@@ -1,4 +1,4 @@
-3.0.1
+1.0.0
 - API cursor HTML5 pour la caméra
 - correction image administration map (dossier du script /monrpg/)
 - Ajout de son
