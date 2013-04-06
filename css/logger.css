@@ -1,0 +1,93 @@
+.input-text-auth {
+		border: 0;
+		border-color: transparent;
+		background-color: transparent;
+		background-image:url(../images/template/bg-input.png);
+		background-repeat: no-repeat;
+		width: 216px;
+		height: 29px;
+		color: #c3c1c1;
+		font-size: 16px;
+		padding: 1px 10px;
+		margin-bottom: 10px;
+}
+
+.button-auth {
+		border: 0;
+		border-color: transparent;
+		background-color: transparent;
+		background-image:url(../images/template/button-play.png);
+		background-repeat: no-repeat;
+		width: 97px;
+		height: 29px;
+		color: #c3c1c1;
+		cursor: pointer;
+		margin-right: 2px;
+		float: right;
+}
+
+.contener-form-auth {
+		width: 798px;
+		margin: auto;
+		position: relative;
+		background-image:url(../images/template/bg-auth.jpg);
+		background-repeat: no-repeat;
+		background-position-x: 50%;
+		background-position-y: 80px;
+		height: 680px;
+}
+
+#formAuth {
+		position: absolute;
+		top: 70px;
+		right: 13px;
+}
+
+#subscribe {
+		position: absolute;
+		top:580px;
+		right: 10px;
+}
+
+#mdp {
+		float: left;
+		margin-top: 5px;
+}
+
+.description {
+		position: absolute;
+		top: 700px;
+		left: 0;
+}
+
+#errorAuth {
+		color:#d08224;
+		font-size: 20px;
+		font-weight: bold;
+		top:72px;
+		position: absolute;
+}
+.contener-content{
+		margin: 0 auto;
+		width: 92%;
+}
+#facebox .content {
+		background-color: #000;
+		color: #FFF;
+		font-size: 13px;
+}
+#facebox .contener-content {
+		border-spacing: 2px 12px;
+}
+
+.buttonAuth {
+		height: 30px;
+		width: 128px;
+		text-align: center;
+		border: 0;
+		color: #d89139;
+		font-size: 14px;
+		cursor: pointer;
+		background: url('../images/template/bg-button-red.png') no-repeat;
+		margin: 0 10px;
+}
