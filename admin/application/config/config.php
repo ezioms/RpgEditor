@@ -24,7 +24,7 @@ defined(	'SYSPATH'	)	OR	die(	'No direct access allowed.'	);
 	* then a full URL will be used, eg: http://localhost/kohana/. If it only includes
 	* the path, and a site_protocol is specified, the domain will be auto-detected.
 	*/
-$config['site_domain']	=	'rpg.dev/';
+$config['site_domain']	=	'rpg.dev/admin/';
 
 /**
 	* Force a default protocol to be used by the site. If no site_protocol is
@@ -55,7 +55,7 @@ $config['internal_cache']	=	TRUE;
 /**
 	* Internal cache directory.
 	*/
-$config['internal_cache_path']	=	DOCROOT.'cache/';
+$config['internal_cache_path']	=	DOCROOT.'../cache/';
 
 /**
 	* Enable internal cache encryption - speed/processing loss
@@ -107,7 +107,7 @@ $config['log_threshold']	=	1;
 /**
 	* Message logging directory.
 	*/
-$config['log_directory']	=	DOCROOT.'logs/';
+$config['log_directory']	=	DOCROOT.'../logs/';
 
 /**
 	* Enable or disable displaying of Kohana error pages. This will not affect
