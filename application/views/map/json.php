@@ -9,7 +9,7 @@
 		"logins" : <?php echo $my->logins; ?>,
 		"gravity" : <?php echo number_format($my->gravity, 2); ?>,
 		"speed" : <?php echo $my->speed; ?>,
-		"currentdirection_x" : <?php echo $my->currentdirection_x; ?>,
+		"currentdirection_x" : <?php echo number_format($my->currentdirection_x, 5); ?>,
 		"img" : "<?php echo $my->avatar; ?>",
 		"hp" : <?php echo $my->hp; ?>,
 		"hpMax" : <?php echo $my->hp_max; ?>,

@@ -14,7 +14,7 @@ var buttonEnter = false;
 app = {};
 
 app.scene = new THREE.Scene();
-app.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 8000 );
+app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 8000);
 app.loader = new THREE.Loader();
 app.clock = new THREE.Clock();
 app.sound = new THREE.Sound();
@@ -139,18 +139,15 @@ function init() {
 				$('body').append(stats.domElement);
 		}
 
-		//	app.scene.fog = new THREE.FogExp2(app.loader.map.colorBackground, 0.0001);
-
 		app.map = new THREE.Map(app);
 
-		
 		app.hero = new THREE.Hero(app);
 
 		app.scene.add(app.map.getUnivers(app.hero.region));
 		app.scene.add(app.map.getAmbience());
 		app.scene.add(app.map.getLight());
 
-		app.scene.add( app.hero.getCamera() );
+		app.scene.add(app.hero.getCamera());
 		app.scene.add(app.hero.person);
 
 		var bots = app.map.getBots(app.hero.region);
@@ -192,10 +189,13 @@ var loadUnivers = function() {
 		for (var key in app.scene.children)
 				if (app.scene.children[key].name == 'map') {
 						app.scene.remove(app.scene.children[key]);
+						app.renderer.deallocateObject(app.scene.children[key]);
 						break;
 				}
 
 		app.scene.add(app.map.getUnivers(app.hero.region));
+		
+		app.renderer.setClearColorHex(app.loader.maps['region_' + app.hero.region].map.colorBackground);
 }
 
 
@@ -204,45 +204,46 @@ var loadUnivers = function() {
  * Rendu du canvas
  */
 function render() {
-		
+
 		if (app.scene === undefined)
 				return;
 
 		if (!control)
 				$('#noCursor').show();
 
-		if (app.loader.my.hp <= 0)
+		if (app.hero.hp <= 0)
 		{
 				app.hero.setPosition(1, 1, 1)
-				app.loader.my.hp = 100;
-				set_barre('#user_hp', app.loader.my.hp);
+				app.hero.hp = 100;
+				set_barre('#user_hp', app.hero.hp);
 				app.messages.push('GAME OVER');
 		}
 
 		app.hero.update(app);
 
 		updateHeroVisual();
-		app.node.send(app.loader.my, app.hero.person);
+		app.node.send(app.hero);
 
 		/* Users */
 		var listUsers = app.node.listUser();
-		if( listUsers )
-		for (var keyUser in listUsers) {
-				if (listUsers[keyUser].region == app.loader.my.region) {
-						if (listUsers[keyUser]) {
-								if (app.users[keyUser] == undefined) {
-										app.users[keyUser] = new THREE.User(listUsers[keyUser], app.loader, app.sound);
-										app.scene.add(app.users[keyUser].person);
+		if (listUsers)
+				for (var keyUser in listUsers) {
+						if (listUsers[keyUser].region == app.hero.region) {
+								if (listUsers[keyUser]) {
+										if (app.users[keyUser] == undefined) {
+												app.users[keyUser] = new THREE.User(listUsers[keyUser], app.loader, app.sound);
+												app.scene.add(app.users[keyUser].person);
+										}
+										else
+												app.users[keyUser].update(listUsers[keyUser]);
+								} else if (!listUsers[keyUser] && app.users[keyUser] != undefined) {
+										app.scene.remove(app.users[keyUser].person);
+										app.renderer.deallocateObject(app.users[keyUser].person);
+										delete app.users[keyUser];
+										app.node.deleteUser(keyUser);
 								}
-								else
-										app.users[keyUser].update(listUsers[keyUser]);
-						} else if (!listUsers[keyUser] && app.users[keyUser] != undefined) {
-								app.scene.remove(app.users[keyUser].person);
-								delete app.users[keyUser];
-								app.node.deleteUser(keyUser);
 						}
 				}
-		}
 
 		/* Bots */
 		for (var keyBot in app.bots)
@@ -251,9 +252,10 @@ function render() {
 		for (var keyChildren in app.scene.children) {
 				if (app.scene.children[keyChildren].name != 'hero' && app.scene.children[keyChildren] instanceof THREE.Person) {
 						var person = app.scene.children[keyChildren].position;
-						if (app.hero.position.x > person.x - 150 && app.hero.position.x < person.x + 150
-										&& app.hero.position.y > person.y - 150 && app.hero.position.y < person.y + 150
-										&& app.hero.position.z > person.z - 150 && app.hero.position.z < person.z + 150) {
+						var hero = app.hero.person.position;
+						if (hero.x > person.x - 150 && hero.x < person.x + 150
+										&& hero.y > person.y - 150 && hero.y < person.y + 150
+										&& hero.z > person.z - 150 && hero.z < person.z + 150) {
 								app.scene.children[keyChildren].text.visible = true;
 						}
 						else
@@ -277,10 +279,8 @@ function render() {
  * Ajout des éléments sur la map
  */
 function reloadMap() {
-		app.map.loadUnivers();
-		app.hero.setPosition(app.loader.my.x, app.loader.my.y, app.loader.my.z);
-
 		for (var keyBotRemove in app.bots) {
+				app.renderer.deallocateObject(app.bots[keyBotRemove].person);
 				app.scene.remove(app.bots[keyBotRemove].person);
 				delete app.bots[keyBotRemove];
 		}
@@ -291,8 +291,9 @@ function reloadMap() {
 				app.bots[bot.id] = bot;
 				app.scene.add(bot.person);
 		}
+		
+		loadUnivers();
 
-		app.renderer.setClearColorHex(app.loader.maps['region_' + app.hero.region].map.colorBackground);
 }
 
 
@@ -446,16 +447,16 @@ function updateHeroVisual() {
 
 
 		// changement de niveau
-		if (app.loader.my.xp >= app.loader.my.xpMax) {
+		if (app.hero.xp >= app.hero.xpMax) {
 				app.loader.request('user/update?' + app.hero.getData());
-				app.messages.push('Vous êtes passé au niveau : ' + app.loader.my.niveau);
+				app.messages.push('Vous êtes passé au niveau : ' + app.hero.niveau);
 		}
 
-		set_barre('#user_hp', app.loader.my.hp);
+		set_barre('#user_hp', app.hero.hp);
 
 		// update de donnée hero
-		$('#user_argent').html(number_format(app.loader.my.argent) + ' pt' + (app.loader.my.argent > 1 ? 's' : ''));
-		$('#user_niveau').html('Niveau ' + app.loader.my.niveau);
+		$('#user_argent').html(number_format(app.hero.argent) + ' pt' + (app.hero.argent > 1 ? 's' : ''));
+		$('#user_niveau').html('Niveau ' + app.hero.niveau);
 
 		if (app.gamepad.buttonX())
 				simulEnter();

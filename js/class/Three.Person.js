@@ -309,7 +309,7 @@ THREE.Person = function ( picture, name ) {
 				this.text.rotation.y = 90 * Math.PI / 180;
 		
 				this.text.doubleSided = false;
-		
+
 				this.add(this.text);
 		}
 };

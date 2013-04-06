@@ -52,7 +52,7 @@ THREE.Bot = function(app, dataBot) {
 		this.position.x = -(this.size.xMax * this.size.elements / 2) + (dataBot.x * this.size.elements + (this.size.elements / 2));
 		this.position.y = dataBot.y * this.size.elements + this.size.elements;
 		this.position.z = -(this.size.zMax * this.size.elements / 2) + (dataBot.z * this.size.elements + (this.size.elements / 2));
-
+console.log(dataBot);
 		this.person = new THREE.Person(dataBot.img, dataBot.name);
 		this.person.name = 'bot';
 		this.person.rotation.y = (270 * Math.PI / 180);

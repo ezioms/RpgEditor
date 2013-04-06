@@ -6,7 +6,7 @@ THREE.Node = function( app ) {
 		
 		var listUsers = {};
 		
-		this.send = function( datas, personDatas )
+		this.send = function( user )
 		{
 				if( this.mySocket == false)
 						return;
@@ -14,43 +14,38 @@ THREE.Node = function( app ) {
 				try {
 						data = {
 								type : 'user',
-								id : datas.id,
-								argent : datas.argent,
-								img : datas.img.src,
-								attack : datas.attack,
-								defense : datas.defense,
-								hand_left : datas.hand_left,
-								hand_right : datas.hand_right,
-								hp : datas.hp,
-								mp : datas.mp,
-								niveau : datas.niveau,
-								region : datas.region,
-								username : datas.username,
-								xp : datas.xp,
-								x : datas.x,
-								y : datas.y,
-								z : datas.z,
-								xPerson : personDatas.position.x,
-								yPerson : personDatas.position.y,
-								zPerson : personDatas.position.z,
-								xRotationPerson : personDatas.rotation.x,
-								yRotationPerson : personDatas.rotation.y,
-								zRotationPerson : personDatas.rotation.z,
-								rightarmRotationXPerson : personDatas.rightarm.rotation.x,
-								rightarmRotationYPerson : personDatas.rightarm.rotation.y,
-								rightarmRotationZPerson : personDatas.rightarm.rotation.z,
-								rightlegRotationXPerson : personDatas.rightleg.rotation.x,
-								rightlegRotationYPerson : personDatas.rightleg.rotation.y,
-								rightlegRotationZPerson : personDatas.rightleg.rotation.z,
-								leftarmRotationXPerson : personDatas.leftarm.rotation.x,
-								leftarmRotationYPerson : personDatas.leftarm.rotation.y,
-								leftarmRotationZPerson : personDatas.leftarm.rotation.z,
-								leftlegRotationXPerson : personDatas.leftleg.rotation.x,
-								leftlegRotationYPerson : personDatas.leftleg.rotation.y,
-								leftlegRotationZPerson : personDatas.leftleg.rotation.z,
-								headRotationXPerson : personDatas.head.rotation.x,
-								headRotationYPerson : personDatas.head.rotation.y,
-								headRotationZPerson : personDatas.head.rotation.z
+								id : user.id,
+								argent : user.argent,
+								img : user.img.src,
+								hp : user.hp,
+								niveau : user.niveau,
+								region : user.region,
+								username : user.username,
+								xp : user.xp,
+								x : user.zone.x,
+								y : user.zone.y,
+								z : user.zone.z,
+								xPerson : user.person.position.x,
+								yPerson : user.person.position.y,
+								zPerson : user.person.position.z,
+								xRotationPerson : user.person.rotation.x,
+								yRotationPerson : user.person.rotation.y,
+								zRotationPerson : user.person.rotation.z,
+								rightarmRotationXPerson : user.person.rightarm.rotation.x,
+								rightarmRotationYPerson : user.person.rightarm.rotation.y,
+								rightarmRotationZPerson : user.person.rightarm.rotation.z,
+								rightlegRotationXPerson : user.person.rightleg.rotation.x,
+								rightlegRotationYPerson : user.person.rightleg.rotation.y,
+								rightlegRotationZPerson : user.person.rightleg.rotation.z,
+								leftarmRotationXPerson : user.person.leftarm.rotation.x,
+								leftarmRotationYPerson : user.person.leftarm.rotation.y,
+								leftarmRotationZPerson : user.person.leftarm.rotation.z,
+								leftlegRotationXPerson : user.person.leftleg.rotation.x,
+								leftlegRotationYPerson : user.person.leftleg.rotation.y,
+								leftlegRotationZPerson : user.person.leftleg.rotation.z,
+								headRotationXPerson : user.person.head.rotation.x,
+								headRotationYPerson : user.person.head.rotation.y,
+								headRotationZPerson : user.person.head.rotation.z
 						};
 						
 						var dataJson = JSON.stringify(data);

@@ -8,6 +8,7 @@ THREE.Hero = function(app) {
 
 		var yawObject = new THREE.Object3D();
 		yawObject.add(pitchObject);
+		yawObject.rotation.y = app.loader.datas.my.currentdirection_x;
 
 
 		this.target = new THREE.Vector3(0, 0, 0);
@@ -39,34 +40,33 @@ THREE.Hero = function(app) {
 
 		this.sizeElement = 0;
 
+		this.id = app.loader.datas.my.id || '';
+		this.username = app.loader.datas.my.username || '';
+		this.img = app.loader.datas.my.img || '';
 		this.region = app.loader.datas.my.region || 1;
-
+		this.argent = app.loader.datas.my.argent || 0;
+		this.xp = app.loader.datas.my.xp || 0;
+		this.hp = app.loader.datas.my.hp || 0;
+		this.hpMax = app.loader.datas.my.hpMax || 0;
+		this.niveau = app.loader.datas.my.niveau || 0;
 		this.gravity = app.loader.datas.my.gravity || 1;
 		this.speed = app.loader.datas.my.speed || 6;
 
 		this.person = new THREE.Person(app.loader.datas.my.img);
 		this.person.name = 'hero';
 		this.person.rotation.y = (90 * Math.PI / 180) + this.rotation.y;
-		
-		
-		
+
+
 		this.getCamera = function() {
 				return yawObject;
 		}
-
 
 
 		/*
 		 * Geneate GET for URL hero
 		 */
 		this.getData = function() {
-				var str = '';
-				for (var key in app.loader.datas.my)
-						if (key != 'img' && key != 'sorts')
-								str += (key + '=' + app.loader.datas.my[key] + '&');
-				str = str.slice(0, -1);
-
-				return str;
+				return 'id=' + this.id + '&region=' + this.region + '&x=' + this.zone.x + '&y=' + this.zone.y + '&z=' + this.zone.z + '&argent=' + this.argent + '&xp=' + this.xp + '&hp=' + this.hp + '&hpMax=' + this.hpMax + '&niveau=' + this.niveau + '&gravity=' + this.gravity + '&speed=' + this.speed+'&currentdirection_x='+this.currentdirection.x;
 		};
 
 
@@ -113,7 +113,8 @@ THREE.Hero = function(app) {
 				pitchObject.rotation.x -= movementY * 0.002;
 
 				pitchObject.rotation.x = Math.max(-1, Math.min(1, pitchObject.rotation.x));
-
+				
+				this.currentdirection.x = yawObject.rotation.y;
 		};
 
 
@@ -393,34 +394,16 @@ THREE.Hero = function(app) {
 						this.person.rotation.y = (90 * Math.PI / 180) + yawObject.rotation.y;
 				}
 
-
 				if (app.gamepad.axeXHead())
 						this.currentdirection.x -= app.gamepad.axeXHead() * 2;
 
 				if (app.gamepad.axeYHead())
 						this.currentdirection.y -= app.gamepad.axeYHead() * 200;
-				
-				
 
-				this.save();
-		};
-
-
-		/*
-		 * Sauvegarde de la session 
-		 */
-		this.save = function() {
 
 				if (Date.now() % 60 == 0)
-						if (app.loader.datas.my.hp < 100)
-								app.loader.datas.my.hp++;
-
-				app.loader.datas.my.x = this.zone.x;
-				app.loader.datas.my.y = this.zone.y;
-				app.loader.datas.my.z = this.zone.z;
-				app.loader.datas.my.speed = this.speed;
-				app.loader.datas.my.gravity = this.gravity;
-				app.loader.datas.my.currentdirection_x = this.currentdirection.x % 360;
+						if (this.hp < 100)
+								this.hp++;
 		};
 
 
