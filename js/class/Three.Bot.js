@@ -97,7 +97,7 @@ THREE.Bot = function(app, dataBot) {
 				var turn = rand > 90 ? true : false;
 
 
-				var hero = app.hero.position;
+				var hero = app.hero.getCamera().position;
 
 				this.moveForward = true;
 

@@ -39,12 +39,12 @@ class Plugin_Move_Controller extends Action_Controller {
 						History_Model::instance()->user_insert( $this->user->id, $this->data->id, $this->data->action_map->id_region_move, 'change_map' );
 
 						echo '<script>';
-						echo 'scene.data.my.x = '.$this->data->action_map->x_move.';';
-						echo 'scene.data.my.y = '.$this->data->action_map->y_move.';';
-						echo 'scene.data.my.z = '.$this->data->action_map->z_move.';';
-						echo 'scene.hero.setPosition('.$this->data->action_map->x_move.','.$this->data->action_map->y_move.','.$this->data->action_map->z_move.');';
-						echo 'scene.data.my.region = '.$this->user->region_id.';';
-						echo 'scene.data.my.argent = '.$this->user->argent.';';
+						echo 'app.hero.zone.x = '.$this->data->action_map->x_move.';';
+						echo 'app.hero.zone.y = '.$this->data->action_map->y_move.';';
+						echo 'app.hero.zone.z = '.$this->data->action_map->z_move.';';
+						echo 'app.hero.setPosition('.$this->data->action_map->x_move.','.$this->data->action_map->y_move.','.$this->data->action_map->z_move.');';
+						echo 'app.hero.region = '.$this->user->region_id.';';
+						echo 'app.argent.argent = '.$this->user->argent.';';
 						echo 'reloadMap();';
 						echo '</script>';
 				}

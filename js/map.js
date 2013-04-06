@@ -14,6 +14,7 @@ var buttonEnter = false;
 app = {};
 
 app.scene = new THREE.Scene();
+app.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 8000 );
 app.loader = new THREE.Loader();
 app.clock = new THREE.Clock();
 app.sound = new THREE.Sound();
@@ -22,6 +23,7 @@ app.overlay = new THREE.Overlay();
 
 
 app.renderer = {};
+app.hero = {};
 app.map = {};
 app.bots = {};
 app.users = {};
@@ -141,12 +143,14 @@ function init() {
 
 		app.map = new THREE.Map(app);
 
-		app.hero = new THREE.Hero(app, 60, window.innerWidth / window.innerHeight, 1, 8000);
+		
+		app.hero = new THREE.Hero(app);
 
 		app.scene.add(app.map.getUnivers(app.hero.region));
 		app.scene.add(app.map.getAmbience());
 		app.scene.add(app.map.getLight());
 
+		app.scene.add( app.hero.getCamera() );
 		app.scene.add(app.hero.person);
 
 		var bots = app.map.getBots(app.hero.region);
@@ -259,7 +263,7 @@ function render() {
 
 		app.sound.update(app);
 
-		app.renderer.render(app.scene, app.hero);
+		app.renderer.render(app.scene, app.camera);
 
 		if (debug) {
 				var info = app.renderer.info;
@@ -314,8 +318,8 @@ function animate() {
  * Traitement du resize de la fenetre
  */
 function onWindowResize() {
-		app.hero.aspect = window.innerWidth / window.innerHeight;
-		app.hero.updateProjectionMatrix();
+		app.camera.aspect = window.innerWidth / window.innerHeight;
+		app.camera.updateProjectionMatrix();
 		app.renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
@@ -369,7 +373,7 @@ function updateHeroVisual() {
 		}
 
 		//	fenetre action module	
-		var module = app.map.getOverModule(app.loader.my.region, app.hero.zone);
+		var module = app.map.getOverModule(app.hero.region, app.hero.zone);
 
 		if (module) {
 				if (!action) {

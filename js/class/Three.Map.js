@@ -18,7 +18,7 @@ THREE.Map = function(app) {
 		 */
 		this.getLight = function() {
 
-				this.light = new THREE.SpotLight(0xffffff, 2);
+				this.light = new THREE.SpotLight(0xffffff, 1);
 				this.light.position.set( 0, 10000, 1 );
 				this.light.rotation.set(0, Math.PI / 2, 0);
 				this.light.shadowCameraFar = 50;
