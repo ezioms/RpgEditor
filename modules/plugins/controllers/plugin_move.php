@@ -19,7 +19,6 @@ class Plugin_Move_Controller extends Action_Controller {
 		 */
 		public function index()
 		{
-				$this->json = FALSE;
 				if( isset( $this->data->action_map->item ) && $this->data->action_map->item && (!$obj = Item_Model::instance()->select( $this->user->id, $this->data->action_map->item, 1 ) ) )
 				{
 						echo 'no';
@@ -39,10 +38,10 @@ class Plugin_Move_Controller extends Action_Controller {
 						History_Model::instance()->user_insert( $this->user->id, $this->data->id, $this->data->action_map->id_region_move, 'change_map' );
 
 						echo '<script>';
-						echo 'app.hero.setPosition('.$this->data->action_map->x_move.','.$this->data->action_map->y_move.','.$this->data->action_map->z_move.');';
 						echo 'app.hero.region = '.$this->user->region_id.';';
 						echo 'app.hero.argent = '.$this->user->argent.';';
-						echo 'reloadMap();';
+						echo 'app.hero.setPosition('.$this->user->x.','.$this->user->y.','.$this->user->z.');';
+						echo 'loadUnivers();';
 						echo '</script>';
 				}
 		}

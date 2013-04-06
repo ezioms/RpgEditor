@@ -181,25 +181,6 @@ function init() {
 
 
 
-
-/*
- * Charger map current
- */
-var loadUnivers = function() {
-		for (var key in app.scene.children)
-				if (app.scene.children[key].name == 'map') {
-						app.scene.remove(app.scene.children[key]);
-						app.renderer.deallocateObject(app.scene.children[key]);
-						break;
-				}
-
-		app.scene.add(app.map.getUnivers(app.hero.region));
-		
-		app.renderer.setClearColorHex(app.loader.maps['region_' + app.hero.region].map.colorBackground);
-}
-
-
-
 /*
  * Rendu du canvas
  */
@@ -275,10 +256,30 @@ function render() {
 
 
 
+
+/*
+ * Charger map current
+ */
+var loadUnivers = function() {
+		for (var key in app.scene.children)
+				if (app.scene.children[key].name == 'map') {
+						app.scene.remove(app.scene.children[key]);
+						app.renderer.deallocateObject(app.scene.children[key]);
+						break;
+				}
+
+		app.scene.add(app.map.getUnivers(app.hero.region));
+		
+		app.renderer.setClearColorHex(app.loader.maps['region_' + app.hero.region].map.colorBackground);
+}
+
+
+
 /*
  * Ajout des éléments sur la map
  */
 function reloadMap() {
+		loadUnivers();
 		for (var keyBotRemove in app.bots) {
 				app.renderer.deallocateObject(app.bots[keyBotRemove].person);
 				app.scene.remove(app.bots[keyBotRemove].person);
@@ -291,9 +292,6 @@ function reloadMap() {
 				app.bots[bot.id] = bot;
 				app.scene.add(bot.person);
 		}
-		
-		loadUnivers();
-
 }
 
 

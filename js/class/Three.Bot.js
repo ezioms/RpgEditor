@@ -52,12 +52,10 @@ THREE.Bot = function(app, dataBot) {
 		this.position.x = -(this.size.xMax * this.size.elements / 2) + (dataBot.x * this.size.elements + (this.size.elements / 2));
 		this.position.y = dataBot.y * this.size.elements + this.size.elements;
 		this.position.z = -(this.size.zMax * this.size.elements / 2) + (dataBot.z * this.size.elements + (this.size.elements / 2));
-console.log(dataBot);
+
 		this.person = new THREE.Person(dataBot.img, dataBot.name);
 		this.person.name = 'bot';
 		this.person.rotation.y = (270 * Math.PI / 180);
-		//this.person.position.set(this.position);
-
 
 		this.fixe = dataBot.fixe;
 		this.leak = dataBot.leak;
@@ -80,10 +78,6 @@ console.log(dataBot);
 		 * UPDATE
 		 */
 		this.update = function(app) {
-
-				if (this.destructor(app))
-						return;
-
 				var x = this.position.x;
 				var z = this.position.z;
 				var y = this.position.y;
@@ -231,9 +225,8 @@ console.log(dataBot);
 
 						var direction = (theta_deg + 90) * (Math.PI / 180);
 
-						if (direction != this.person.rotation.y) {
+						if (direction != this.person.rotation.y) 
 								this.person.rotation.y = (theta_deg + 90) * (Math.PI / 180);
-						}
 
 						if (buttonEnter)
 								this.speack(app);
@@ -284,28 +277,6 @@ console.log(dataBot);
 						app.messages.push(app.map.getArticles(app.hero.data.my.region));
 				}
 		};
-
-
-
-		/*
-		 * Animation et destruction du bot
-		 */
-		this.destructor = function(app) {
-				if (!this.remove)
-						return false;
-
-				if (this.person.scale.x < 0 && this.person.scale.y < 0 && this.person.scale.z < 0) {
-						app.scene.remove(this.person);
-						delete app.bots[this.id];
-						return true;
-				}
-
-				this.person.scale.x -= 0.1;
-				this.person.scale.y -= 0.1;
-				this.person.scale.z -= 0.1;
-				this.person.position.y++;
-				return false;
-		}
 };
 
 THREE.Bot.prototype = Object.create(THREE.Object3D.prototype);
