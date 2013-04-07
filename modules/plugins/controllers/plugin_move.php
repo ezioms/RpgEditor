@@ -37,12 +37,10 @@ class Plugin_Move_Controller extends Action_Controller {
 
 						History_Model::instance()->user_insert( $this->user->id, $this->data->id, $this->data->action_map->id_region_move, 'change_map' );
 
-						echo '<script>';
-						echo 'app.hero.region = '.$this->user->region_id.';';
-						echo 'app.hero.argent = '.$this->user->argent.';';
-						echo 'app.hero.setPosition('.$this->user->x.','.$this->user->y.','.$this->user->z.');';
-						echo 'loadUnivers();';
-						echo '</script>';
+						echo '<script>
+						$(window).unbind("unload");
+						window.location.reload();
+						</script>';
 				}
 		}
 

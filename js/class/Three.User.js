@@ -1,4 +1,4 @@
-THREE.User = function ( dataUser, data, sound ) {
+THREE.User = function ( dataUser, app ) {
 
 		THREE.Object3D.call( this );
 		
@@ -7,7 +7,7 @@ THREE.User = function ( dataUser, data, sound ) {
 		
 		this.data = dataUser;
 
-		this.person = new THREE.Person( dataUser.img, data, sound, dataUser.username);
+		this.person = new THREE.Person( 'user', dataUser.img, dataUser.username);
 		this.person.rotation.y = (270 * Math.PI / 180);
 		
 		

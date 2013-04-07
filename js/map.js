@@ -121,8 +121,6 @@ var load = function () {
  * Initialisation de la map
  */
 function init() {
-    info('Chargement des données à 100%');
-    info('Chargement de ' + number_format(app.loader.nbrMap) + ' région(s)');
     info('Chargement de ' + number_format(app.loader.nbrBot) + ' bot(s)');
     info('Chargement de ' + number_format(app.loader.nbrElements) + ' élement(s)');
 
@@ -145,6 +143,7 @@ function init() {
     app.scene.add(app.hero.getCamera());
     app.scene.add(app.hero.person);
 
+
     var bots = app.map.getBots(app.hero.region);
     if (bots)
         for (var keyBot in bots) {
@@ -155,8 +154,7 @@ function init() {
 
 
     app.renderer = new THREE.WebGLRenderer({
-        clearColor: app.loader.map.colorBackground,
-        antialias: false
+        clearColor: app.loader.map.colorBackground
     });
     app.renderer.setSize(window.innerWidth, window.innerHeight);
     app.renderer.shadowMapEnabled = true;
@@ -250,38 +248,31 @@ function render() {
 /*
  * Charger map current
  */
-var loadUnivers = function () {
+var reloadMap = function () {
+    for (var keyBotRemove in app.bots) {
+        app.scene.remove(app.bots[keyBotRemove].person);
+        delete app.bots[keyBotRemove];
+    }
+
     for (var key in app.scene.children)
         if (app.scene.children[key].name == 'map') {
             app.scene.remove(app.scene.children[key]);
-            app.renderer.deallocateObject(app.scene.children[key]);
             break;
         }
 
     app.scene.add(app.map.getUnivers(app.hero.region));
 
     app.renderer.setClearColorHex(app.loader.maps['region_' + app.hero.region].map.colorBackground);
-}
 
-
-/*
- * Ajout des éléments sur la map
- */
-function reloadMap() {
-    loadUnivers();
-    for (var keyBotRemove in app.bots) {
-        app.renderer.deallocateObject(app.bots[keyBotRemove].person);
-        app.scene.remove(app.bots[keyBotRemove].person);
-        delete app.bots[keyBotRemove];
-    }
-
-    var bots = app.map.getBots(app.hero.region)
-    for (var keyBot in bots) {
-        var bot = new THREE.Bot(app, bots[keyBot]);
-        app.bots[bot.id] = bot;
-        app.scene.add(bot.person);
-    }
-}
+    var bots = app.map.getBots(app.hero.region);
+    app.bots = {};
+    if (bots)
+        for (var keyBot in bots) {
+            var bot = new THREE.Bot(app, bots[keyBot]);
+            app.bots[bot.id] = bot;
+            app.scene.add(bot.person);
+        }
+};
 
 
 /*
@@ -313,7 +304,6 @@ function onWindowResize() {
 function lookMessage(txt) {
     var id = app.clock.oldTime + '_' + random(0, 100);
     $('#notifications').append('<div id="' + id + '" class="notifications">' + txt + '</div>');
-    app.sound.effect('system/001-System01.ogg', 0.1);
     $('#' + id).fadeIn(400).delay(80 * txt.length).fadeOut(3000, function () {
         killSpeackBot();
     });
@@ -354,7 +344,7 @@ function updateHeroVisual() {
     }
 
     //	fenetre action module
-    var module = app.map.getOverModule(app.hero.region, app.hero.zone);
+    var module = app.map.getOverModule(app.hero.zone);
 
     if (module) {
         if (!action) {

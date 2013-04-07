@@ -40,19 +40,19 @@ THREE.Hero = function (app) {
 
     this.sizeElement = 0;
 
-    this.id = app.loader.datas.my.id || '';
-    this.username = app.loader.datas.my.username || '';
-    this.img = app.loader.datas.my.img || '';
-    this.region = app.loader.datas.my.region || 1;
-    this.argent = app.loader.datas.my.argent || 0;
-    this.xp = app.loader.datas.my.xp || 0;
-    this.hp = app.loader.datas.my.hp || 0;
-    this.hpMax = app.loader.datas.my.hpMax || 0;
-    this.niveau = app.loader.datas.my.niveau || 0;
-    this.gravity = app.loader.datas.my.gravity || 1;
-    this.speed = app.loader.datas.my.speed || 6;
+    this.id = app.loader.my.id || '';
+    this.username = app.loader.my.username || '';
+    this.img = app.loader.my.img || '';
+    this.region = app.loader.my.region || 1;
+    this.argent = app.loader.my.argent || 0;
+    this.xp = app.loader.my.xp || 0;
+    this.hp = app.loader.my.hp || 0;
+    this.hpMax = app.loader.my.hpMax || 0;
+    this.niveau = app.loader.my.niveau || 0;
+    this.gravity = app.loader.my.gravity || 1;
+    this.speed = app.loader.my.speed || 6;
 
-    this.person = new THREE.Person(app.loader.datas.my.img);
+    this.person = new THREE.Person('hero', app.loader.my.img);
     this.person.name = 'hero';
     this.person.rotation.y = (90 * Math.PI / 180) + this.rotation.y;
 
@@ -67,7 +67,7 @@ THREE.Hero = function (app) {
      */
     this.setPosition = function (x, y, z) {
 
-        var infoSize = app.map.getSize(this.region);
+        var infoSize = app.map.getSize();
         var sizeBloc = infoSize.elements;
         var maxX = infoSize.xMax * sizeBloc;
         var maxZ = infoSize.zMax * sizeBloc;
@@ -134,6 +134,9 @@ THREE.Hero = function (app) {
      */
     this.onKeyDown = function (event) {
 
+        if (event.keyCode != 13)
+            document.getElementById('notifications').innerHTML = '';
+
         switch (event.keyCode) {
             case 38 :
             case 122 :
@@ -143,7 +146,6 @@ THREE.Hero = function (app) {
                 if (this.moveForward)
                     break;
 
-                app.sound.move(true);
                 this.moveForward = true;
                 break;
             case 37 :
@@ -154,7 +156,6 @@ THREE.Hero = function (app) {
                 if (this.moveLeft)
                     break;
 
-                app.sound.move(true);
                 this.moveLeft = true;
                 break;
             case 40 :
@@ -163,7 +164,6 @@ THREE.Hero = function (app) {
                 if (this.moveBackward)
                     break;
 
-                app.sound.move(true);
                 this.moveBackward = true;
                 break;
             case 39 :
@@ -172,7 +172,6 @@ THREE.Hero = function (app) {
                 if (this.moveRight)
                     break;
 
-                app.sound.move(true);
                 this.moveRight = true;
                 break;
             case 32:
@@ -201,7 +200,6 @@ THREE.Hero = function (app) {
             case 119 :
             case 90 :
             case 87 : // Flèche haut, z, w, Z, W
-                app.sound.move(false);
                 this.moveForward = false;
                 break;
             case 37 :
@@ -209,19 +207,16 @@ THREE.Hero = function (app) {
             case 97 :
             case 81 :
             case 65 : // Flèche gauche, q, a, Q, A
-                app.sound.move(false);
                 this.moveLeft = false;
                 break;
             case 40 :
             case 115 :
             case 83 : // Flèche bas, s, S
-                app.sound.move(false);
                 this.moveBackward = false;
                 break;
             case 39 :
             case 100 :
             case 68 : // Flèche droite, d, D
-                app.sound.move(false);
                 this.moveRight = false;
                 break;
             case 16 :
@@ -238,7 +233,7 @@ THREE.Hero = function (app) {
      */
     this.update = function (app) {
 
-        var infoSize = app.map.getSize(app.hero.region);
+        var infoSize = app.map.getSize();
         var sizeBloc = infoSize.elements;
         var maxX = infoSize.xMax * sizeBloc;
         var maxZ = infoSize.zMax * sizeBloc;
@@ -253,9 +248,9 @@ THREE.Hero = function (app) {
         }
 
         if (this.moveLeft)
-            this.clone.translateX(-(this.speed + this.speedTmp));
+            this.clone.translateX(-this.speed);
         else if (this.moveRight)
-            this.clone.translateX(this.speed + this.speedTmp);
+            this.clone.translateX(this.speed);
         else if (app.gamepad.axeXFoot() != 0)
             this.clone.translateX(-app.gamepad.axeXFoot());
 
@@ -293,7 +288,7 @@ THREE.Hero = function (app) {
         var dirYx = Math.floor((x + (maxX / 2)) / sizeBloc) + 1;
         var dirYy = Math.floor(y / sizeBloc);
         var dirYz = Math.floor((z + (maxZ / 2)) / sizeBloc) + 1;
-        if (app.map.hasObstacle(dirYx, dirYy + 1, dirYz, app.hero.region) || app.map.hasObstacle(dirYx, dirYy - 1, dirYz, app.hero.region)) {
+        if (app.map.hasObstacle(dirYx, dirYy + 1, dirYz) || app.map.hasObstacle(dirYx, dirYy - 1, dirYz)) {
             y = Math.floor(yawObject.position.y / sizeBloc) * sizeBloc;
             this.jump = false;
             this.currentdirection.jump = 0;
@@ -306,7 +301,7 @@ THREE.Hero = function (app) {
         var dirXx = Math.floor(((x + (x > yawObject.position.x ? middle : -middle)) + (maxX / 2)) / sizeBloc) + 1;
         var dirXy = Math.floor(y / sizeBloc);
         var dirXz = Math.floor((z + (maxZ / 2)) / sizeBloc) + 1;
-        if (app.map.hasObstacle(dirXx, dirXy, dirXz, app.hero.region) || app.map.hasObstacle(dirXx, dirXy - 1, dirXz, app.hero.region)) {
+        if (app.map.hasObstacle(dirXx, dirXy, dirXz) || app.map.hasObstacle(dirXx, dirXy - 1, dirXz)) {
             x = yawObject.position.x;
             this.speedTmp -= 0.2;
         }
@@ -315,7 +310,7 @@ THREE.Hero = function (app) {
         var dirZx = Math.floor((x + (maxX / 2)) / sizeBloc) + 1;
         var dirZy = Math.floor(y / sizeBloc);
         var dirZz = Math.floor(((z + (z > yawObject.position.z ? middle : -middle)) + (maxZ / 2)) / sizeBloc) + 1;
-        if (app.map.hasObstacle(dirZx, dirZy, dirZz, app.hero.region) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz, app.hero.region)) {
+        if (app.map.hasObstacle(dirZx, dirZy) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz)) {
             z = yawObject.position.z;
             this.speedTmp -= 0.2;
         }
@@ -375,7 +370,15 @@ THREE.Hero = function (app) {
                 app.hero.hp -= Math.round(Math.round(this.timeFall) / 10);
                 this.timeFall = 0;
             }
+
+
+            if (this.moveForward || this.moveBackward || this.moveLeft || this.moveRight)
+                app.sound.move(true);
+            else
+                app.sound.move(false);
         }
+        else
+            app.sound.move(false);
 
         if (app.gamepad.axeXHead())
             this.currentdirection.x -= app.gamepad.axeXHead() * 2;
@@ -435,7 +438,7 @@ THREE.Hero = function (app) {
     window.addEventListener('keyup', bind(this, this.onKeyUp), false);
 
 
-    this.setPosition(app.loader.datas.my.x, app.loader.datas.my.y, app.loader.datas.my.z);
+    this.setPosition(app.loader.my.x, app.loader.my.y, app.loader.my.z);
 };
 
 THREE.Hero.prototype = Object.create(THREE.Object3D.prototype);

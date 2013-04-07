@@ -219,7 +219,7 @@ class Plugin_Quete_Controller extends Action_Controller {
 
 						if( $quete->argent ){
 								$txt .= '<br />+ '.$quete->argent.' pt'.($quete->argent > 1 ? 's' : '');
-								echo '<script>sound.effect(\'system/056-Right02.ogg\');</script>';
+								echo '<script>app.sound.effect(\'system/056-Right02.ogg\');</script>';
 						}
 						History_Model::instance()->user_insert( $this->user->id, $this->data->id, $id_quete, 'quete_valide' );
 
@@ -230,10 +230,10 @@ class Plugin_Quete_Controller extends Action_Controller {
 
 
 				echo '<script>';
-				echo 'scene.messages.push("'.$txt.'");';
-				echo 'scene.data.my.xp = '.$this->user->xp.';';
-				echo 'scene.data.my.niveau = '.$this->user->niveau.';';
-				echo 'scene.data.my.argent = '.$this->user->argent.';';
+				echo 'app.messages.push("'.$txt.'");';
+				echo 'app.hero.xp = '.$this->user->xp.';';
+				echo 'app.hero.niveau = '.$this->user->niveau.';';
+				echo 'app.hero.argent = '.$this->user->argent.';';
 				echo '</script>';
 				
 				$this->index();
