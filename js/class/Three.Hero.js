@@ -351,7 +351,7 @@ THREE.Hero = function (app) {
                     var yPerson = Math.floor(contactPerson.position.y / sizeBloc);
                     var zPerson = Math.floor((contactPerson.position.z + (maxZ / 2)) / sizeBloc) + 1;
 
-                    if (xPerson === newZoneX && yPerson === newZoneY && zPerson === newZoneZ) {
+                    if (xPerson === newZoneX && yPerson === newZoneY && zPerson === newZoneZ && !this.jump) {
                         noBot = true;
                         break;
                     }

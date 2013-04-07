@@ -14,7 +14,7 @@ var buttonEnter = false;
 app = {};
 
 app.scene = new THREE.Scene();
-app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 8000);
+app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 8000);
 app.loader = new THREE.Loader();
 app.clock = new THREE.Clock();
 app.sound = new THREE.Sound();
@@ -160,7 +160,9 @@ function init() {
     app.renderer.shadowMapEnabled = true;
     app.renderer.sortObjects = false;
 
-    $('#content_body').html(app.renderer.domElement);
+
+    $('#content_body').hide().html(app.renderer.domElement).delay(100).fadeIn();
+
     $('#content_loading').empty();
 
     if (app.loader.map.music)

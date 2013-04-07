@@ -18,7 +18,7 @@ THREE.Map = function (app) {
     this.getLight = function () {
 
         this.light = new THREE.SpotLight(0xffffff, 0.6);
-        this.light.position.set(3000, 3000, 3000);
+        this.light.position.set(3000, 4000, 3000);
         this.light.target.position.set(0, 0, 0);
 
         this.light.shadowCameraVisible = this.wireframe;
