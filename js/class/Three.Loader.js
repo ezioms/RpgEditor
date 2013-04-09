@@ -10,8 +10,6 @@ THREE.Loader = function () {
 
     this.nbrBot = 0;
 
-    this.nbrMap = 0;
-
     this.nbrElements = 0;
 
     this.completedImage = 0;

@@ -10,9 +10,9 @@ THREE.Person = function (type, picture, name) {
 
     this.bodyGroup = new THREE.Object3D();
 
-    this.faceMesh = new THREE.MeshFaceMaterial();
+    var faceMesh = new THREE.MeshFaceMaterial();
 
-    this.listImg = {};
+    var listImg = {};
 
 
     /*
@@ -47,8 +47,8 @@ THREE.Person = function (type, picture, name) {
     this.loadTexture = function (x, y, xSize, ySize) {
         var path = x + '-' + y + '-' + xSize + '-' + ySize;
 
-        if (this.listImg[path] !== undefined)
-            return this.listImg[path];
+        if (listImg[path] !== undefined)
+            return listImg[path];
 
         var canvas = window.document.createElement('canvas');
         canvas.width = xSize * 4;
@@ -61,7 +61,7 @@ THREE.Person = function (type, picture, name) {
         var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
         texture.needsUpdate = true;
 
-        return this.listImg[path] = new THREE.MeshLambertMaterial({
+        return listImg[path] = new THREE.MeshLambertMaterial({
             map: texture,
             wireframe: this.wireframe,
             transparent: true
@@ -175,7 +175,7 @@ THREE.Person = function (type, picture, name) {
         this.loadTexture(8, 2, 2, 2),
         this.loadTexture(12, 2, 2, 2)
     ];
-    this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10, 0, 0, 0, this.materialHeadAccessory), this.faceMesh);
+    this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10, 0, 0, 0, this.materialHeadAccessory), faceMesh);
     this.headAccessory.receiveShadow = true;
     this.headAccessory.castShadow = true;
     this.headAccessory.position.x = -1;
@@ -190,7 +190,7 @@ THREE.Person = function (type, picture, name) {
         this.loadTexture(0, 2, 2, 2),
         this.loadTexture(4, 2, 2, 2)
     ];
-    this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8, 0, 0, 0, this.materialHead), this.faceMesh);
+    this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8, 0, 0, 0, this.materialHead), faceMesh);
     this.head.receiveShadow = true;
     this.head.castShadow = true;
     this.head.position.y = 18;
@@ -211,8 +211,8 @@ THREE.Person = function (type, picture, name) {
     for (i = 0; i < 8; i += 1)
         tarm.vertices[i].y -= 6;
 
-    this.leftarm = new THREE.Mesh(tarm, this.faceMesh);
-    this.rightarm = new THREE.Mesh(tarm, this.faceMesh);
+    this.leftarm = new THREE.Mesh(tarm, faceMesh);
+    this.rightarm = new THREE.Mesh(tarm, faceMesh);
     this.leftarm.position.z = -6;
     this.rightarm.position.z = 6;
     this.leftarm.position.y = 14;
@@ -237,7 +237,7 @@ THREE.Person = function (type, picture, name) {
         this.loadTexture(7, 5, 1, 3)
     ];
 
-    this.body = new THREE.Mesh(new THREE.CubeGeometry(4, 12, 8, 0, 0, 0, this.materialBody), this.faceMesh);
+    this.body = new THREE.Mesh(new THREE.CubeGeometry(4, 12, 8, 0, 0, 0, this.materialBody), faceMesh);
     this.body.position.y = 8;
     this.body.receiveShadow = true;
     this.body.castShadow = true;
@@ -258,8 +258,8 @@ THREE.Person = function (type, picture, name) {
     var leg = new THREE.CubeGeometry(4, 12, 4, 0, 0, 0, this.materialLeg)
     for (i = 0; i < 8; i += 1)
         leg.vertices[i].y -= 6;
-    this.leftleg = new THREE.Mesh(leg, this.faceMesh);
-    this.rightleg = new THREE.Mesh(leg, this.faceMesh);
+    this.leftleg = new THREE.Mesh(leg, faceMesh);
+    this.rightleg = new THREE.Mesh(leg, faceMesh);
     this.leftleg.position.z = -2;
     this.rightleg.position.z = 2;
     this.leftleg.position.y = 2;

@@ -61,6 +61,11 @@ THREE.Bot = function (app, dataBot) {
     this.leak = dataBot.leak;
 
 
+    this.getPerson = function () {
+        return this.person;
+    }
+
+
     /*
      *	SET position du héro
      */

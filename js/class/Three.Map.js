@@ -4,39 +4,47 @@ THREE.Map = function (app) {
 
     this.wireframe = false;
 
-    this.ambient = false;
+    var univers = new THREE.Object3D();
+    
+    var geometry = new THREE.Geometry();
 
-    this.region = {};
+    var ambient = new THREE.AmbientLight(0x666666);
 
-    this.listImg = {};
+    var light = new THREE.SpotLight(0xffffff, 0.6);
+    light.position.set(3000, 4000, 3000);
+    light.target.position.set(0, 0, 0);
 
-    this.listCube = {};
+    light.shadowCameraVisible = this.wireframe;
+    light.shadowCameraNear = 0.01;
+    light.castShadow = true;
+    light.shadowDarkness = 0.5;
+
+    var region = {};
+
+    var listImg = {};
+
+    var listCube = {};
+
+    //size
+    var infoSize = app.loader.map.size;
+    var sizeBloc = infoSize.elements;
+    var maxX = infoSize.xMax * sizeBloc;
+    var maxY = infoSize.yMax * sizeBloc;
+    var maxZ = infoSize.zMax * sizeBloc;
 
     /*
-     * Lumière du soleil
+     * GET light spot
      */
     this.getLight = function () {
-
-        this.light = new THREE.SpotLight(0xffffff, 0.6);
-        this.light.position.set(3000, 4000, 3000);
-        this.light.target.position.set(0, 0, 0);
-
-        this.light.shadowCameraVisible = this.wireframe;
-        this.light.shadowCameraNear = 0.01;
-        this.light.castShadow = true;
-        this.light.shadowDarkness = 0.5;
-
-
-        return this.light;
+        return light;
     };
 
 
     /*
-     * Lumière d'ambience
+     * GET light ambience
      */
     this.getAmbience = function () {
-        this.ambient = new THREE.AmbientLight(0x666666);
-        return this.ambient;
+        return ambient;
     };
 
 
@@ -44,7 +52,8 @@ THREE.Map = function (app) {
      * GET data for obstacles map current
      */
     this.getArticles = function () {
-        return this.region.articles[random(0, (this.region.articles.length - 1))];
+        var article = app.loader.map.articles[random(0, (app.loader.map.articles.length - 1))];
+        return article ? article : false;
     }
 
 
@@ -52,7 +61,7 @@ THREE.Map = function (app) {
      * GET data for obstacles map current
      */
     this.getObstacles = function () {
-        return this.region.obstacles;
+        return region.obstacles ? region.obstacles : false;
     }
 
 
@@ -60,7 +69,7 @@ THREE.Map = function (app) {
      * GET data for module map current
      */
     this.getModules = function () {
-        return this.region.modules;
+        return region.modules ? region.modules : false;
     }
 
 
@@ -68,7 +77,7 @@ THREE.Map = function (app) {
      * GET data for univers map current
      */
     this.getUnivers = function () {
-        return this.region.univers;
+        return region.univers ? region.univers : false;
     }
 
 
@@ -76,38 +85,27 @@ THREE.Map = function (app) {
      * GET data for bots map current
      */
     this.getBots = function () {
-        return this.region.bots;
+        return app.loader.bots.list ? app.loader.bots.list : false;
     }
 
 
     /*
-     * GET data for size map current
+     * GET la couleur de fond de la map
      */
-    this.getSize = function () {
-        return this.region.size;
+    this.getBackgroundColor = function () {
+        return app.loader.map.colorBackground ? app.loader.map.colorBackground : 0x8fa2ff;
     }
 
 
     /*
-     * Delete session
+     * GET obstacles
      */
     this.hasObstacle = function (x, y, z) {
-        var obstacles =  this.getObstacles();
-        if (obstacles[x] != undefined && obstacles[x][y] != undefined && obstacles[x][y][z] != undefined && obstacles[x][y][z]) {
+        var obstacles = this.getObstacles();
+        if (obstacles[x] != undefined && obstacles[x][y] != undefined && obstacles[x][y][z] != undefined && obstacles[x][y][z])
             return true;
-        }
+
         return false;
-    };
-
-
-    /*
-     * Mise a jour des différents éléments du terrain
-     * Lumière soleil
-     * Forme soleil
-     * Forme lune
-     * Effet de brume
-     */
-    this.update = function (app) {
     };
 
 
@@ -115,8 +113,8 @@ THREE.Map = function (app) {
      * Tool load image / gestion en cache
      */
     this.loadTexture = function (path) {
-        if (this.listImg[path.src] !== undefined)
-            return this.listImg[path.src];
+        if (listImg[path.src] !== undefined)
+            return listImg[path.src];
 
         var material = new THREE.MeshLambertMaterial({
             map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
@@ -126,14 +124,14 @@ THREE.Map = function (app) {
         });
         material.map.needsUpdate = true;
 
-        return this.listImg[path.src] = material;
+        return listImg[path.src] = material;
     };
 
 
     /*
      * Create element
      */
-    this.addCube = function (row, obstacles, map) {
+    this.addCube = function (row, obstacles) {
         var title = [];
         var faces = {
             px: obstacles[row.x + 1][row.y][row.z] ? false : true,
@@ -158,48 +156,49 @@ THREE.Map = function (app) {
 
         title = title.join('-') + '-' + faces.px + '-' + faces.nx + '-' + faces.py + '-' + faces.ny + '-' + faces.pz + '-' + faces.nz;
 
-        if (this.listCube[title] !== undefined)
-            return this.listCube[title];
+        if (listCube[title] !== undefined)
+            return listCube[title];
 
-        return this.listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(map.size.elements, map.size.elements, map.size.elements, 0, 0, 0, row.materials, faces));
+        return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials, faces));
     };
 
 
+    /*
+     * GET if over module
+     */
     this.getOverModule = function (position) {
-        if (this.region.modules[position.x + '-' + position.y + '-' + position.z] != undefined)
-            return this.region.modules[position.x + '-' + position.y + '-' + position.z];
+        if (region.modules[position.x + '-' + position.y + '-' + position.z] != undefined)
+            return region.modules[position.x + '-' + position.y + '-' + position.z];
 
         return false;
     };
 
 
-    var map = app.loader.map;
-
-    var univers = new THREE.Object3D();
-    var geometry = new THREE.Geometry();
-
-    var material = new THREE.Texture(map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter);
+    /*
+     * CONSTRUCTOR
+     */
+    var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter);
     material.wrapS = material.wrapT = THREE.RepeatWrapping;
-    material.repeat.set(map.size.xMax, map.size.zMax);
+    material.repeat.set(infoSize.xMax, infoSize.zMax);
     material.needsUpdate = true;
 
 
-    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(map.size.xMax * map.size.elements * 2, map.size.zMax * map.size.elements * 2), new THREE.MeshLambertMaterial({
+    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(maxX, maxZ), new THREE.MeshLambertMaterial({
         map: material,
         wireframe: this.wireframe
     }));
-    mesh.position.y = map.size.elements / 2;
+    mesh.position.y = sizeBloc / 2;
     mesh.rotation.x = -Math.PI / 2;
     mesh.receiveShadow = true;
 
     univers.add(mesh);
 
-    material = new THREE.Texture(map.univers, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter);
+    material = new THREE.Texture(app.loader.map.univers, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter);
     material.wrapS = material.wrapT = THREE.RepeatWrapping;
     material.needsUpdate = true;
 
-    var faceZ = new THREE.PlaneGeometry(map.size.xMax * map.size.elements, map.size.yMax * map.size.elements);
-    var faceX = new THREE.PlaneGeometry(map.size.zMax * map.size.elements, map.size.yMax * map.size.elements);
+    var faceZ = new THREE.PlaneGeometry(maxX, maxY);
+    var faceX = new THREE.PlaneGeometry(maxZ, maxY);
     var materialMesh = new THREE.MeshLambertMaterial({
         map: material,
         wireframe: this.wireframe,
@@ -207,52 +206,51 @@ THREE.Map = function (app) {
     });
 
     var nz = new THREE.Mesh(faceZ, materialMesh);
-    nz.position.z -= map.size.zMax * map.size.elements / 2;
-    nz.position.y = map.size.yMax * map.size.elements / 2;
+    nz.position.z -= maxZ / 2;
+    nz.position.y = maxY / 2;
     univers.add(nz);
 
     var pz = new THREE.Mesh(faceZ, materialMesh);
-    pz.position.z = map.size.zMax * map.size.elements / 2;
-    pz.position.y = map.size.yMax * map.size.elements / 2;
+    pz.position.z = maxZ / 2;
+    pz.position.y = maxY / 2;
     pz.rotation.y = -180 * Math.PI / 180;
     univers.add(pz);
 
     var nx = new THREE.Mesh(faceX, materialMesh);
-    nx.position.x -= map.size.xMax * map.size.elements / 2;
-    nx.position.y = map.size.yMax * map.size.elements / 2;
+    nx.position.x -= maxX / 2;
+    nx.position.y = maxY / 2;
     nx.rotation.y = 90 * Math.PI / 180;
     univers.add(nx);
 
     var px = new THREE.Mesh(faceX, materialMesh);
-    px.position.x = map.size.xMax * map.size.elements / 2;
-    px.position.y = map.size.yMax * map.size.elements / 2;
+    px.position.x = maxX / 2;
+    px.position.y = maxY / 2;
     px.rotation.y = -90 * Math.PI / 180;
     univers.add(px);
 
     var obstacles = {};
     var modules = {};
-    for (var x = 0; x <= map.size.xMax + 1; x++) {
+
+    for (var x = 0; x <= infoSize.xMax + 1; x++) {
         obstacles[x] = {};
-        for (var y = 0; y <= map.size.yMax + 1; y++) {
+        for (var y = 0; y <= infoSize.yMax + 1; y++) {
             obstacles[x][y] = {};
-            for (var z = 0; z <= map.size.zMax + 1; z++)
+            for (var z = 0; z <= infoSize.zMax + 1; z++)
                 obstacles[x][y][z] = y == 0 ? true : false;
         }
     }
 
-    for (var keyEl in map.elements)
-        obstacles[map.elements[keyEl].x][map.elements[keyEl].y][map.elements[keyEl].z] = true;
+    for (var keyEl in app.loader.map.elements)
+        obstacles[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
 
-    for (var keyModule in map.modules)
-        modules[map.modules[keyModule].x + '-' + map.modules[keyModule].y + '-' + map.modules[keyModule].z] = map.modules[keyModule];
+    for (var keyModule in app.loader.map.modules)
+        modules[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = app.loader.map.modules[keyModule];
 
-    for (var keyEle in map.elements) {
-        var row = map.elements[keyEle];
-        var cube = this.addCube(row, obstacles, map);
+    for (var keyEle in app.loader.map.elements) {
+        var row = app.loader.map.elements[keyEle];
+        var cube = this.addCube(row, obstacles);
 
-        cube.position.x = -(map.size.xMax * map.size.elements / 2) + row.x * map.size.elements - (map.size.elements / 2);
-        cube.position.y = row.y * map.size.elements;
-        cube.position.z = -(map.size.zMax * map.size.elements / 2) + row.z * map.size.elements - (map.size.elements / 2);
+        cube.position.set(-(maxX / 2) + row.x * sizeBloc - (sizeBloc / 2), row.y * sizeBloc, -(maxZ / 2) + row.z * sizeBloc - (sizeBloc / 2) );
 
         THREE.GeometryUtils.merge(geometry, cube);
     }
@@ -265,13 +263,10 @@ THREE.Map = function (app) {
     univers.add(element);
     univers.name = 'map';
 
-    this.region = {
+    region = {
         univers: univers,
         obstacles: obstacles,
-        modules: modules,
-        bots: app.loader.bots.list,
-        articles: map.articles,
-        size: map.size
+        modules: modules
     };
 };
 

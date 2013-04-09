@@ -29,7 +29,7 @@ class Logger_Controller extends Template_Controller {
 						return FALSE;
 				}
 
-				$this->script = array( 'js/lib/jquery.validate', 'js/logger' );
+				$this->script = array( 'js/lib/jquery.validate', 'js/class/helvetiker_regular.typeface', 'js/logger' );
 
 				$cache = Cache::instance();
 

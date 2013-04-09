@@ -24,4 +24,4 @@
 		password_minlength = "<?php echo Kohana::lang( 'form.password_minlength' ); ?>",
 		email_required = "<?php echo Kohana::lang( 'form.email_required' ); ?>",
 		email_equalTo = "<?php echo Kohana::lang( 'form.email_equalTo' ); ?>";
-</script> 
+</script>
