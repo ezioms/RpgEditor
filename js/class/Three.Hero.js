@@ -22,10 +22,6 @@ THREE.Hero = function (app) {
 		jump: 0
 	};
 
-
-	//move
-	var clone = new THREE.Object3D();
-
 	var moveForward = false;
 	var moveBackward = false;
 	var moveLeft = false;
@@ -231,7 +227,7 @@ THREE.Hero = function (app) {
 	 */
 	this.update = function (app) {
 
-		clone = yawObject.clone();
+		var clone = yawObject.clone();
 
 		if ((app.gamepad.buttonJump() || app.gamepad.buttonA()) && !jump) {
 			jump = true;
