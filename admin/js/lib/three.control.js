@@ -121,8 +121,6 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 		this.onKeyDown = function ( event ) {
 
-				//event.preventDefault();
-
 				switch ( event.keyCode ) {
 
 						case 38 : case 122 : case 119 : case 90 : case 87 : // Flèche haut, z, w, Z, W
@@ -229,8 +227,8 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 						if ( this.moveForward || ( this.autoForward && !this.moveBackward ) ) this.object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
 						if ( this.moveBackward ) this.object.translateZ( actualMoveSpeed );
 
-						if ( this.moveLeft ) this.lon -= 1.4;
-						if ( this.moveRight ) this.lon += 1.4;
+						if ( this.moveLeft )  this.object.translateX( -actualMoveSpeed );
+						if ( this.moveRight ) this.object.translateX( actualMoveSpeed );
 
 						if ( this.moveUp ) this.object.translateY( actualMoveSpeed );
 						if ( this.moveDown ) this.object.translateY( - actualMoveSpeed );

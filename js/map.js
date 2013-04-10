@@ -1,12 +1,5 @@
 var SIMULE_KEY;
 
-if (!Detector.webgl)
-	Detector.addGetWebGLMessage();
-
-/*
- * Chargement des classes
- */
-
 var stats;
 var control = false;
 var buttonEnter = false;
@@ -139,6 +132,7 @@ function init() {
 	app.scene.add(app.hero.getCamera());
 	app.scene.add(app.hero.getPerson());
 
+
 	app.scene.add(app.map.getUnivers());
 	app.scene.add(app.map.getAmbience());
 	app.scene.add(app.map.getLight());
@@ -154,8 +148,7 @@ function init() {
 
 
 	app.renderer = new THREE.WebGLRenderer({
-		clearColor: app.map.getBackgroundColor(),
-		antialias: false
+		clearColor: app.map.getBackgroundColor()
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
 	app.renderer.shadowMapEnabled = true;
@@ -202,25 +195,26 @@ function render() {
 				}
 			}
 		}
-	app.node.send(app.hero);
 
 	/* Bots */
 	for (var keyBot in app.bots)
 		app.bots[keyBot].update(app);
 
 	app.hero.update(app);
+	app.node.send(app.hero);
 	app.sound.update(app);
 
-	//updateHeroVisual();
+	updateHeroVisual();
 
 
-	app.renderer.render(app.scene, app.camera);
 	/*
 	 if (debug) {
 	 var info = app.renderer.info;
 	 $('#debugWebGL').html('<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points);
 	 }
 	 */
+
+	app.renderer.render(app.scene, app.camera);
 }
 
 
@@ -452,6 +446,9 @@ function simulEnter() {
 
 $(function () {
 
+	if (!Detector.webgl)
+		Detector.addGetWebGLMessage();
+
 	/*
 	 * MAPPING START
 	 */
@@ -463,14 +460,12 @@ $(function () {
 			if (e.keyCode === 13) {
 				buttonEnter = SIMULE_KEY = false;
 			}
-			e.preventDefault();
 		}).keydown(function (e) {
 			if (e.keyCode === 13) {
 				killSpeackBot();
 				simulEnter();
 				buttonEnter = SIMULE_KEY = true;
 			}
-			e.preventDefault();
 		});
 
 
