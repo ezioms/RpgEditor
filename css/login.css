@@ -1,0 +1,76 @@
+body, html {
+    overflow: hidden;
+}
+#logo {
+    position: absolute;
+    top:150px;
+    left: 50%;
+    margin-left: -482px;
+    z-index: 2;
+}
+
+#container {
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:1;
+    background-color: #a6e0d3;
+    background-image: url('../images/template/bg.png');
+}
+
+#form {
+    position: absolute;
+    top:400px;
+    left: 50%;
+    margin-left: -350px;
+    width: 700px;
+    z-index: 2;
+}
+
+#formBg {
+    float: left;
+    margin-top: 10px;
+}
+
+#formButton {
+    float: right;
+    cursor: pointer;
+}
+
+#username {
+    position: absolute;
+    top: 68px;
+    left: 15px;
+    font-size: 19px;
+    padding: 0;
+    margin: 0;
+    width: 335px;
+}
+
+#password {
+    position: absolute;
+    top: 161px;
+    left: 15px;
+    font-size: 19px;
+    padding: 0;
+    margin: 0;
+    width: 235px;
+}
+
+#send {
+    position: absolute;
+    top: 161px;
+    left: 260px;
+    font-size: 19px;
+    padding: 0;
+    margin: 0;
+    width: 100px;
+    cursor: pointer;
+}
+
+input {
+    background: none;
+    border: 0;
+}

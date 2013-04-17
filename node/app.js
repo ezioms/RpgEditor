@@ -1,28 +1,29 @@
-//port utilisé
-var port_websocket = 8585;
+var io = require('socket.io').listen(8585);
 
-var io = require('socket.io');
+var client = {};
 
-var app = require('http').createServer();
-io = io.listen(app); 
-
-//io.set('log level', 1); // mettre en commentaire pour la dev
-
-var users = {};
-		
 io.sockets.on('connection', function (socket) {
-	
-		socket.on('envois', function (mess) {
-				users[socket.id] = mess;
-				socket.broadcast.emit('message', mess);
-		});
-		
-		socket.on('disconnect', function () {
-				if( users[socket.id] != undefined ) {
-						io.sockets.emit('disconnected', users[socket.id]);
-						delete users[socket.id];
-				}
-		});
-});
 
-app.listen(port_websocket);
+	// add user
+	socket.on('addUser', function (user) {
+		client[socket.id] = user;
+
+		socket.emit('serverListUsers', client);
+
+		io.sockets.emit('serverAddUser', client[socket.id]);
+	});
+
+	// update user
+	socket.on('updateUser', function (user) {
+		client[socket.id] = user;
+		io.sockets.emit('serverUpdateUser', client[socket.id]);
+	});
+
+	// remove user
+	socket.on('disconnect', function () {
+		io.sockets.emit('serverRemoveUser', client[socket.id]);
+		client[socket.id] = {};
+		delete client[socket.id];
+	});
+
+});

@@ -112,22 +112,14 @@ abstract class Template_Controller extends Authentic_Controller {
 						if( is_file( DOCROOT.'js/lib/'.$row ) )
 								$script[] = 'js/lib/'.str_replace( '.js', '', $row );
 
-				foreach( file::listing_dir( DOCROOT.'css' ) as $row )
-						if( is_file( DOCROOT.'css/'.$row ) )
-								$css[] = 'css/'.str_replace( '.css', '', $row );
-
 				if( $this->script && is_array( $this->script ) )
 						$script = array_merge( $script, $this->script );
 
-				if( $this->css && is_array( $this->css ) )
-						$css = array_merge( $css, $this->css );
-
 				$script = array_unique( $script );
-				$css = array_unique( $css );
 
 				$this->template->script .= html::script( $script );
 
-				$this->template->css = html::stylesheet( $css );
+				$this->template->css = html::stylesheet( $this->css );
 		}
 
 }

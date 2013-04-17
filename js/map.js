@@ -11,7 +11,7 @@ app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHei
 app.loader = new THREE.Loader();
 app.clock = new THREE.Clock();
 app.sound = new THREE.Sound();
-app.node = new THREE.Node(app);
+app.node = new THREE.Node();
 app.overlay = new THREE.Overlay();
 
 
@@ -116,7 +116,7 @@ var load = function () {
 	}
 
 	app.gamepad.init();
-	app.node.init();
+	app.node.init(app);
 	init();
 }
 
@@ -178,23 +178,23 @@ function render() {
 	/* Users */
 	var listUsers = app.node.listUser();
 	if (listUsers)
-		for (var keyUser in listUsers) {
-			if (listUsers[keyUser].region == app.hero.region) {
-				if (listUsers[keyUser]) {
+		for (var keyUser in listUsers)
+			if (listUsers[keyUser].id != app.hero.id) {
+				if (listUsers[keyUser] != false && listUsers[keyUser].region == app.hero.region) {
 					if (app.users[keyUser] == undefined) {
 						app.users[keyUser] = new THREE.User(listUsers[keyUser], app.loader, app.sound);
 						app.scene.add(app.users[keyUser].getPerson());
 					}
 					else
 						app.users[keyUser].update(listUsers[keyUser]);
-				} else if (!listUsers[keyUser] && app.users[keyUser] != undefined) {
+				} else if (listUsers[keyUser] == false && app.users[keyUser] != undefined) {
 					app.scene.remove(app.users[keyUser].getPerson());
 					app.renderer.deallocateObject(app.users[keyUser].getPerson());
 					delete app.users[keyUser];
 					app.node.deleteUser(keyUser);
 				}
 			}
-		}
+
 
 	/* Bots */
 	for (var keyBot in app.bots)

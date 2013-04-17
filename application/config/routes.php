@@ -8,9 +8,6 @@ $config['_default'] = 'home';
 $config['auth'] = '/logger';
 $config['login'] = '/logger/login';
 $config['logout'] = '/logger/logout';
-$config['subscribe'] = '/logger/subscribe';
-$config['register'] = '/logger/register';
-$config['mdp'] = '/logger/mdp';
 $config['send'] = '/logger/send';
 
 //plugins

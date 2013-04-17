@@ -10,7 +10,7 @@ $config['loginUser'] = TRUE; //Afficher la partie login user
 
 $config['registerUser'] = TRUE; //Afficher la partie register user
 
-$config['debug'] = TRUE; //Afficher la partie debug
+$config['debug'] = FALSE; //Afficher la partie debug
 
 $config['cache'] = FALSE; //Activer ou non le cache
 
