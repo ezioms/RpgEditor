@@ -43,6 +43,7 @@ class Logger_Controller extends Template_Controller
 
         $view = new View('auth/index');
         $view->alert = $this->input->get('msg');
+        $view->users = Statistiques_Model::instance()->top_user();
 
         if (($ajax = url::current() == 'logger/auth') ? TRUE : FALSE)
             $this->auto_render = FALSE;

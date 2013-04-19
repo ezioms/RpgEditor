@@ -80,6 +80,14 @@ if (!Detector.webgl) {
 
 $(function () {
 	$('body')
+		.on('click', '#score', function () {
+			$('#contentLogin').hide();
+			$('#contentScores').show();
+		})
+		.on('click', '#return', function () {
+			$('#contentLogin').show();
+			$('#contentScores').hide();
+		})
 		.on('click', '#formButton', function () {
 			$('form').submit();
 		})
@@ -487,7 +495,7 @@ function init() {
 	var ambientLight = new THREE.AmbientLight(0xcccccc);
 	scene.add(ambientLight);
 
-	var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+	var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
 	directionalLight.position.set(1, 1, 0.5).normalize();
 	scene.add(directionalLight);
 
@@ -501,8 +509,8 @@ function init() {
 	//THREE.NearestFilter
 	var texture = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping());
 		texture.magFilter = THREE.NearestFilter;
-	// Skybox
 
+	// Skybox
 	var shader = THREE.ShaderUtils.lib[ "cube" ];
 	shader.uniforms[ "tCube" ].value = texture;
 
@@ -515,7 +523,7 @@ function init() {
 
 		} ),
 
-		textureCube = new THREE.Mesh( new THREE.CubeGeometry( 10000, 10000, 10000 ), material );
+	textureCube = new THREE.Mesh( new THREE.CubeGeometry( 10000, 10000, 10000 ), material );
 	scene.add( textureCube );
 
 
