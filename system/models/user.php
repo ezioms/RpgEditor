@@ -132,7 +132,7 @@
 		*/
 	 public static function view_xp()
 	 {
-		 return (int) round( $this->xp / ( self::niveau_suivant() / 100 ) );
+		 return (int) round( $this->xp / ( $this->niveau_suivant() / 100 ) );
 	 }
 
 	 /**

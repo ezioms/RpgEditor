@@ -58,7 +58,7 @@ class Authentic_Controller extends Controller {
 		 */
 		protected function access( $type )
 		{
-				self::login();
+				$this->login();
 
 				if( (!in_array( $type, $this->role->name ) && !in_array( 'admin', $this->role->name ) ) )
 						return url::redirect( 'auth' );

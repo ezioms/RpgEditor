@@ -34,9 +34,7 @@ class Home_Controller extends Template_Controller
             if (is_file(DOCROOT . 'js/class/' . $row))
                 $this->script[] = 'js/class/' . str_replace('.js', '', $row);
 
-        foreach (file::listing_dir(DOCROOT . 'js') as $row)
-            if (is_file(DOCROOT . 'js/' . $row) && $row != 'login.js')
-                $this->script[] = 'js/' . str_replace('.js', '', $row);
+        $this->script[] = 'js/map';
 
         $this->template->content = new View('home/index');
         $this->template->content->admin = in_array('admin', $this->role->name);

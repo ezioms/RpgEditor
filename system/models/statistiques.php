@@ -83,31 +83,7 @@
 		*/
 	 public function top_user()
 	 {
-		 $query = $this->db->from( 'users' )->orderby( array( 'niveau' => 'DESC', 'xp' => 'DESC', 'argent' => 'DESC' ) )->limit( 3 )->get();
-
-		 return $query->count() ? $query : FALSE;
-	 }
-
-	 /**
-		* Permet de connaitre le top item 
-		*
-		* @return object retourne les 3 meilleurs objets du jeu
-		*/
-	 public function top_item()
-	 {
-		 $query = $this->db->from( 'items' )->orderby( array( 'prix' => 'DESC' ) )->limit( 3 )->get();
-
-		 return $query->count() ? $query : FALSE;
-	 }
-
-	 /**
-		* Permet de connaitre le top sort 
-		*
-		* @return object retourne les 3 meilleurs sorts du jeu
-		*/
-	 public function top_sort()
-	 {
-		 $query = $this->db->from( 'sorts' )->orderby( array( 'prix' => 'DESC' ) )->limit( 3 )->get();
+		 $query = $this->db->from( 'users' )->orderby( array( 'argent' => 'DESC', 'niveau' => 'DESC', 'xp' => 'DESC' ) )->limit( 10 )->get();
 
 		 return $query->count() ? $query : FALSE;
 	 }
