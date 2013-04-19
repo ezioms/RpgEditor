@@ -9,7 +9,6 @@
 <table>
     <tbody>
     <?php foreach ($users as $user) : ?>
-        <?php if (!$user->argent) continue ?>
         <tr>
             <td class="left"><?php echo $user->username; ?></td>
             <td class="right"><?php echo $user->argent; ?> pts</td>
@@ -18,4 +17,7 @@
     </tbody>
 </table>
 
+<div id="return">
+    <a href="<?php echo url::base(); ?>"><img src="<?php echo url::base(); ?>images/template/return.png" width="80" height="84"/></a>
+</div>
 

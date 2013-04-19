@@ -14,3 +14,8 @@
     <input name="password" id="password" type="password"/>
     <input name="send" id="send" type="button" data-action="<?php echo url::site('send'); ?>"/>
 </form>
+
+<div id="score">
+    <a href="<?php echo url::site('score'); ?>"><img src="<?php echo url::base(); ?>images/template/score.png" width="291" height="37"/></a>
+</div>
+
