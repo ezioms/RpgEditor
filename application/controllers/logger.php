@@ -42,7 +42,7 @@ class Logger_Controller extends Template_Controller
             return url::redirect(NULL);
 
         $view = new View('auth/index');
-        $view->msg = $this->input->get('msg');
+        $view->alert = $this->input->get('msg');
 
         if (($ajax = url::current() == 'logger/auth') ? TRUE : FALSE)
             $this->auto_render = FALSE;

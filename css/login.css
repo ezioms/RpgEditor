@@ -1,5 +1,6 @@
 body, html {
     overflow: hidden;
+    font-family: Arial;
 }
 #logo {
     position: absolute;
@@ -70,7 +71,24 @@ body, html {
     cursor: pointer;
 }
 
-input {
+input  {
     background: none;
     border: 0;
+    outline: none;
+}
+input:-webkit-autofill{
+    background-color: rgb(255, 255, 255) !important;
+    background-image: none !important;
+}
+#alert{
+    position: absolute;
+    top:320px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    text-align: center;
+    font-size: 40px;
+    color: #000000;
+    font-weight: bold;
+    width: 100%;
 }

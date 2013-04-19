@@ -59,7 +59,7 @@ THREE.Bot = function (app, dataBot) {
 
 
 	this.speack = function (app) {
-		if (document.getElementById('notifications').innerHTML != '')
+		if (document.getElementById('notifications').innerHTML != '' || this.fixe)
 			return;
 
 		if (this.position.distanceTo(app.hero.getPerson().position) < 100) {

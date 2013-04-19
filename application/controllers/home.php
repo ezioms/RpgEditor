@@ -12,12 +12,6 @@ defined('SYSPATH') or die('No direct access allowed.');
  */
 class Home_Controller extends Template_Controller
 {
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Page par défaut du jeu (homepage).
      *
@@ -26,7 +20,10 @@ class Home_Controller extends Template_Controller
      */
     public function index()
     {
-        if (!$this->user) {
+        if (!strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome') && !strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
+            Router_Core::$controller = 'browser';
+            return Browser_Controller::index();
+        } elseif (!$this->user) {
             Router_Core::$controller = 'logger';
             return Logger_Controller::index();
         }

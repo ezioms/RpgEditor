@@ -92,23 +92,27 @@ $(function () {
 				$('form').submit();
 		}
 	});
+
+
+	if($('#alert').length)
+		$('#alert').delay(3000).fadeOut(2000);
 });
 
 var container, stats;
 
 var camera, scene, renderer;
 
-var mesh;
+var mesh, 	textureCube;
 
 var worldWidth = 100, worldDepth = 100,
-	worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2,
+		worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2,
 	data = generateHeight(worldWidth, worldDepth);
 
 init();
 animate();
 
 function render() {
-	mesh.rotation.y += 0.0005;
+	camera.rotation.y += 0.0005;
 	renderer.render(scene, camera);
 
 }
@@ -117,12 +121,11 @@ function init() {
 
 	container = document.getElementById('container');
 
-	camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 10000);
+	camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 100000);
 	camera.position.y = getY(worldHalfWidth, worldHalfDepth) * 100 + 400;
-	camera.rotation.x -= 0.2;
 
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2(0xffffff, 0.00015);
+	//scene.fog = new THREE.FogExp2(0xffffff, 0.00015);
 
 	var debug_texture = false,
 		debug_numbers = false,
@@ -478,6 +481,7 @@ function init() {
 	}
 
 	mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
+	mesh.wireframe = true;
 	scene.add(mesh);
 
 	var ambientLight = new THREE.AmbientLight(0xcccccc);
@@ -487,7 +491,36 @@ function init() {
 	directionalLight.position.set(1, 1, 0.5).normalize();
 	scene.add(directionalLight);
 
-	renderer = new THREE.WebGLRenderer({ clearColor: 0x000000, antialias: false });
+
+	var r = "images/panorama/3/panorama";
+
+	var urls = [ r + "3.png", r + "1.png",
+		r + "4.png", r + "5.png",
+		r + "2.png", r + "0.png" ];
+
+	//THREE.NearestFilter
+	var texture = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping());
+		texture.magFilter = THREE.NearestFilter;
+	// Skybox
+
+	var shader = THREE.ShaderUtils.lib[ "cube" ];
+	shader.uniforms[ "tCube" ].value = texture;
+
+	var material = new THREE.ShaderMaterial( {
+
+			fragmentShader: shader.fragmentShader,
+			vertexShader: shader.vertexShader,
+			uniforms: shader.uniforms,
+			side: THREE.BackSide
+
+		} ),
+
+		textureCube = new THREE.Mesh( new THREE.CubeGeometry( 10000, 10000, 10000 ), material );
+	scene.add( textureCube );
+
+
+
+	renderer = new THREE.WebGLRenderer({ clearColor: 0x000000, antialias: true });
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
 	container.innerHTML = "";
@@ -556,93 +589,6 @@ function generateMegamaterialAO(textures, strength, debug_texture, debug_numbers
 	}
 
 	return new THREE.MeshLambertMaterial({ map: texture, ambient: 0xbbbbbb });
-
-}
-
-function generateMegamaterialPlain(textures) {
-
-	var count = 0,
-		tex_side = loadTexture(textures.side, function () {
-			count++;
-			generateTexture()
-		}),
-		tex_top = loadTexture(textures.top, function () {
-			count++;
-			generateTexture()
-		}),
-		tex_bottom = loadTexture(textures.bottom, function () {
-			count++;
-			generateTexture()
-		}),
-
-		canvas = document.createElement('canvas'),
-		ctx = canvas.getContext('2d'),
-		size = 256, tile = 16;
-
-	canvas.width = canvas.height = size;
-
-	var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
-	texture.flipY = false;
-
-	function generateTexture() {
-
-		if (count == 3) {
-
-			var i, sx;
-
-			for (i = 0; i < 16; i++) {
-
-				sx = i * tile;
-
-				drawBase(ctx, tex_top, sx, 0 * tile, tile, false);
-				drawBase(ctx, tex_top, sx, 1 * tile, tile, false);
-				drawBase(ctx, tex_top, sx, 2 * tile, tile, false);
-				drawBase(ctx, tex_side, sx, 3 * tile, tile, false);
-				drawBase(ctx, tex_bottom, sx, 4 * tile, tile, false);
-
-			}
-
-			texture.needsUpdate = true;
-
-		}
-
-	}
-
-	return new THREE.MeshLambertMaterial({ map: texture });
-
-}
-
-function generateMegamaterialDebug() {
-
-	var canvas = document.createElement('canvas'),
-		ctx = canvas.getContext("2d"),
-		size = 256, tile = 16,
-		i, j, h, s;
-
-	canvas.width = size;
-	canvas.height = size;
-
-	ctx.textBaseline = "top";
-	ctx.font = "8pt arial";
-
-	for (i = 0; i < tile; i++) {
-
-		for (j = 0; j < tile; j++) {
-
-			h = i * tile + j;
-			ctx.fillStyle = "hsl(" + h + ",90%, 50%)";
-			ctx.fillRect(i * tile, j * tile, tile, tile);
-
-			drawHex(ctx, h, i * tile + 2, j * tile + 2);
-
-		}
-
-	}
-
-	var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
-	texture.needsUpdate = true;
-
-	return new THREE.MeshLambertMaterial({ map: texture });
 
 }
 
