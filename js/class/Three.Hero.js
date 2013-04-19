@@ -400,15 +400,6 @@ THREE.Hero = function (app) {
 
 
 	/*
-	 * Delete session
-	 */
-	this.deleteSession = function () {
-		sessionStorage.removeItem('currentdirection_x');
-		sessionStorage.removeItem('currentdirection_y');
-	};
-
-
-	/*
 	 * Geneate GET for URL hero
 	 */
 	this.getData = function () {

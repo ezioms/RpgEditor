@@ -205,7 +205,7 @@ THREE.Bot = function (app, dataBot) {
 		else if (moveRight)
 			currentdirection.x -= rand / 50;
 
-		var newRotation = (currentdirection.x + 270 % 360) * Math.PI / 180;
+		var newRotation = (currentdirection.x + 270 % 360) * PI;
 
 		person.position.set(this.position.x, this.position.y - 50, this.position.z);
 		person.rotation.y = newRotation;

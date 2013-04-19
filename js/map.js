@@ -1,7 +1,6 @@
-var SIMULE_KEY;
-
 var stats;
 var control = false;
+var simulate_key;
 var buttonEnter = false;
 
 app = {};
@@ -25,6 +24,9 @@ app.alert = false;
 app.gamepad = gamepadSupport;
 
 
+/*
+ * cursor management
+ */
 var noCursor = document.getElementById('noCursor');
 
 var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
@@ -90,11 +92,12 @@ if (havePointerLock) {
 
 
 /*
- * Chargement des données et pré-traitement
+ * Initialize datas, gamepad, node and scene
  */
 var load = function () {
 	info(app.loader.stateLoad);
 
+	// load elements
 	if (!app.loader.getCompleted()) {
 		$('#content_loading').html(app.loader.stateLoad);
 		setTimeout(load, 1);
@@ -102,11 +105,13 @@ var load = function () {
 	} else
 		$('#content_loading').html('Initialisation des données');
 
+	// show elements HTML for hero HP / SCORE ...
 	$('#user_hp, #user_niveau, #user_argent_content').show();
 
 	info('Chargement de ' + number_format(app.loader.nbrBot) + ' bot(s)');
 	info('Chargement de ' + number_format(app.loader.nbrElements) + ' élement(s)');
 
+	//stat for le debug
 	if (debug) {
 		stats = new Stats();
 		stats.domElement.style.position = 'absolute';
@@ -115,8 +120,13 @@ var load = function () {
 		$('body').append(stats.domElement);
 	}
 
+	// initialize gamepad
 	app.gamepad.init();
+
+	// initialize Socket.io
 	app.node.init(app);
+
+	// initialize the scene with objects
 	init();
 }
 
@@ -124,20 +134,26 @@ var load = function () {
 /*
  * Initialisation de la map
  */
-function init() {
+var init = function () {
+	// creat map
 	app.map = new THREE.Map(app);
 
+	// creat hero
 	app.hero = new THREE.Hero(app);
 
+	// add camera in scene
 	app.scene.add(app.hero.getCamera());
+	// add physic hero (camera) in scene
 	app.scene.add(app.hero.getPerson());
 
-
+	// add physic map in scene
 	app.scene.add(app.map.getUnivers());
+	// add light in scene
 	app.scene.add(app.map.getAmbience());
+	// add spot for shadow in scene
 	app.scene.add(app.map.getLight());
 
-
+	// generate bots and add in scene
 	var bots = app.map.getBots();
 	if (bots)
 		for (var keyBot in bots) {
@@ -147,6 +163,7 @@ function init() {
 		}
 
 
+	//generate render
 	app.renderer = new THREE.WebGLRenderer({
 		clearColor: app.map.getBackgroundColor()
 	});
@@ -154,14 +171,17 @@ function init() {
 	app.renderer.shadowMapEnabled = true;
 	app.renderer.sortObjects = false;
 
+	// load music
 	if (app.loader.map.music)
 		app.sound.ambience(app.loader.map.music);
 
 
+	// load render in html
 	$('#content_body').hide().html(app.renderer.domElement).delay(100).fadeIn();
 
 	$('#content_loading').empty();
 
+	// loop
 	animate();
 
 	window.addEventListener('resize', onWindowResize, false);
@@ -171,16 +191,19 @@ function init() {
 /*
  * Rendu du canvas
  */
-function render() {
+var render = function () {
 	if (!control)
 		$('#noCursor').show();
 
-	/* Users */
+	// listen others users with socket.io
 	var listUsers = app.node.listUser();
 	if (listUsers)
 		for (var keyUser in listUsers)
+			// ID is not my ID
 			if (listUsers[keyUser].id != app.hero.id) {
+				// if user existe and he's in my region
 				if (listUsers[keyUser] != false && listUsers[keyUser].region == app.hero.region) {
+					// user exist in memory
 					if (app.users[keyUser] == undefined) {
 						app.users[keyUser] = new THREE.User(listUsers[keyUser], app.loader, app.sound);
 						app.scene.add(app.users[keyUser].getPerson());
@@ -196,85 +219,63 @@ function render() {
 			}
 
 
-	/* Bots */
+	// update bots in scene
 	for (var keyBot in app.bots)
 		app.bots[keyBot].update(app);
 
+	// update hero
 	app.hero.update(app);
+
+	// send my information with socket.io
 	app.node.send(app.hero);
+
+	// update sound for the volume distance with hero and environment
 	app.sound.update(app);
 
+	// update the environment hero
 	updateHeroVisual();
 
-
-	/*
-	 if (debug) {
-	 var info = app.renderer.info;
-	 $('#debugWebGL').html('<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points);
-	 }
-	 */
+	if (debug) {
+		var info = app.renderer.info;
+		$('#debugWebGL').html('<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points);
+	}
 
 	app.renderer.render(app.scene, app.camera);
 }
 
 
 /*
- * Charger map current
+ * Loop for animate
  */
-var reloadMap = function () {
-	for (var keyBotRemove in app.bots) {
-		app.scene.remove(app.bots[keyBotRemove].getPerson());
-		delete app.bots[keyBotRemove];
-	}
-
-	for (var key in app.scene.children)
-		if (app.scene.children[key].name == 'map') {
-			app.scene.remove(app.scene.children[key]);
-			break;
-		}
-
-	app.scene.add(app.map.getUnivers());
-
-	app.renderer.setClearColorHex(app.loader.map.colorBackground);
-
-	var bots = app.map.getBots();
-	app.bots = {};
-	if (bots)
-		for (var keyBot in bots) {
-			var bot = new THREE.Bot(app, bots[keyBot]);
-			app.bots[bot.id] = bot;
-			app.scene.add(bot.getPerson());
-		}
-};
-
-
-/*
- * Loop pour l'animation
- */
-function animate() {
+var animate = function () {
 	requestAnimationFrame(animate);
 
+	// the scene is not defined
 	if (app.scene === undefined)
 		return;
 
+	// update the render
 	render();
 
+	// if the debug is TRUE => update
 	if (debug)
 		stats.update();
 }
 
 
 /*
- * Traitement du resize de la fenetre
+ * Resize window
  */
-function onWindowResize() {
+var onWindowResize = function () {
 	app.camera.aspect = window.innerWidth / window.innerHeight;
 	app.camera.updateProjectionMatrix();
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-
-function lookMessage(txt) {
+/*
+ * Update notification management
+ */
+var lookMessage = function (txt) {
 	var id = app.clock.oldTime + '_' + random(0, 100);
 	$('#notifications').append('<div id="' + id + '" class="notifications">' + txt + '</div>');
 	$('#' + id).fadeIn(400).delay(80 * txt.length).fadeOut(3000, function () {
@@ -282,7 +283,11 @@ function lookMessage(txt) {
 	});
 }
 
-function killSpeackBot() {
+
+/*
+ * look notifications bots for random messages
+ */
+var killSpeackBot = function () {
 	if ($('.notifications').length) {
 		$('.notifications').stop(true, true);
 		if ($('.reponse').length) {
@@ -300,11 +305,11 @@ function killSpeackBot() {
 
 
 /*
- * UPDATE INTERFACE USER / GRAPHIQUE
+ * Update user interface
  */
 var loadMove = false;
 var action = false;
-function updateHeroVisual() {
+var updateHeroVisual = function () {
 
 	set_barre('#user_hp', app.hero.hp);
 
@@ -325,7 +330,7 @@ function updateHeroVisual() {
 	if (loadMove)
 		return;
 
-	if (!SIMULE_KEY) {
+	if (!simulate_key) {
 		if (app.gamepad.buttonB()) {
 			buttonEnter = true;
 			killSpeackBot();
@@ -422,7 +427,10 @@ function updateHeroVisual() {
 		simulEnter();
 }
 
-function simulEnter() {
+/*
+ * Simular click cursor with pressKey ENTER or button gamepad
+ */
+var simulEnter = function () {
 	if ($(":button").length) {
 		$(":button").each(function () {
 			var data = $(this).data();
@@ -449,30 +457,32 @@ $(function () {
 		Detector.addGetWebGLMessage();
 
 	/*
-	 * MAPPING START
+	 * Mapping start
 	 */
 	load();
 
+	/*
+	 * Event unload window or press key
+	 */
 	$(window)
 		.unload(function () {
 			app.loader.request('user/update', 'GET', app.hero.getData());
 		})
 		.keyup(function (e) {
 			if (e.keyCode === 13)
-				buttonEnter = SIMULE_KEY = false;
+				buttonEnter = simulate_key = false;
 		})
 		.keydown(function (e) {
 			if (e.keyCode === 13) {
 				killSpeackBot();
 				simulEnter();
-				buttonEnter = SIMULE_KEY = true;
+				buttonEnter = simulate_key = true;
 			}
 		});
 
 
-
 	/*
-	 * QUETE START
+	 * Quete / mission start
 	 */
 	$('#content_action')
 		.on('click', '#accepter', function (event) {
