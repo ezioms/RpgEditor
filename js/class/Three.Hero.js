@@ -1,7 +1,5 @@
 THREE.Hero = function (app) {
 
-	THREE.Object3D.call(this);
-
 	this.wireframe = false;
 
 	this.id = app.loader.my.id;
@@ -43,8 +41,10 @@ THREE.Hero = function (app) {
 	var middleMaxX = maxX / 2;
 	var middleMaxZ = maxZ / 2;
 
-	//tool
-	var PI = 90 * Math.PI / 180;
+	// memory stat hero
+	var memoryBarValue = 0;
+	var memoryScoreValue = 0;
+	var memoryLevelValue = 0;
 
 	//camera
 	var pitchObject = new THREE.Object3D();
@@ -57,7 +57,7 @@ THREE.Hero = function (app) {
 
 	var person = new THREE.Person('hero', this.img);
 	person.name = 'hero';
-	person.rotation.y = PI + this.rotation.y;
+	person.rotation.y = PIDivise2;
 
 
 	/*
@@ -81,15 +81,6 @@ THREE.Hero = function (app) {
 	this.setPosition = function (x, y, z) {
 		this.zone.set(x, y, z);
 		yawObject.position.set(-middleMaxX + (x * sizeBloc + middle), y * sizeBloc + (sizeBloc * 2), -middleMaxZ + (z * sizeBloc + middle));
-	};
-
-
-	/*
-	 *	SET la rotation du héro
-	 */
-	this.setRotation = function (x, y) {
-		this.currentdirection.x = x;
-		this.currentdirection.y = y;
 	};
 
 
@@ -229,20 +220,11 @@ THREE.Hero = function (app) {
 
 		var clone = yawObject.clone();
 
-		if ((app.gamepad.buttonJump() || app.gamepad.buttonA()) && !jump) {
-			jump = true;
-			this.currentdirection.jump = heightJump;
-			app.sound.effect('system/016-Jump02.ogg', 0.2);
-		}
-
 		if (moveLeft && !moveRight)
 			clone.translateX(-this.speed);
 
 		if (moveRight && !moveLeft)
 			clone.translateX(this.speed);
-
-		if (app.gamepad.axeXFoot() != 0)
-			clone.translateX(-app.gamepad.axeXFoot());
 
 		if (moveForward) {
 			if (run)
@@ -251,13 +233,9 @@ THREE.Hero = function (app) {
 		}
 		else if (moveBackward)
 			clone.translateZ(this.speed);
-		else if (app.gamepad.axeZFoot() != 0) {
-			speedTmp += app.gamepad.axeZFoot();
-			clone.translateZ(-app.gamepad.axeZFoot());
-		}
 
 
-		if (!run && !app.gamepad.axeZFoot() && speedTmp > 0.2)
+		if (!run && speedTmp > 0.2)
 			speedTmp -= 0.2;
 
 
@@ -270,6 +248,7 @@ THREE.Hero = function (app) {
 
 		clone.position.y += this.currentdirection.jump -= this.gravity;
 
+		//collision Y
 		var dirYx = ((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		var dirYy = clone.position.y / sizeBloc;
 		var dirYz = ((clone.position.z + middleMaxZ) / sizeBloc) + 1;
@@ -282,25 +261,33 @@ THREE.Hero = function (app) {
 		if (clone.position.y < 100)
 			clone.position.y = 100;
 
+		// collision X
 		var dirXx = (((clone.position.x + (clone.position.x > yawObject.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
 		var dirXy = clone.position.y / sizeBloc;
 		var dirXz = ((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		if (app.map.hasObstacle(dirXx, dirXy, dirXz) || app.map.hasObstacle(dirXx, dirXy - 1, dirXz)) {
+		if( clone.position.y > yawObject.position.y ) {
+			if (app.map.hasObstacle(dirXx, dirXy, dirXz) ) {
+				clone.position.x = yawObject.position.x;
+				speedTmp -= 0.2;
+			}
+		}
+		else if (app.map.hasObstacle(dirXx, dirXy - 1, dirXz)) {
 			clone.position.x = yawObject.position.x;
 			speedTmp -= 0.2;
 		}
 
-
+		// collision Z
 		var dirZx = ((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		var dirZy = clone.position.y / sizeBloc;
 		var dirZz = (((clone.position.z + (clone.position.z > yawObject.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
-		if (app.map.hasObstacle(dirZx, dirZy) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz)) {
+		if (app.map.hasObstacle(dirZx, dirZy, dirZz) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz)) {
 			clone.position.z = yawObject.position.z;
 			speedTmp -= 0.2;
 		}
 
 
+		// no out map
 		if (clone.position.x < -middleMaxX + middle)
 			clone.position.x = -middleMaxX + middle;
 		else if (clone.position.x > middleMaxX - middle)
@@ -311,13 +298,15 @@ THREE.Hero = function (app) {
 		else if (clone.position.z > middleMaxZ - middle)
 			clone.position.z = middleMaxZ - middle;
 
+
+
 		if (yawObject.position.y != clone.position.y && yawObject.position.y > clone.position.y)
 			timeFall += yawObject.position.y - clone.position.y;
 		else
 			timeFall = 0;
 
-		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PI + yawObject.rotation.y) {
-			person.update(speedTmp >= 2 || app.gamepad.axeZFoot() < -2 ? 1 : 0);
+		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
+			person.update(speedTmp >= 2 ? 1 : 0);
 			app.sound.audioMove.volume = 0.1;
 		}
 		else
@@ -329,7 +318,7 @@ THREE.Hero = function (app) {
 
 		var noBot = false;
 
-		if ((moveForward || moveBackward || app.gamepad.axeZFoot()) && !moveLeft && !moveRight && app.gamepad.axeXFoot() < 4 && app.gamepad.axeXFoot() > -4)
+		if ((moveForward || moveBackward) && !moveLeft && !moveRight)
 			for (key in app.scene.children)
 				if (app.scene.children[key] instanceof THREE.Person && app.scene.children[key].name != 'hero') {
 					var contactPerson = app.scene.children[key];
@@ -348,7 +337,7 @@ THREE.Hero = function (app) {
 			yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
 			this.zone.set(newZoneX, newZoneY, newZoneZ);
 			person.position.set(clone.position.x, clone.position.y - sizeBloc, clone.position.z);
-			person.rotation.y = PI + yawObject.rotation.y;
+			person.rotation.y = PIDivise2 + yawObject.rotation.y;
 
 			if (timeFall > 300 && yawObject.position.y == clone.position.y) {
 				app.alert = timeFall * 10;
@@ -367,13 +356,6 @@ THREE.Hero = function (app) {
 			app.sound.move(false);
 
 
-		if (app.gamepad.axeXHead())
-			this.currentdirection.x -= app.gamepad.axeXHead() * 2;
-
-		if (app.gamepad.axeYHead())
-			this.currentdirection.y -= app.gamepad.axeYHead() * 200;
-
-
 		if (Date.now() % 60 == 0)
 			if (this.hp < 100)
 				this.hp++;
@@ -384,6 +366,24 @@ THREE.Hero = function (app) {
 			this.hp = 100;
 			app.messages.push('GAME OVER');
 		}
+
+		if (memoryBarValue != this.hp) {
+			memoryBarValue = this.hp;
+			valueGraph.innerHTML = this.hp;
+			contentGraph.style.width = this.hp + '%';
+		}
+
+		if (memoryScoreValue == this.argent) {
+			memoryScoreValue = this.argent;
+			userScore.innerHTML = 'Score : ' + number_format(this.argent) + ' pt' + (this.argent > 1 ? 's' : '');
+		}
+
+		if (memoryLevelValue == this.niveau) {
+			memoryLevelValue = this.niveau;
+			userLevel.innerHTML = 'Niveau : ' + this.niveau;
+		}
+
+
 	};
 
 
@@ -428,5 +428,3 @@ THREE.Hero = function (app) {
 
 	this.setPosition(this.zone.x, this.zone.y, this.zone.z);
 };
-
-THREE.Hero.prototype = Object.create(THREE.Object3D.prototype);

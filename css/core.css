@@ -208,7 +208,7 @@ fieldset {
     display: none;
 }
 
-#user_argent_content {
+#user_argent {
     position: absolute;
     z-index: 20;
     top: 25px;
@@ -276,7 +276,7 @@ fieldset {
     padding: 0 20px 20px;
 }
 
-.ConteneurGraphique {
+#ConteneurGraphique {
     height: 30px;
     position: relative;
     background: rgb(169, 3, 41); /* Old browsers */
@@ -294,7 +294,7 @@ fieldset {
     border: 3px solid #FFF;
 }
 
-.ContenuGraphique {
+#ContenuGraphique {
     height: 30px;
     float: left;
     background: rgb(191, 210, 85); /* Old browsers */
@@ -311,7 +311,7 @@ fieldset {
     border-radius: 5px;
 }
 
-.infoGraphique {
+#infoGraphique {
     font-size: 24px;
     font-weight: bold;
     color: #fff;

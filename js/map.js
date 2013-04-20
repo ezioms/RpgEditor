@@ -3,15 +3,35 @@ var control = false;
 var simulate_key;
 var buttonEnter = false;
 
+
+/*
+ * element div ID
+ */
+var contentLoading = document.getElementById('content_loading');
+var contentBody = document.getElementById('content_body');
+var contentAction = document.getElementById('content_action');
+var valueGraph = document.getElementById('valueMoyenneGraph');
+var contentGraph = document.getElementById('ContenuGraphique');
+var userHp = document.getElementById('user_hp');
+var userScore = document.getElementById('user_argent');
+var userLevel = document.getElementById('user_niveau');
+var noCursor = document.getElementById('noCursor');
+var notifications = document.getElementById('notifications');
+var webGL = document.getElementById('debugWebGL');
+
+
+/*
+ * my app
+ */
 app = {};
 
-app.scene = new THREE.Scene();
-app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 8000);
-app.loader = new THREE.Loader();
-app.clock = new THREE.Clock();
-app.sound = new THREE.Sound();
-app.node = new THREE.Node();
-app.overlay = new THREE.Overlay();
+app.scene = new THREE.Scene;
+app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 8000);
+app.loader = new THREE.Loader;
+app.clock = new THREE.Clock;
+app.sound = new THREE.Sound;
+app.node = new THREE.Node;
+app.overlay = new THREE.Overlay;
 
 
 app.renderer = {};
@@ -21,92 +41,20 @@ app.bots = {};
 app.users = {};
 app.messages = [];
 app.alert = false;
-app.gamepad = gamepadSupport;
-
 
 /*
- * cursor management
- */
-var noCursor = document.getElementById('noCursor');
-
-var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
-
-if (havePointerLock) {
-
-	var element = document.body;
-
-	var pointerlockchange = function (event) {
-		if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
-			noCursor.style.display = 'none';
-			lookMessage('Souris désactivé');
-			control = true;
-		} else {
-			noCursor.style.display = 'block';
-			control = false;
-			lookMessage('Souris activé');
-		}
-	}
-
-	// Hook pointer lock state change events
-	document.addEventListener('pointerlockchange', pointerlockchange, false);
-	document.addEventListener('mozpointerlockchange', pointerlockchange, false);
-	document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
-
-	noCursor.addEventListener('click', function (event) {
-		activeCursor();
-
-	}, false);
-
-	function activeCursor() {
-		// Ask the browser to lock the pointer
-		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-
-		if (/Firefox/i.test(navigator.userAgent)) {
-
-			var fullscreenchange = function (event) {
-
-				if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
-
-					document.removeEventListener('fullscreenchange', fullscreenchange);
-					document.removeEventListener('mozfullscreenchange', fullscreenchange);
-
-					element.requestPointerLock();
-				}
-
-			}
-
-			document.addEventListener('fullscreenchange', fullscreenchange, false);
-			document.addEventListener('mozfullscreenchange', fullscreenchange, false);
-
-			element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-			element.requestFullscreen();
-
-		} else {
-			element.requestPointerLock();
-		}
-	}
-
-} else {
-	noCursor.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
-}
-
-
-/*
- * Initialize datas, gamepad, node and scene
+ * Initialize datas, node and scene
  */
 var load = function () {
-	info(app.loader.stateLoad);
-
 	// load elements
 	if (!app.loader.getCompleted()) {
-		$('#content_loading').html(app.loader.stateLoad);
-		setTimeout(load, 1);
+		setTimeout(load, 1000 / 25);
 		return;
 	} else
-		$('#content_loading').html('Initialisation des données');
+		contentLoading.innerHTML = 'Initialisation des données';
 
 	// show elements HTML for hero HP / SCORE ...
-	$('#user_hp, #user_niveau, #user_argent_content').show();
+	userHp.style.display = userLevel.style.display = userScore.style.display = 'block';
 
 	info('Chargement de ' + number_format(app.loader.nbrBot) + ' bot(s)');
 	info('Chargement de ' + number_format(app.loader.nbrElements) + ' élement(s)');
@@ -117,24 +65,21 @@ var load = function () {
 		stats.domElement.style.position = 'absolute';
 		stats.domElement.style.bottom = '0';
 		stats.domElement.style.left = '0';
-		$('body').append(stats.domElement);
+		document.body.appendChild(stats.domElement);
 	}
-
-	// initialize gamepad
-	app.gamepad.init();
 
 	// initialize Socket.io
 	app.node.init(app);
 
 	// initialize the scene with objects
-	init();
-}
+	initialize();
+};
 
 
 /*
  * Initialisation de la map
  */
-var init = function () {
+var initialize = function () {
 	// creat map
 	app.map = new THREE.Map(app);
 
@@ -177,15 +122,14 @@ var init = function () {
 
 
 	// load render in html
-	$('#content_body').hide().html(app.renderer.domElement).delay(100).fadeIn();
-
-	$('#content_loading').empty();
+	contentBody.appendChild(app.renderer.domElement);
+	contentLoading.innerHTML = '';
 
 	// loop
 	animate();
 
 	window.addEventListener('resize', onWindowResize, false);
-}
+};
 
 
 /*
@@ -193,7 +137,7 @@ var init = function () {
  */
 var render = function () {
 	if (!control)
-		$('#noCursor').show();
+		noCursor.style.display = 'block';
 
 	// listen others users with socket.io
 	var listUsers = app.node.listUser();
@@ -236,13 +180,15 @@ var render = function () {
 	updateHeroVisual();
 
 	// update stat environment
-	if (debug) {
-		var info = app.renderer.info;
-		$('#debugWebGL').html('<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points);
-	}
+	/*
+	 if (debug) {
+	 var info = app.renderer.info;
+	 webGL.innerHTML = '<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points;
+	 }
+	 */
 
 	app.renderer.render(app.scene, app.camera);
-}
+};
 
 
 /*
@@ -261,7 +207,7 @@ var animate = function () {
 	// if the debug is TRUE => update
 	if (debug)
 		stats.update();
-}
+};
 
 
 /*
@@ -271,7 +217,7 @@ var onWindowResize = function () {
 	app.camera.aspect = window.innerWidth / window.innerHeight;
 	app.camera.updateProjectionMatrix();
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
-}
+};
 
 /*
  * Update notification management
@@ -282,27 +228,28 @@ var lookMessage = function (txt) {
 	$('#' + id).fadeIn(400).delay(80 * txt.length).fadeOut(3000, function () {
 		killSpeackBot();
 	});
-}
+};
 
 
 /*
  * look notifications bots for random messages
  */
 var killSpeackBot = function () {
-	if ($('.notifications').length) {
-		$('.notifications').stop(true, true);
+	var notif = $('.notifications');
+	if (notif.length) {
+		notif.stop(true, true);
 		if ($('.reponse').length) {
 			var id = app.clock.oldTime + '_' + random(0, 100);
-			txt = $('.reponse').html();
+			var txt = $('.reponse').html();
 			$('#notifications').empty().append('<div id="' + id + '" class="notifications reponseNotification">' + txt + '</div>');
 			$('#' + id).fadeIn(1000).delay(80 * txt.length).fadeOut(4000, function () {
 				$(this).remove();
 			});
 		}
 		else
-			$('.notifications').remove();
+			notif.remove();
 	}
-}
+};
 
 
 /*
@@ -312,34 +259,25 @@ var loadMove = false;
 var action = false;
 var updateHeroVisual = function () {
 
-	set_barre('#user_hp', app.hero.hp);
-
 	for (var keyChildren in app.scene.children) {
-		if (app.scene.children[keyChildren].name != 'hero' && app.scene.children[keyChildren] instanceof THREE.Person) {
-			var person = app.scene.children[keyChildren].position;
+		var child = app.scene.children[keyChildren];
+		if (child.name != 'hero' && child instanceof THREE.Person) {
+			var person = child.position;
 			var hero = app.hero.getPerson().position;
 			if (hero.x > person.x - 150 && hero.x < person.x + 150
 				&& hero.y > person.y - 150 && hero.y < person.y + 150
 				&& hero.z > person.z - 150 && hero.z < person.z + 150) {
-				app.scene.children[keyChildren].text.visible = true;
+				child.text.visible = true;
 			}
 			else
-				app.scene.children[keyChildren].text.visible = false;
+				child.text.visible = false;
 		}
 	}
 
 	if (loadMove)
 		return;
 
-	if (!simulate_key) {
-		if (app.gamepad.buttonB()) {
-			buttonEnter = true;
-			killSpeackBot();
-		} else
-			buttonEnter = false;
-	}
-
-	//	fenetre action module
+	// fenetre action module
 	var module = app.map.getOverModule(app.hero.zone);
 
 	if (module) {
@@ -349,22 +287,18 @@ var updateHeroVisual = function () {
 					if (data == 'no')
 						return;
 
-					$('#content_action').html(data);
-
-					if (module.data.title)
-						app.messages.push(module.data.title);
-					else
-						app.messages.push('Changement de lieu');
+					contentAction.innerHTML = data;
+					app.messages.push(module.data.title ? module.data.title : 'Changement de lieu');
 				});
 			}
 			else if (module.data.module == 'html') {
-				$('#content_action').html(module.data.html);
+				contentAction.innerHTML = module.data.html;
 
 				if (module.data.title)
 					app.messages.push(module.data.title);
 			}
 			else if (module.data.module == 'article') {
-				$('#content_action').html(module.article);
+				contentAction.innerHTML = module.article;
 
 				if (module.data.title)
 					app.messages.push(module.data.title);
@@ -379,9 +313,7 @@ var updateHeroVisual = function () {
 					if (data == 'no')
 						return;
 
-					if (app.gamepad.length)
-						data = data.replace('la touche ENTER', 'la touche ENTER ou le bouton X de la manette');
-					$('#content_action').html(data);
+					contentAction.innerHTML = data;
 				});
 			}
 
@@ -389,9 +321,11 @@ var updateHeroVisual = function () {
 		}
 	}
 	else {
-		$('#content_action').empty();
+		contentAction.innerHTML = '';
 		action = false;
 	}
+
+
 	// lecture de message a afficher
 	if (app.messages) {
 		for (var keyMsg in app.messages) {
@@ -404,9 +338,10 @@ var updateHeroVisual = function () {
 
 	// Vue en rouge en cas d'accident'
 	if (app.alert) {
-		if (!$('#alertUser').is(':visible')) {
-			app.sound.play('system/159-Skill03.ogg', app.hero.position);
-			$('#alertUser').show().fadeOut(Math.round(app.alert));
+		var alertUser = $('#alertUser');
+		if (!alertUser.is(':visible')) {
+			app.sound.play('system/159-Skill03.ogg', app.hero.getPerson().position);
+			alertUser.show().fadeOut(app.alert);
 		}
 		app.alert = false;
 	}
@@ -418,22 +353,15 @@ var updateHeroVisual = function () {
 		app.messages.push('Vous êtes passé au niveau : ' + app.hero.niveau);
 	}
 
-	set_barre('#user_hp', app.hero.hp);
-
-	// update de donnée hero
-	$('#user_argent').html(number_format(app.hero.argent) + ' pt' + (app.hero.argent > 1 ? 's' : ''));
-	$('#user_niveau').html('Niveau ' + app.hero.niveau);
-
-	if (app.gamepad.buttonX())
-		simulEnter();
-}
+};
 
 /*
- * Simular click cursor with pressKey ENTER or button gamepad
+ * Simular click cursor with pressKey ENTER
  */
 var simulEnter = function () {
-	if ($(":button").length) {
-		$(":button").each(function () {
+	var button = $(":button");
+	if (button.length) {
+		button.each(function () {
 			var data = $(this).data();
 			if (data) {
 				if (data.url !== undefined) {
@@ -441,8 +369,6 @@ var simulEnter = function () {
 						if (!data)
 							return;
 
-						if (app.gamepad.length)
-							data = data.replace('la touche ENTER', 'la touche ENTER ou le bouton X de la manette');
 						$('#content_action').html(data).fadeIn();
 					});
 				}
@@ -450,7 +376,67 @@ var simulEnter = function () {
 			$(this).click();
 		});
 	}
-}
+};
+
+
+/*
+ * cursor management
+ */
+
+var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+
+if (havePointerLock) {
+
+	var element = document.body;
+
+	var pointerlockchange = function () {
+		if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
+			noCursor.style.display = 'none';
+			lookMessage('Souris désactivé');
+			control = true;
+		} else {
+			noCursor.style.display = 'block';
+			control = false;
+			lookMessage('Souris activé');
+		}
+	};
+
+	var activeCursor = function () {
+		// Ask the browser to lock the pointer
+		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
+
+		if (/Firefox/i.test(navigator.userAgent)) {
+
+			var fullscreenchange = function () {
+
+				if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
+
+					document.removeEventListener('fullscreenchange', fullscreenchange);
+					document.removeEventListener('mozfullscreenchange', fullscreenchange);
+
+					element.requestPointerLock();
+				}
+			};
+
+			document.addEventListener('fullscreenchange', fullscreenchange, false);
+			document.addEventListener('mozfullscreenchange', fullscreenchange, false);
+
+			element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
+			element.requestFullscreen();
+
+		} else
+			element.requestPointerLock();
+	};
+
+	// Hook pointer lock state change events
+	document.addEventListener('pointerlockchange', pointerlockchange, false);
+	document.addEventListener('mozpointerlockchange', pointerlockchange, false);
+	document.addEventListener('webkitpointerlockchange', pointerlockchange, false);
+
+	noCursor.addEventListener('click', activeCursor, false);
+
+} else
+	noCursor.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 
 
 $(function () {
@@ -469,12 +455,12 @@ $(function () {
 		.unload(function () {
 			app.loader.request('user/update', 'GET', app.hero.getData());
 		})
-		.keyup(function (e) {
-			if (e.keyCode === 13)
+		.keyup(function (event) {
+			if (event.keyCode === 13)
 				buttonEnter = simulate_key = false;
 		})
-		.keydown(function (e) {
-			if (e.keyCode === 13) {
+		.keydown(function (event) {
+			if (event.keyCode === 13) {
 				killSpeackBot();
 				simulEnter();
 				buttonEnter = simulate_key = true;
@@ -487,19 +473,19 @@ $(function () {
 	 */
 	$('#content_action')
 		.on('click', '#accepter', function (event) {
-			event.preventDefault();
 			var id = $('#id_quete').val();
 			$('#content_action').empty().load('actions/quete/add/' + id + '?' + app.hero.getData(), function (data) {
 				if (data)
 					$(this).html(data).fadeIn();
 			});
+			event.preventDefault();
 		})
 		.on('click', '#annul', function (event) {
-			event.preventDefault();
 			var id = $('#id_quete').val();
 			$('#content_action').empty().load('actions/quete/annul/' + id + '?' + app.hero.getData(), function (data) {
 				if (data)
 					$(this).html(data).fadeIn();
 			});
+			event.preventDefault();
 		});
 });

@@ -42,7 +42,6 @@
 	 {
 		 $sql = 'SELECT
 							( SELECT count(*) FROM users ) as nb_user,
-							( SELECT count(*) FROM bots ) as nb_bot,
 							( SELECT count(*) FROM regions ) as nb_region,
 							( SELECT count(*) FROM articles ) as nb_article,
 							( SELECT count(*) FROM articles_category ) as nb_cat_article,
@@ -96,19 +95,11 @@
 	 public function user_show( $id_user )
 	 {
 		 $sql = 'SELECT
-							( SELECT count(*) FROM users_history WHERE type_element = \'using_item\' AND user_id = '.$id_user.' ) as nb_using_item,
-							( SELECT count(*) FROM users_history WHERE type_element = \'victory_bot\' AND user_id = '.$id_user.' ) as nb_victory_bot,
 							( SELECT count(*) FROM users_history WHERE type_element = \'change_map\' AND user_id = '.$id_user.' ) as nb_change_map,
-							( SELECT count(*) FROM users_history WHERE type_element = \'shop\' AND user_id = '.$id_user.' ) as nb_shop,
 							( SELECT count(*) FROM users_history WHERE type_element = \'quete_annul\' AND user_id = '.$id_user.' ) as nb_quete_annul,
 							( SELECT count(*) FROM users_history WHERE type_element = \'quete_valide\' AND user_id = '.$id_user.' ) as nb_quete_valide,
-							( SELECT count(*) FROM users_history WHERE type_element = \'victory_bot_module\' AND user_id = '.$id_user.' ) as nb_victory_bot_module,
 							( SELECT count(*) FROM users_history WHERE type_element = \'gameover_bot_module\' AND user_id = '.$id_user.' ) as nb_gameover_bot_module,
-							( SELECT count(*) FROM users_history WHERE type_element = \'gameover_bot\' AND user_id = '.$id_user.' ) as nb_gameover_bot,
-							( SELECT count(*) FROM users_history WHERE type_element = \'object\' AND user_id = '.$id_user.' ) as nb_object,
-							( SELECT count(*) FROM users_sorts WHERE user_id = '.$id_user.' ) as nb_sorts,
-							( SELECT count(*) FROM users_stuffs WHERE user_id = '.$id_user.' ) as nb_stuff,
-							( SELECT count(*) FROM users_items WHERE user_id = '.$id_user.' ) as nb_item';
+							( SELECT count(*) FROM users_history WHERE type_element = \'gameover_bot\' AND user_id = '.$id_user.' ) as nb_gameover_bot';
 
 		 return $this->db->query( $sql )->current();
 	 }

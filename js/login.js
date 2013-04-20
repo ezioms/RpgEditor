@@ -92,7 +92,7 @@ $(function () {
 			$('form').submit();
 		})
 		.on('click', '#send', function () {
-			$('form').attr('action',$(this).data('action')).submit();
+			$('form').attr('action', $(this).data('action')).submit();
 		});
 	$(window).keyup(function (e) {
 		if (e.keyCode == 13) {
@@ -102,7 +102,7 @@ $(function () {
 	});
 
 
-	if($('#alert').length)
+	if ($('#alert').length)
 		$('#alert').delay(3000).fadeOut(2000);
 });
 
@@ -110,10 +110,10 @@ var container, stats;
 
 var camera, scene, renderer;
 
-var mesh, 	textureCube;
+var mesh, textureCube;
 
 var worldWidth = 100, worldDepth = 100,
-		worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2,
+	worldHalfWidth = worldWidth / 2, worldHalfDepth = worldDepth / 2,
 	data = generateHeight(worldWidth, worldDepth);
 
 init();
@@ -507,25 +507,24 @@ function init() {
 		r + "2.png", r + "0.png" ];
 
 	//THREE.NearestFilter
-	var texture = THREE.ImageUtils.loadTextureCube( urls, new THREE.CubeRefractionMapping());
-		texture.magFilter = THREE.NearestFilter;
+	var texture = THREE.ImageUtils.loadTextureCube(urls, new THREE.CubeRefractionMapping());
+	texture.magFilter = THREE.NearestFilter;
 
 	// Skybox
 	var shader = THREE.ShaderUtils.lib[ "cube" ];
 	shader.uniforms[ "tCube" ].value = texture;
 
-	var material = new THREE.ShaderMaterial( {
+	var material = new THREE.ShaderMaterial({
 
 			fragmentShader: shader.fragmentShader,
 			vertexShader: shader.vertexShader,
 			uniforms: shader.uniforms,
 			side: THREE.BackSide
 
-		} ),
+		}),
 
-	textureCube = new THREE.Mesh( new THREE.CubeGeometry( 10000, 10000, 10000 ), material );
-	scene.add( textureCube );
-
+		textureCube = new THREE.Mesh(new THREE.CubeGeometry(10000, 10000, 10000), material);
+	scene.add(textureCube);
 
 
 	renderer = new THREE.WebGLRenderer({ clearColor: 0x000000, antialias: true });

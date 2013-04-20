@@ -58,7 +58,7 @@ THREE.Map = function (app) {
 	this.getArticles = function () {
 		var article = app.loader.map.articles[random(0, (app.loader.map.articles.length - 1))];
 		return article ? article : false;
-	}
+	};
 
 
 	/*
@@ -66,7 +66,7 @@ THREE.Map = function (app) {
 	 */
 	this.getObstacles = function () {
 		return region.obstacles ? region.obstacles : false;
-	}
+	};
 
 
 	/*
@@ -74,7 +74,7 @@ THREE.Map = function (app) {
 	 */
 	this.getModules = function () {
 		return region.modules ? region.modules : false;
-	}
+	};
 
 
 	/*
@@ -82,7 +82,7 @@ THREE.Map = function (app) {
 	 */
 	this.getUnivers = function () {
 		return region.univers ? region.univers : false;
-	}
+	};
 
 
 	/*
@@ -90,7 +90,7 @@ THREE.Map = function (app) {
 	 */
 	this.getBots = function () {
 		return app.loader.bots.list ? app.loader.bots.list : false;
-	}
+	};
 
 
 	/*
@@ -98,7 +98,7 @@ THREE.Map = function (app) {
 	 */
 	this.getBackgroundColor = function () {
 		return app.loader.map.colorBackground ? app.loader.map.colorBackground : 0x8fa2ff;
-	}
+	};
 
 
 	/*
@@ -108,8 +108,8 @@ THREE.Map = function (app) {
 		x = Math.floor(x);
 		y = Math.floor(y);
 		z = Math.floor(z);
-		var obstacles = this.getObstacles();
-		if (obstacles[x] != undefined && obstacles[x][y] != undefined && obstacles[x][y][z] != undefined && obstacles[x][y][z])
+
+		if (region.obstacles[x] != undefined && region.obstacles[x][y] != undefined && region.obstacles[x][y][z] != undefined && region.obstacles[x][y][z])
 			return true;
 
 		return false;

@@ -113,7 +113,6 @@ abstract class Template_Controller extends Authentic_Controller
             'js/lib/jquery',
             'js/lib/three',
             'js/lib/detector',
-            'js/lib/gamepad',
             'js/lib/stats',
             'js/lib/socket',
             'js/lib/tools',
