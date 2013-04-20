@@ -105,10 +105,6 @@ THREE.Map = function (app) {
 	 * GET obstacles
 	 */
 	this.hasObstacle = function (x, y, z) {
-		x = Math.floor(x);
-		y = Math.floor(y);
-		z = Math.floor(z);
-
 		if (region.obstacles[x] != undefined && region.obstacles[x][y] != undefined && region.obstacles[x][y][z] != undefined && region.obstacles[x][y][z])
 			return true;
 

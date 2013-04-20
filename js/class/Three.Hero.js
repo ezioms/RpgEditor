@@ -248,39 +248,36 @@ THREE.Hero = function (app) {
 
 		clone.position.y += this.currentdirection.jump -= this.gravity;
 
+		if (clone.position.y < 100)
+			clone.position.y = 100;
+
+
 		//collision Y
-		var dirYx = ((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirYy = clone.position.y / sizeBloc;
-		var dirYz = ((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+		var dirYx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
+		var dirYy = Math.ceil( Math.round(clone.position.y * 10 ) / 10 / sizeBloc);
+		var dirYz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+		console.log(clone.position.y, dirYy);
 		if (app.map.hasObstacle(dirYx, dirYy + 1, dirYz) || app.map.hasObstacle(dirYx, dirYy - 1, dirYz)) {
 			clone.position.y = yawObject.position.y;
 			jump = false;
 			this.currentdirection.jump = 0;
 		}
 
-		if (clone.position.y < 100)
-			clone.position.y = 100;
-
 		// collision X
-		var dirXx = (((clone.position.x + (clone.position.x > yawObject.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
-		var dirXy = clone.position.y / sizeBloc;
-		var dirXz = ((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+		var dirXx = Math.floor(((clone.position.x + (clone.position.x > yawObject.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
+		var dirXy = Math.floor(clone.position.y / sizeBloc);
+		var dirXz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		if( clone.position.y > yawObject.position.y ) {
-			if (app.map.hasObstacle(dirXx, dirXy, dirXz) ) {
-				clone.position.x = yawObject.position.x;
-				speedTmp -= 0.2;
-			}
-		}
-		else if (app.map.hasObstacle(dirXx, dirXy - 1, dirXz)) {
+
+		if (app.map.hasObstacle(dirXx, dirXy, dirXz) || app.map.hasObstacle(dirXx, dirXy - 1, dirXz)) {
 			clone.position.x = yawObject.position.x;
 			speedTmp -= 0.2;
 		}
 
 		// collision Z
-		var dirZx = ((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirZy = clone.position.y / sizeBloc;
-		var dirZz = (((clone.position.z + (clone.position.z > yawObject.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
+		var dirZx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
+		var dirZy = Math.floor(clone.position.y / sizeBloc);
+		var dirZz = Math.floor(((clone.position.z + (clone.position.z > yawObject.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
 		if (app.map.hasObstacle(dirZx, dirZy, dirZz) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz)) {
 			clone.position.z = yawObject.position.z;
 			speedTmp -= 0.2;
