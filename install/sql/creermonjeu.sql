@@ -90,86 +90,6 @@ CREATE TABLE `bots` (
   CONSTRAINT `bots_ibfk_2` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
--- ----------------------------
---  Table structure for `items`
--- ----------------------------
-DROP TABLE IF EXISTS `items`;
-CREATE TABLE `items` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `prix` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `comment` text,
-  `image` varchar(255) DEFAULT NULL,
-  `niveau` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `quick` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `protect` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `hp` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `mp` mediumint(8) unsigned NOT NULL DEFAULT '0',
-  `position` tinyint(2) unsigned NOT NULL,
-  `cle` tinyint(1) unsigned DEFAULT '0',
-  `attaque` tinyint(3) unsigned DEFAULT '0',
-  `defense` tinyint(3) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `xp` (`niveau`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
---  Records of `items`
--- ----------------------------
-BEGIN;
-INSERT INTO `items` VALUES ('1', 'Baie', '50', 'Petite baie des bois très bon mais qui ne donne pas beaucoup de force.', 'baie01.gif', '0', '1', '0', '100', '0', '0', '0', '0', '0'), ('2', 'Framboise', '75', 'Les framboises ont un goût extra ordinaire et permette de reprendre un peu de force.', 'baie17.gif', '0', '1', '0', '20', '0', '0', '0', '0', '0'), ('3', 'Citron', '100', 'Le citron du soleil sont très acides mais tellement remplis de vitamines.', 'baie30.gif', '0', '1', '0', '30', '0', '0', '0', '0', '0'), ('4', 'Poire', '125', 'En cours de publication.', 'baie35.gif', '0', '1', '0', '40', '0', '0', '0', '0', '0'), ('5', 'Bonbon', '150', 'En cours de publication.', '011-Head02.png', '0', '1', '0', '50', '0', '0', '0', '0', '0'), ('6', 'Potion sans fin', '30', 'Cette potion est un peu comme un verre d\'alcool fort. Un petit remontant qu\'on consomme avec un peu d\'appréhension.', '024-Potion04.png', '0', '1', '0', '0', '10', '0', '0', '0', '0'), ('7', 'Potion du mage', '20', 'Ces potions, crées par les mages et prêtres de la région vous redonnent vigueur dès les premières georgées.', '023-Potion03.png', '0', '1', '0', '0', '20', '0', '0', '0', '0'), ('8', 'Potion du sang', '130', 'Cette potion est crée à partir du sang chaud des gros gibiers que prennent les chasseurs, après une savante distillation consommer une fiole de ce sang apporte un vrai coup de fouet.', '022-Potion02.png', '0', '1', '0', '0', '30', '0', '0', '0', '0'), ('9', 'Potion de mer', '150', 'En cours de publication.', '021-Potion01.png', '0', '1', '0', '0', '40', '0', '0', '0', '0'), ('10', 'Herbe des anges', '200', 'En cours de publication.', '025-Herb01.png', '0', '1', '0', '0', '50', '0', '0', '0', '0'), ('11', 'Hache de guerre', '930', 'Une hache à lame large spécialement conçue pour le combat, on notera que cette arme figure en général à l\'arsenal de tous les nains.', 'Arme 1.png', '0', '0', '1', '0', '0', '1', '0', '20', '2'), ('12', 'Epée batarde', '800', 'Également appelée épée à une main et un demi cette lame est issue du croisement de l\'épée à deux mains et de l\'épée traditionnelle, elle peut occasionner de lourd dommage mais peu de précision', 'Arme 5.png', '0', '0', '1', '0', '0', '1', '0', '14', '2'), ('13', 'Dague courbée', '160', 'Une arme courte en tout point semblable à la dague, la seule différence se trouve au niveau de la courbure de la lame', 'Couteau 1.png', '10', '0', '1', '0', '0', '1', '0', '8', '0'), ('14', 'Trident', '500', 'Arme issue des périodes antiques. Il symbolise dans les temples la maitrise de l\'eau, le trident reste pour autant une arme pratique et assez fiable.', 'Trident 1.png', '12', '0', '1', '0', '0', '1', '0', '15', '5'), ('15', 'Dague', '50', 'Une arme courte extrêmement répandue dont la lame pointue ayant pour but de poignarder à maintes fois fait ses preuves.', 'Arme 8.png', '0', '0', '1', '0', '0', '1', '0', '4', '0'), ('16', 'Tunique de toile', '200', 'Des vêtements de voyages offrant une bien piètre protection en cas d\'attaque.', 'Armure 4.png', '0', '0', '1', '0', '0', '5', '0', '0', '10'), ('17', 'Targe de fer', '500', 'Un bouclier en fer, rond et de petite taille il est en général fixé au poignet et est tenu en place par la main.', 'Bouclier 2.png', '0', '0', '1', '0', '0', '2', '0', '0', '20'), ('18', 'Heaume', '80', 'Ce casque offre une protection intégrale de la tête et offre une esthétique remarquable. Il est utilisé par les chevaliers qui préfèrent son esthétique qui peut parfois être travaillée.', 'Casque 1.png', '0', '0', '1', '0', '0', '3', '0', '0', '5'), ('19', 'Armure de cuir', '1000', 'Cette armure est conçue à partir de plusieurs couches de cuirs cousues les unes aux autres, plus résistantes que les armures de cuirs habituelles, elles sont aussi plus lourdes.', 'Armure 1.png', '10', '0', '1', '0', '0', '5', '0', '0', '15'), ('20', 'Plastron de fer', '3000', 'Ce plastron composé de plusieurs couches de fer forgés se chevauchant les une sur les autres offre une protection des organes vitaux du haut de la poitrine jusqu\'au bas du ventre.', 'Armure 2.png', '15', '0', '1', '0', '0', '5', '0', '0', '20'), ('21', 'Anneau de force d\'ogre', '300', 'Cet anneau de bronze et d\'or enchanté vous confère une force peu commune.', 'Bague 1.png', '2', '0', '1', '0', '0', '6', '0', '0', '0'), ('22', 'Amulette de puissance', '150', 'Ce collier d\'or ou d\'argent orné d\'une gemme rouge et scintillante confère une force peu commune à son porteur.', '012-Head03.png', '0', '0', '1', '0', '0', '3', '0', '0', '3'), ('23', 'Anneau du dragon', '2000', 'Ces anneaux ornées de goutes de sangs  cristallisées puis ambrées des grands dragons pourpres confèrent à leur porteur une force et une musculature vraiment très impressionnante.', 'Bague 2.png', '20', '0', '1', '0', '0', '6', '0', '0', '0'), ('24', 'Pierre de Lune', '400', 'Cette pierre, qu\'on dit directement tombée de la lune accorde à celui qui la possède une force sur humaine, ces pierres sont très recherchées par les adeptes de la déesse de la lune ...', 'Joyaux 2.png', '0', '0', '1', '0', '0', '0', '0', '0', '0'), ('25', 'Broche de puissance.', '100', 'Cette broche de bronze ou d\'argent est ornée d\'une gemme rouge scintillante conférant à son porteur une force inhabituelle.', 'Joyaux 7.png', '0', '0', '1', '0', '0', '0', '0', '0', '0'), ('26', 'Gants de voleur', '100', 'Ces gants de tissu sombre vous permettront de glisser vos doigts avec agilité dans n\'importe quelles bourses.', 'Gants 1.png', '0', '0', '1', '0', '0', '6', '0', '0', '0'), ('27', 'Bottes du felin', '150', 'Ces bottes vous permettront de vous déplacer plus rapidement et d\'avancer à pas de velours, ce serait presque comme si vous ne laissiez qu\'une infime trace de votre passage sur la neige.', '020-Accessory05.png', '0', '0', '1', '0', '0', '7', '0', '0', '0'), ('28', 'Cape du loup', '400', 'La cape du loup vous procure une vitesse et une agilité incomparable, en plus de cela elle vous permet de vous dissimuler facilement dans les coins sombres.', 'Cape 3.png', '0', '0', '1', '0', '0', '4', '0', '0', '5'), ('29', 'Clé de la maison du héro', '0', 'Cette clé permet l\'ouverture de la maison du héros', '031-Key03.png', '0', '1', '0', '0', '0', '0', '1', '0', '0'), ('31', 'Passe du tripaux', '0', 'passe qui permet l\'accès au Tripaux Clandestin dans la taverne', 'Joyaux7.png', '0', '0', '0', '0', '0', '0', '1', '0', '0'), ('33', 'Epée du Héros', '5000', 'l\'épée du héros est sans nul doute la plus puissante du monde !', 'Arme 5.png', '1', '0', '1', '0', '0', '1', '0', '100', '0'), ('34', 'gland magique', '0', 'Un gland rare', '042-Item11.png', '0', '0', '0', '0', '0', '0', '0', '0', '0'), ('35', 'Minerai de Fer', '50', 'le minerai de fer sert essentiellement a la fabrication d\'armes et d\'armures, il est utile pour les ingénieurs et les Forgerons.', '043-Item12.png', '5', '0', '0', '0', '0', '0', '0', '0', '0'), ('36', 'Charbon', '20', 'Le charbon est utile dans la création de l\'acier s\'il est coupler a un minerai de fer', 'Roche 1.png', '5', '0', '0', '0', '0', '0', '0', '0', '0'), ('37', 'Acier', '200', 'l\'acier est le produit d\'un mélange de Fer et de charbon', '039-Item08.png', '10', '0', '0', '0', '0', '0', '0', '0', '0'), ('38', 'Fil', '10', 'le fil est indispensable dans la création d\'objets pour le couturier', 'Boucle 1.png', '5', '0', '0', '0', '0', '0', '0', '0', '0'), ('39', 'Tissu', '30', 'le tissu est utile au couturier pour la création d\'objets', '014-Body02.png', '5', '0', '0', '0', '0', '0', '0', '0', '0'), ('40', 'Souffre', '50', 'le souffre est utile dans la fabrication d\'objet pour les alchimistes', 'Joyaux 6.png', '1', '0', '0', '0', '0', '0', '0', '0', '0'), ('41', 'Salpêtre', '100', 'Le salpêtre est utile pour la fabrication d\'objets pour l\'achimiste', 'Joyaux 2.png', '1', '0', '0', '0', '0', '0', '0', '0', '0'), ('42', 'Poudre à canon', '500', 'La Poudre à canon est le résultat du mélange de souffre, de charbon et de salpêtre', 'Arme 10.png', '1', '0', '0', '0', '0', '0', '0', '0', '0'), ('43', 'épée de lune', '3000', 'une épée qui tire son pouvoir des pierres de lunes, elle est créer par les enchanteurs avec une épée bâtarde et une pierre de lune', 'Arme 5.png', '20', '0', '0', '50', '0', '0', '0', '0', '0'), ('44', 'Passe Partout', '300', 'le passe partout est une clef créer par l’ingénieure et est utile pour déverrouiller certains coffre et certaines portes', '030-Key02.png', '5', '0', '0', '0', '0', '0', '1', '0', '0'), ('45', 'clef', '20', 'une clef basic', '031-Key03.png', '2', '0', '0', '0', '0', '0', '1', '0', '0');
-COMMIT;
-
--- ----------------------------
---  Table structure for `items_link`
--- ----------------------------
-DROP TABLE IF EXISTS `items_link`;
-CREATE TABLE `items_link` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `items_id_one` int(11) unsigned DEFAULT '0',
-  `nbr_one` tinyint(3) unsigned DEFAULT '1',
-  `items_id_two` int(11) unsigned DEFAULT '0',
-  `nbr_two` tinyint(11) unsigned DEFAULT '1',
-  `items_id_result` int(11) unsigned DEFAULT '0',
-  `job_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `niveau` tinyint(3) unsigned DEFAULT '0',
-  `xp` int(11) unsigned DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `items_id_one` (`items_id_one`),
-  KEY `items_id_two` (`items_id_two`),
-  KEY `items_id_result` (`items_id_result`),
-  KEY `job_id` (`job_id`),
-  CONSTRAINT `items_link_ibfk_1` FOREIGN KEY (`items_id_one`) REFERENCES `items` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `items_link_ibfk_2` FOREIGN KEY (`items_id_two`) REFERENCES `items` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `items_link_ibfk_3` FOREIGN KEY (`items_id_result`) REFERENCES `items` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `items_link_ibfk_4` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
---  Records of `items_link`
--- ----------------------------
-BEGIN;
-INSERT INTO `items_link` VALUES ('1', '35', '1', '36', '2', '37', '8', '5', '0'), ('2', '36', '2', '35', '1', '37', '8', '5', '0'), ('3', '38', '2', '39', '1', '16', '4', '5', '0'), ('4', '39', '1', '38', '2', '16', '4', '5', '0'), ('5', '40', '2', '41', '2', '42', '1', '10', '0'), ('6', '24', '1', '12', '1', '43', '7', '10', '0'), ('7', '12', '1', '24', '1', '43', '7', '10', '0'), ('8', '45', '1', '37', '1', '44', '10', '5', '0'), ('9', '37', '1', '45', '1', '44', '10', '5', '0'), ('10', '5', '5', '24', '1', '6', '13', '5', '0'), ('11', '24', '1', '5', '5', '6', '13', '5', '0');
-COMMIT;
-
--- ----------------------------
---  Table structure for `jobs`
--- ----------------------------
-DROP TABLE IF EXISTS `jobs`;
-CREATE TABLE `jobs` (
-  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) DEFAULT NULL,
-  `comment` text,
-  `image` varchar(128) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
---  Records of `jobs`
--- ----------------------------
-BEGIN;
-INSERT INTO `jobs` VALUES ('1', 'Alchimiste', 'L\'Alchimie, métier des potions et élixirs, est le métier qui convient pour tous.', 'alchimie.png'), ('4', 'Couture', 'La Couture, métier de l\'art du tissage d\'armures en tissu.', 'couture.png'), ('7', 'Enchanteur', 'L\'Enchantement, l\'art d\'ensorceler ses pièces d\'équipement afin des les améliorer.', 'enchanteur.png'), ('8', 'Forgeron', 'La Forge, l\'art de fabriquer ses armes et ses pièces d\'armures.', 'forgeron.png'), ('10', 'Ingénieur', 'L\'Ingénierie, métier loufoque et créateur d\'inventions farfelues, utilisé pour assembler divers matériaux.', 'ingenieur.png'), ('13', 'Secouriste', 'l\'art de soigner et de guérir. Le Secourisme n\'est pas un métier à négliger.', 'secouriste.png');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `map`
@@ -351,36 +271,6 @@ BEGIN;
 INSERT INTO `roles_users` VALUES ('11', '1'), ('11', '2');
 COMMIT;
 
--- ----------------------------
---  Table structure for `sorts`
--- ----------------------------
-DROP TABLE IF EXISTS `sorts`;
-CREATE TABLE `sorts` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(128) DEFAULT NULL,
-  `comment` text,
-  `image` varchar(255) DEFAULT NULL,
-  `attack_min` int(11) unsigned NOT NULL DEFAULT '0',
-  `attack_max` int(11) unsigned NOT NULL DEFAULT '0',
-  `mp` int(11) unsigned NOT NULL DEFAULT '0',
-  `niveau` tinyint(3) NOT NULL DEFAULT '0',
-  `prix` int(11) unsigned NOT NULL DEFAULT '0',
-  `size` tinyint(3) unsigned DEFAULT '5',
-  `radius` tinyint(3) unsigned DEFAULT '10',
-  `segments` tinyint(3) unsigned DEFAULT '25',
-  `ring` tinyint(3) DEFAULT '15',
-  `color` varchar(7) DEFAULT '#ffffff',
-  `sound` varchar(128) DEFAULT 'system/135-Light01.ogg',
-  `xp` mediumint(8) unsigned DEFAULT '5',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
---  Records of `sorts`
--- ----------------------------
-BEGIN;
-INSERT INTO `sorts` VALUES ('1', 'Eclat de lumière', 'surnommé mégalithe se sort ébloui l\'adversaire tout en cause de faible dégât ', 'eclatLumiere.png', '20', '50', '1', '1', '300', '2', '10', '25', '15', '#990000', 'system/135-Light01.ogg', '50'), ('2', 'Griffe du tigre', 'coup de base axé sur la vitesse !', 'griffeTigre.png', '0', '10', '20', '0', '50', '5', '8', '20', '15', '#009900', 'system/136-Light02.ogg', '5'), ('3', 'Souffle de poussière', 'le vent et la terre sont a l\'origine de se sort ! sa puissance peut déstabilisé n\'importe quelle adversaire !', 'soufflePoussiere.png', '0', '20', '30', '2', '2000', '4', '10', '25', '5', '#000099', 'system/137-Light03.ogg', '5'), ('4', 'Boule électrique', 'en concentrant l\'énergie statique et la magie, ont obtient une belle boule bleu qui ne sert pas qu\'a éclairer un endroits sombre...', 'bouleElectrique.png', '0', '32', '80', '2', '900', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('5', 'Colère du félin', 'sort de type nature de puissance moyenne', 'colereFelin.png', '0', '40', '50', '1', '800', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('6', 'Danse de l\'ours', 'c\'est dans la nature que ce se sort trouve son essence !', 'danseOurs.png', '0', '80', '60', '1', '500', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('7', 'Boule de feu', 'la boule de feu est l\'un des sort de base de tous les jeteurs de sort.', 'bouleFeu.png', '0', '90', '10', '0', '150', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('8', 'Feu de terre', 'remontant des profondeur de l\'enfer, le sort Feu de Terre fait littéralement brulé votre adversaire sur place !', 'feuTerre.png', '0', '100', '80', '1', '1500', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('9', 'Foudre des dieux', 'Puisant dans l\'énergie statique de l\'air, ce sort produit une décharge de faible intensité', 'foudreDieu.png', '0', '110', '20', '0', '300', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('10', 'Rage du sol', 'Attaque de type terre, le sol se soulève pour engendré un mini scéisme', 'rageSol.png', '0', '130', '100', '2', '1000', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('11', 'Explosion du diable', 'Une boule de feu des projetée dans les les airs a une vitesse élevé', 'exploDiable.png', '0', '190', '110', '1', '500', '5', '10', '25', '15', '#ffffff', 'system/135-Light01.ogg', '5'), ('12', 'Tourbillon des lames', 'le tourbillon des lames lance une attaque en rotation dévastatrice !', 'tourbillonLame.png', '0', '170', '5', '0', '100', '5', '10', '25', '15', '#ff5b7d', 'system/135-Light01.ogg', '5');
-COMMIT;
 
 -- ----------------------------
 --  Table structure for `users`
@@ -442,20 +332,6 @@ CREATE TABLE `users_history` (
   PRIMARY KEY (`id_history`)
 ) ENGINE=InnoDB AUTO_INCREMENT=745 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
--- ----------------------------
---  Table structure for `users_items`
--- ----------------------------
-DROP TABLE IF EXISTS `users_items`;
-CREATE TABLE `users_items` (
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `item_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `item_position` smallint(3) unsigned NOT NULL DEFAULT '0',
-  `using` tinyint(1) unsigned DEFAULT '0',
-  KEY `user_id` (`user_id`),
-  KEY `item_id` (`item_id`),
-  CONSTRAINT `users_items_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `users_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 --  Table structure for `users_quetes`
@@ -472,34 +348,5 @@ CREATE TABLE `users_quetes` (
   CONSTRAINT `users_quetes_ibfk_2` FOREIGN KEY (`quete_id`) REFERENCES `quetes` (`id_quete`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
--- ----------------------------
---  Table structure for `users_sorts`
--- ----------------------------
-DROP TABLE IF EXISTS `users_sorts`;
-CREATE TABLE `users_sorts` (
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `sort_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `order` tinyint(3) unsigned DEFAULT '0',
-  UNIQUE KEY `sort_unique` (`user_id`,`sort_id`),
-  KEY `user_id` (`user_id`),
-  KEY `sort_id` (`sort_id`),
-  CONSTRAINT `users_sorts_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `users_sorts_ibfk_2` FOREIGN KEY (`sort_id`) REFERENCES `sorts` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
---  Table structure for `users_stuffs`
--- ----------------------------
-DROP TABLE IF EXISTS `users_stuffs`;
-CREATE TABLE `users_stuffs` (
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `item_id` int(11) unsigned NOT NULL DEFAULT '0',
-  `item_position` tinyint(2) unsigned NOT NULL DEFAULT '0',
-  `using` tinyint(1) unsigned DEFAULT '0',
-  KEY `item_id` (`item_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `users_stuffs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `users_stuffs_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 SET FOREIGN_KEY_CHECKS = 1;
