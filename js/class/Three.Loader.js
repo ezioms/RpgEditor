@@ -84,7 +84,6 @@ THREE.Loader = function () {
 		else
 			this.noCompletedImage--;
 
-		log(this.noCompletedImage);
 		this.stat('Chargement du héro', this.noCompletedImage);
 
 		return noComplete ? false : true;

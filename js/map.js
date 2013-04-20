@@ -47,17 +47,14 @@ app.alert = false;
  */
 var load = function () {
 	// load elements
-	if (!app.loader.getCompleted()) {
-		setTimeout(load, 1000 / 25);
-		return;
-	} else
-		contentLoading.innerHTML = 'Initialisation des données';
+	if (!app.loader.getCompleted())
+		return setTimeout(load, 1000 / 25);
 
 	// show elements HTML for hero HP / SCORE ...
 	userHp.style.display = userLevel.style.display = userScore.style.display = 'block';
 
-	info('Chargement de ' + number_format(app.loader.nbrBot) + ' bot(s)');
-	info('Chargement de ' + number_format(app.loader.nbrElements) + ' élement(s)');
+	info(app.loader.nbrBot + ' habitant(s)');
+	info(app.loader.nbrElements + ' cube(s)');
 
 	//stat for le debug
 	if (debug) {
