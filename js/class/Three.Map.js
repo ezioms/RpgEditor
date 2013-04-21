@@ -122,9 +122,7 @@ THREE.Map = function (app) {
 		var material = new THREE.MeshLambertMaterial({
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
 			ambient: 0xbbbbbb,
-			wireframe: this.wireframe,
-			transparent: true,
-			doubleSided: true
+			wireframe: this.wireframe
 		});
 		material.map.needsUpdate = true;
 
@@ -162,6 +160,8 @@ THREE.Map = function (app) {
 
 		if (listCube[title] !== undefined)
 			return listCube[title];
+
+		console.log(row.materials)
 
 		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials, faces));
 	};

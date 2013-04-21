@@ -50,7 +50,7 @@ THREE.Hero = function (app) {
 
 	//camera
 	var pitchObject = new THREE.Object3D();
-	pitchObject.position.z = -2;
+	pitchObject.position.z = 0;
 	pitchObject.add(app.camera);
 
 	var yawObject = new THREE.Object3D();
@@ -100,7 +100,7 @@ THREE.Hero = function (app) {
 		yawObject.rotation.y -= movementX * 0.002;
 		pitchObject.rotation.x -= movementY * 0.002;
 
-		pitchObject.rotation.x = Math.max(-1, Math.min(1, pitchObject.rotation.x));
+		pitchObject.rotation.x = Math.max(-0.8, Math.min(1, pitchObject.rotation.x));
 
 		this.currentdirection.x = yawObject.rotation.y;
 

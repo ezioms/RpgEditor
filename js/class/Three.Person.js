@@ -102,8 +102,8 @@ THREE.Person = function (type, picture, name) {
 		this.leftarm.rotation.z = 1;
 		this.leftarm.rotation.x = 0.8;
 
-		this.leftleg.rotation.z = -0.3;
-		this.rightleg.rotation.z = -0.3;
+		this.leftleg.rotation.z = -0.1;
+		this.rightleg.rotation.z = -0.1;
 	};
 
 
