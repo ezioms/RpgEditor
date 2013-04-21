@@ -1,6 +1,6 @@
 Enigma Cube
 ========
-[Site officiel de THREE](http://www.openrpg.fr/) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/creer-mon-jeu-mon-rpg)
+[Site officiel](http://www.openrpg.fr/) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/creer-mon-jeu-mon-rpg)
 
 #### Jeu en javascript et PHP ####
 
