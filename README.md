@@ -1,12 +1,20 @@
 Enigma Cube
 ========
+[Site officiel de THREE](http://www.openrpg.fr/) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/creer-mon-jeu-mon-rpg)
 
 #### Jeu en javascript et PHP ####
 
-Enigma Cube est un jeu en WebGL s'appyant sur les frameworks THREE et sur KOHANA
+Enigma Cube est un jeu en WebGL s'appyant sur les frameworks THREE et sur KOHANA.
 
 [Site officiel de THREE](http://threejs.org/) — [Documentation de THREE](http://threejs.org/docs/) — [Site officiel de KOHANA](http://kohanaframework.org/) — [Documentation de KOHANA](http://docs.openrpg.fr/creer-son-jeu)
 
+Vous devrez résoudre des enigmes pour évoluer dans un monde n'utilisant que des cubes dans le principe de Minecraft et du PixelArt.
+Vous aurez aussi l'occassion de discuter avec des habitants qui vous posseront des questions ou vous donneront des informations plus ou moins interressantes.
+Il vous faudra donc accomplir des petits défis pour augmenter votre score et figurer dans le top 10 qui se trouve sur la page d'accueil.
+
+### Administration ###
+
+Une administration qui reste dans le principe de tous les CMS mais avec un éditeur 3D pour construire vos différentes carte et y placer des modules tel que la possibilité de changer de carte, placer un défi ou un simple checkpoint.
 
 ### Usage ###
 
