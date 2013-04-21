@@ -383,12 +383,12 @@ THREE.Hero = function (app) {
 			contentGraph.style.width = this.hp + '%';
 		}
 
-		if (memoryScoreValue == this.argent) {
+		if (memoryScoreValue != this.argent) {
 			memoryScoreValue = this.argent;
 			userScore.innerHTML = 'Score : ' + number_format(this.argent) + ' pt' + (this.argent > 1 ? 's' : '');
 		}
 
-		if (memoryLevelValue == this.niveau) {
+		if (memoryLevelValue != this.niveau) {
 			memoryLevelValue = this.niveau;
 			userLevel.innerHTML = 'Niveau : ' + this.niveau;
 		}

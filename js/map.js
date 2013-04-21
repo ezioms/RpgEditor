@@ -284,18 +284,18 @@ var updateHeroVisual = function () {
 					if (data == 'no')
 						return;
 
-					contentAction.innerHTML = data;
+					$('#content_action').html(data);
 					app.messages.push(module.data.title ? module.data.title : 'Changement de lieu');
 				});
 			}
 			else if (module.data.module == 'html') {
-				contentAction.innerHTML = module.data.html;
+				$('#content_action').html(module.data.html);
 
 				if (module.data.title)
 					app.messages.push(module.data.title);
 			}
 			else if (module.data.module == 'article') {
-				contentAction.innerHTML = module.article;
+				$('#content_action').html(module.article);
 
 				if (module.data.title)
 					app.messages.push(module.data.title);
@@ -309,8 +309,7 @@ var updateHeroVisual = function () {
 				$.get('actions/' + module.data.module + '?' + app.hero.getData(), function (data) {
 					if (data == 'no')
 						return;
-
-					contentAction.innerHTML = data;
+					$('#content_action').html(data);
 				});
 			}
 
