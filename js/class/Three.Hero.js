@@ -112,7 +112,7 @@ THREE.Hero = function (app) {
 	 * On relache le click sourie
 	 */
 	this.onMouseDown = function (event) {
-		if (!control || jump || yawObject.position.y % sizeBloc != 0 || grab)
+		if (!control || jump || grab)
 			return;
 
 		jump = true;
@@ -162,11 +162,19 @@ THREE.Hero = function (app) {
 					moveRight = true;
 				break;
 			case 32:
-				if (jump || yawObject.position.y % sizeBloc != 0 || grab)
+				if (jump)
 					break;
 
+				if (grab && moveForward) {
+					moveForward = false;
+					setTimeout(function () {
+						moveForward = true;
+					}, 100);
+				}
+					this.currentdirection.jump = heightJump;
+
 				jump = true;
-				this.currentdirection.jump = heightJump;
+
 
 				app.sound.effect('system/016-Jump02.ogg', 0.2);
 				break;
@@ -259,8 +267,8 @@ THREE.Hero = function (app) {
 		var dirYy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
 		var dirYz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		grab = app.map.hasObstacle(dirYx, dirYy - 1, dirYz);
 		contactSol = app.map.hasObstacle(dirYx, dirYy - 2, dirYz);
+		grab = app.map.hasObstacle(dirYx, dirYy - 1, dirYz);
 
 		//si on grab son ralentit direct à 0
 		if (grab)
@@ -320,7 +328,7 @@ THREE.Hero = function (app) {
 		else
 			timeFall = 0;
 
-		if (timeFall > 300 && yawObject.position.y == clone.position.y) {
+		if (timeFall > 300 && ( contactSol || grab )) {
 			app.alert = timeFall * 10;
 			app.messages.push('Chute de ' + (Math.round(timeFall) / 100) + 'm');
 			app.hero.hp -= Math.round(Math.round(timeFall) / 10);

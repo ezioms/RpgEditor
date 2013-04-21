@@ -96,11 +96,11 @@ THREE.Person = function (type, picture, name) {
 	 * Position person GRAB
 	 */
 	this.grab = function () {
-		this.rightarm.rotation.z = 0.5;
-		this.rightarm.rotation.x = -0.3;
+		this.rightarm.rotation.z = 1;
+		this.rightarm.rotation.x = -0.8;
 
-		this.leftarm.rotation.z = 0.5;
-		this.leftarm.rotation.x = 0.3;
+		this.leftarm.rotation.z = 1;
+		this.leftarm.rotation.x = 0.8;
 
 		this.leftleg.rotation.z = -0.3;
 		this.rightleg.rotation.z = -0.3;
