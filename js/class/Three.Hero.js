@@ -271,8 +271,11 @@ THREE.Hero = function (app) {
 		grab = app.map.hasObstacle(dirYx, dirYy - 1, dirYz);
 
 		//si on grab son ralentit direct à 0
-		if (grab)
+		if (grab) {
+			clone.position.x = yawObject.position.x;
+			clone.position.z = yawObject.position.z;
 			speedTmp = 0;
+		}
 
 		if (contactSol || grab || app.map.hasObstacle(dirYx, dirYy, dirYz)) {
 			clone.position.y = Math.floor(yawObject.position.y / sizeBloc) * sizeBloc;
@@ -355,6 +358,7 @@ THREE.Hero = function (app) {
 		var newZoneX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		var newZoneY = Math.floor(clone.position.y / sizeBloc) - 1;
 		var newZoneZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+
 
 		yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
 		this.zone.set(newZoneX, newZoneY, newZoneZ);

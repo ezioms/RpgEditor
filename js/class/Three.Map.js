@@ -10,7 +10,7 @@ THREE.Map = function (app) {
 
 	var ambient = new THREE.AmbientLight(0x666666);
 
-	var light = new THREE.SpotLight(0xffffff, 0.6);
+	var light = new THREE.SpotLight(0xffffff, 1);
 	light.position.set(3000, 4000, 3000);
 	light.target.position.set(0, 0, 0);
 
@@ -122,7 +122,8 @@ THREE.Map = function (app) {
 		var material = new THREE.MeshLambertMaterial({
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
 			ambient: 0xbbbbbb,
-			wireframe: this.wireframe
+			wireframe: this.wireframe,
+			side : 2
 		});
 		material.map.needsUpdate = true;
 
@@ -160,8 +161,6 @@ THREE.Map = function (app) {
 
 		if (listCube[title] !== undefined)
 			return listCube[title];
-
-		console.log(row.materials)
 
 		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials, faces));
 	};
