@@ -5,7 +5,7 @@ Enigma Cube
 
 Enigma Cube est un jeu en WebGL s'appyant sur les frameworks THREE et sur KOHANA
 
-[Site officiel de THREE](http://threejs.org/) — [Documentation de THREE](http://threejs.org/docs/) [Site officiel de KOHANA](http://kohanaframework.org/) — [Documentation de KOHANA](http://docs.openrpg.fr/creer-son-jeu)
+[Site officiel de THREE](http://threejs.org/) — [Documentation de THREE](http://threejs.org/docs/) — [Site officiel de KOHANA](http://kohanaframework.org/) — [Documentation de KOHANA](http://docs.openrpg.fr/creer-son-jeu)
 
 
 ### Usage ###
@@ -13,9 +13,11 @@ Enigma Cube est un jeu en WebGL s'appyant sur les frameworks THREE et sur KOHANA
 Télécharger le script ou se connecter au repository
 Vérifier que le fichier de configuration n'est pas présent :
 
+```html
 /System/config/database.php
+```
 
-Si c'est le cas veuillez le supprimer
+Si c'est le cas, veuillez le supprimer
 
 Lancer la page web index.php et vous serez redirectionné vers l'installateur qui s'occupera de faire la configuration de votre jeu.
 
@@ -66,4 +68,4 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 * Réorganisation des fichiers
 
 
-** First alpha release **
+** Mise en ligne **
