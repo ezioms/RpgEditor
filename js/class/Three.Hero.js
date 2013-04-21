@@ -28,6 +28,8 @@ THREE.Hero = function (app) {
 	var heightJump = 13;
 	var jump = false;
 	var run = false;
+	var grab = false;
+	var contactSol = false;
 
 	var timeFall = 0;
 	var speedTmp = 0;
@@ -110,7 +112,7 @@ THREE.Hero = function (app) {
 	 * On relache le click sourie
 	 */
 	this.onMouseDown = function (event) {
-		if (!control || jump)
+		if (!control || jump || yawObject.position.y % sizeBloc != 0 || grab)
 			return;
 
 		jump = true;
@@ -160,7 +162,7 @@ THREE.Hero = function (app) {
 					moveRight = true;
 				break;
 			case 32:
-				if (jump || yawObject.position.y % sizeBloc != 0)
+				if (jump || yawObject.position.y % sizeBloc != 0 || grab)
 					break;
 
 				jump = true;
@@ -257,7 +259,14 @@ THREE.Hero = function (app) {
 		var dirYy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
 		var dirYz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		if (app.map.hasObstacle(dirYx, dirYy - 2, dirYz) || app.map.hasObstacle(dirYx, dirYy - 1, dirYz) || app.map.hasObstacle(dirYx, dirYy, dirYz)) {
+		grab = app.map.hasObstacle(dirYx, dirYy - 1, dirYz);
+		contactSol = app.map.hasObstacle(dirYx, dirYy - 2, dirYz);
+
+		//si on grab son ralentit direct à 0
+		if (grab)
+			speedTmp = 0;
+
+		if (contactSol || grab || app.map.hasObstacle(dirYx, dirYy, dirYz)) {
 			clone.position.y = Math.floor(yawObject.position.y / sizeBloc) * sizeBloc;
 			jump = false;
 			this.currentdirection.jump = 0;
@@ -294,32 +303,46 @@ THREE.Hero = function (app) {
 		else if (clone.position.z > middleMaxZ - middle)
 			clone.position.z = middleMaxZ - middle;
 
+		if (moveForward)
+			for (var key in app.scene.children)
+				if (app.scene.children[key] instanceof THREE.Person && app.scene.children[key].name != 'hero') {
+					var distance = app.scene.children[key].position.distanceTo(person.position);
+					if (distance <= sizeBloc / 2) {
+						clone.position.x = yawObject.position.x;
+						clone.position.y = yawObject.position.y;
+						clone.position.z = yawObject.position.z;
+					}
+				}
+
 
 		if (yawObject.position.y != clone.position.y && yawObject.position.y > clone.position.y)
 			timeFall += yawObject.position.y - clone.position.y;
 		else
 			timeFall = 0;
 
+		if (timeFall > 300 && yawObject.position.y == clone.position.y) {
+			app.alert = timeFall * 10;
+			app.messages.push('Chute de ' + (Math.round(timeFall) / 100) + 'm');
+			app.hero.hp -= Math.round(Math.round(timeFall) / 10);
+			timeFall = 0;
+		}
+
+		if (!grab) {
+			if ((moveForward || moveBackward || moveLeft || moveRight) && contactSol)
+				app.sound.move(true);
+			else
+				app.sound.move(false);
+		}
+
 		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
-			person.update(speedTmp >= 2 ? 1 : 0);
-			app.sound.audioMove.volume = 0.1;
+			person.update(( grab ? 6 : speedTmp >= 2 ? 1 : 0));
+			if (grab)
+				app.sound.audioMove.volume = 0;
+			else
+				app.sound.audioMove.volume = 0.1;
 		}
 		else
 			app.sound.audioMove.volume = 0;
-
-		if (moveForward)
-			for (var key in app.scene.children)
-				if (app.scene.children[key] instanceof THREE.Person && app.scene.children[key].name != 'hero') {
-					var contactPerson = app.scene.children[key];
-
-					var distance = contactPerson.position.distanceTo(person.position);
-					if (distance <= sizeBloc / 2) {
-						clone.position.x = yawObject.position.x;
-						clone.position.y = yawObject.position.y;
-						clone.position.z = yawObject.position.z;
-						//console.log(distance);
-					}
-				}
 
 		var newZoneX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		var newZoneY = Math.floor(clone.position.y / sizeBloc) - 1;
@@ -329,19 +352,6 @@ THREE.Hero = function (app) {
 		this.zone.set(newZoneX, newZoneY, newZoneZ);
 		person.position.set(clone.position.x, clone.position.y - sizeBloc, clone.position.z);
 		person.rotation.y = PIDivise2 + yawObject.rotation.y;
-
-		if (timeFall > 300 && yawObject.position.y == clone.position.y) {
-			app.alert = timeFall * 10;
-			app.messages.push('Chute de ' + (Math.round(timeFall) / 100) + 'm');
-			app.hero.hp -= Math.round(Math.round(timeFall) / 10);
-			timeFall = 0;
-		}
-
-
-		if (moveForward || moveBackward || moveLeft || moveRight)
-			app.sound.move(true);
-		else
-			app.sound.move(false);
 
 
 		if (Date.now() % 60 == 0)

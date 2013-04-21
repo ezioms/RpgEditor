@@ -34,6 +34,9 @@ THREE.Person = function (type, picture, name) {
 			case 5 :
 				this.stop();
 				break;
+			case 6 :
+				this.grab();
+				break;
 			default :
 				this.walk();
 				break;
@@ -86,6 +89,21 @@ THREE.Person = function (type, picture, name) {
 	this.guard = function () {
 		this.rightarm.rotation.z = 2;
 		this.rightarm.rotation.x = 0.2;
+	};
+
+
+	/*
+	 * Position person GRAB
+	 */
+	this.grab = function () {
+		this.rightarm.rotation.z = 0.5;
+		this.rightarm.rotation.x = -0.3;
+
+		this.leftarm.rotation.z = 0.5;
+		this.leftarm.rotation.x = 0.3;
+
+		this.leftleg.rotation.z = -0.3;
+		this.rightleg.rotation.z = -0.3;
 	};
 
 
