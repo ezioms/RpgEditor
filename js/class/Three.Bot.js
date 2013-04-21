@@ -142,9 +142,9 @@ THREE.Bot = function (app, dataBot) {
 
 
 		//Collision
-		var wallX = (((clone.position.x + (clone.position.x > this.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
-		var wallY = clone.position.y / sizeBloc;
-		var wallZ = ((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+		var wallX = Math.floor(((clone.position.x + (clone.position.x > this.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
+		var wallY = Math.floor(clone.position.y / sizeBloc);
+		var wallZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
 		if (app.map.hasObstacle(wallX, wallY, wallZ) || app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
 			clone.position.x = this.position.x;
@@ -152,8 +152,8 @@ THREE.Bot = function (app, dataBot) {
 			turn = true;
 		}
 
-		wallX = ((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		wallZ = (((clone.position.z + (clone.position.z > this.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
+		wallX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
+		wallZ = Math.floor(((clone.position.z + (clone.position.z > this.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
 
 		if (app.map.hasObstacle(wallX, wallY, wallZ) || app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
 			clone.position.z = this.position.z;
@@ -185,9 +185,9 @@ THREE.Bot = function (app, dataBot) {
 
 		clone.position.y += currentdirection.y -= this.gravity;
 
-		wallX = ((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		wallY = clone.position.y / sizeBloc;
-		wallZ = ((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+		wallX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
+		wallY = Math.floor(clone.position.y / sizeBloc);
+		wallZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
 		if (app.map.hasObstacle(wallX, wallY, wallZ) || app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
 			clone.position.y = this.position.y;

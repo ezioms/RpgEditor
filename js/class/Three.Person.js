@@ -275,8 +275,8 @@ THREE.Person = function (type, picture, name) {
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
 
-	this.head.position.x = -2;
-	this.bodyGroup.position.x = -2;
+	//this.head.position.x = -2;
+	//this.bodyGroup.position.x = -2;
 
 	this.add(this.bodyGroup);
 	this.add(this.head);

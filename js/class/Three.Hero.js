@@ -160,7 +160,7 @@ THREE.Hero = function (app) {
 					moveRight = true;
 				break;
 			case 32:
-				if (jump)
+				if (jump || yawObject.position.y % sizeBloc != 0)
 					break;
 
 				jump = true;
@@ -254,18 +254,18 @@ THREE.Hero = function (app) {
 
 		//collision Y
 		var dirYx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirYy = Math.ceil( Math.round(clone.position.y * 10 ) / 10 / sizeBloc);
+		var dirYy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
 		var dirYz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
-		console.log(clone.position.y, dirYy);
-		if (app.map.hasObstacle(dirYx, dirYy + 1, dirYz) || app.map.hasObstacle(dirYx, dirYy - 1, dirYz)) {
-			clone.position.y = yawObject.position.y;
+
+		if (app.map.hasObstacle(dirYx, dirYy - 2, dirYz) || app.map.hasObstacle(dirYx, dirYy - 1, dirYz) || app.map.hasObstacle(dirYx, dirYy, dirYz)) {
+			clone.position.y = Math.floor(yawObject.position.y / sizeBloc) * sizeBloc;
 			jump = false;
 			this.currentdirection.jump = 0;
 		}
 
 		// collision X
 		var dirXx = Math.floor(((clone.position.x + (clone.position.x > yawObject.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
-		var dirXy = Math.floor(clone.position.y / sizeBloc);
+		var dirXy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
 		var dirXz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
 
@@ -276,13 +276,12 @@ THREE.Hero = function (app) {
 
 		// collision Z
 		var dirZx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirZy = Math.floor(clone.position.y / sizeBloc);
+		var dirZy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
 		var dirZz = Math.floor(((clone.position.z + (clone.position.z > yawObject.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
 		if (app.map.hasObstacle(dirZx, dirZy, dirZz) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz)) {
 			clone.position.z = yawObject.position.z;
 			speedTmp -= 0.2;
 		}
-
 
 		// no out map
 		if (clone.position.x < -middleMaxX + middle)
@@ -294,7 +293,6 @@ THREE.Hero = function (app) {
 			clone.position.z = -middleMaxZ + middle;
 		else if (clone.position.z > middleMaxZ - middle)
 			clone.position.z = middleMaxZ - middle;
-
 
 
 		if (yawObject.position.y != clone.position.y && yawObject.position.y > clone.position.y)
@@ -309,46 +307,39 @@ THREE.Hero = function (app) {
 		else
 			app.sound.audioMove.volume = 0;
 
+		if (moveForward)
+			for (var key in app.scene.children)
+				if (app.scene.children[key] instanceof THREE.Person && app.scene.children[key].name != 'hero') {
+					var contactPerson = app.scene.children[key];
+
+					var distance = contactPerson.position.distanceTo(person.position);
+					if (distance <= sizeBloc / 2) {
+						clone.position.x = yawObject.position.x;
+						clone.position.y = yawObject.position.y;
+						clone.position.z = yawObject.position.z;
+						//console.log(distance);
+					}
+				}
+
 		var newZoneX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		var newZoneY = Math.floor(clone.position.y / sizeBloc) - 1;
 		var newZoneZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		var noBot = false;
+		yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
+		this.zone.set(newZoneX, newZoneY, newZoneZ);
+		person.position.set(clone.position.x, clone.position.y - sizeBloc, clone.position.z);
+		person.rotation.y = PIDivise2 + yawObject.rotation.y;
 
-		if ((moveForward || moveBackward) && !moveLeft && !moveRight)
-			for (key in app.scene.children)
-				if (app.scene.children[key] instanceof THREE.Person && app.scene.children[key].name != 'hero') {
-					var contactPerson = app.scene.children[key];
-					var xPerson = Math.floor((contactPerson.position.x + middleMaxX) / sizeBloc) + 1;
-					var yPerson = Math.floor(contactPerson.position.y / sizeBloc);
-					var zPerson = Math.floor((contactPerson.position.z + middleMaxZ) / sizeBloc) + 1;
-
-					if (xPerson === newZoneX && yPerson === newZoneY && zPerson === newZoneZ && !jump) {
-						noBot = true;
-						break;
-					}
-
-				}
-
-		if (!noBot) {
-			yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
-			this.zone.set(newZoneX, newZoneY, newZoneZ);
-			person.position.set(clone.position.x, clone.position.y - sizeBloc, clone.position.z);
-			person.rotation.y = PIDivise2 + yawObject.rotation.y;
-
-			if (timeFall > 300 && yawObject.position.y == clone.position.y) {
-				app.alert = timeFall * 10;
-				app.messages.push('Chute de ' + (Math.round(timeFall) / 100) + 'm');
-				app.hero.hp -= Math.round(Math.round(timeFall) / 10);
-				timeFall = 0;
-			}
-
-
-			if (moveForward || moveBackward || moveLeft || moveRight)
-				app.sound.move(true);
-			else
-				app.sound.move(false);
+		if (timeFall > 300 && yawObject.position.y == clone.position.y) {
+			app.alert = timeFall * 10;
+			app.messages.push('Chute de ' + (Math.round(timeFall) / 100) + 'm');
+			app.hero.hp -= Math.round(Math.round(timeFall) / 10);
+			timeFall = 0;
 		}
+
+
+		if (moveForward || moveBackward || moveLeft || moveRight)
+			app.sound.move(true);
 		else
 			app.sound.move(false);
 

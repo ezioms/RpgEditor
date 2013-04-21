@@ -161,8 +161,8 @@ var render = function () {
 
 
 	// update bots in scene
-	//for (var keyBot in app.bots)
-	//	app.bots[keyBot].update(app);
+	for (var keyBot in app.bots)
+		app.bots[keyBot].update(app);
 
 	// update hero
 	app.hero.update(app);
