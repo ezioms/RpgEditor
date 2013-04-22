@@ -1,6 +1,6 @@
 Enigma Cube
 ========
-[Site officiel](http://www.openrpg.fr/) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/creer-mon-jeu-mon-rpg)
+[Site officiel](http://www.enigmacube.com) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/85-enigma-cube)
 
 #### Jeu en javascript et PHP ####
 
@@ -33,6 +33,14 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 
 
 ### Change log ###
+
+
+22 avril 2013 00:27:53 - **r7**
+
+* Read Me
+* Mise en place d'un nouvelle position du personnage quand t'il s'agrippe.
+* Correctif du grab
+* Correctif de l'affichage
 
 
 21 avril 2013 16:02:49 - **r6**

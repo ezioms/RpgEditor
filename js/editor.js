@@ -3,16 +3,15 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 var container, stats;
 var camera, scene, renderer;
 var projector, plane, cube;
-var mouse2D, mouse3D, ray,
-	rollOveredFace, isShiftDown = false,
-	theta = 45, isCtrlDown = false, sizeMap = 40, control, cubes;
+var mouse2D, ray,
+	theta = 45, control, cubes;
 
 var hoverTool = false;
 var typeAction = 'no';
 
 var listImg = {}, obstacles = [], modules = [], listCube = {};
 
-var rollOverMesh, rollOverMaterial, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3();
+var rollOverMesh, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3();
 var i, intersector;
 var idClickMaterial;
 var dataTextureCube = {};
@@ -26,13 +25,6 @@ $(function () {
 	init();
 	animate();
 
-	$('.cubeBackground').click(function () {
-		$.facebox({
-			ajax: url_script + 'mapping/listing_material'
-		});
-		idClickMaterial = this.id;
-	});
-
 	$("#selectAction, #controlCube").hover(
 		function () {
 			hoverTool = true;
@@ -42,55 +34,59 @@ $(function () {
 		}
 	);
 
-	$('.material').live('click', function () {
-		$('#' + idClickMaterial).attr('src', dir_script + '../images/background/' + this.id);
+	$('#body')
+		.on('click', '.cubeBackground',function () {
+			$.facebox({
+				ajax: url_script + 'editor/listing_material'
+			});
+			idClickMaterial = this.id;
 
-		if (idClickMaterial == 'bloc_all')
-			for (var i = 1; i <= 6; i++)
-				$('#bloc_' + i).attr('src', dir_script + '../images/background/' + this.id);
+		}).on('click', '.material',function () {
+			$('#' + idClickMaterial).attr('src', dir_script + 'images/background/' + this.id);
 
-		idClickMaterial = null;
+			if (idClickMaterial == 'bloc_all')
+				for (var i = 1; i <= 6; i++)
+					$('#bloc_' + i).attr('src', dir_script + 'images/background/' + this.id);
 
-		typeAction = $("input[name='action']:checked").val();
+			idClickMaterial = null;
 
-		var position = rollOverMesh.position;
+			typeAction = $("input[name='action']:checked").val();
 
-		dataTextureCube = getTexutreVoxel();
+			var position = rollOverMesh.position;
 
-		if (typeAction == 'mod')
-			return;
+			dataTextureCube = getTexutreVoxel();
 
-		scene.remove(rollOverMesh);
+			if (typeAction == 'mod')
+				return;
 
-		rollOverMesh = addCube(dataTextureCube);
-		rollOverMesh.position = position;
+			scene.remove(rollOverMesh);
 
-		if (typeAction == 'del' || typeAction == 'no')
-			rollOverMesh.visible = false;
-
-		scene.add(rollOverMesh);
-	});
-
-
-	$("input[name='action']").live('click', function () {
-		scene.remove(rollOverMesh);
-
-		typeAction = $("input[name='action']:checked").val();
-		if (typeAction == 'no')
-			return;
-		else if (typeAction == 'add') {
 			rollOverMesh = addCube(dataTextureCube);
-			rollOverMesh.visible = true;
-		} else {
-			rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(51, 51, 51), new THREE.MeshBasicMaterial({
-				color: typeAction == 'del' ? 0xff0000 : 0xffff00,
-				opacity: 0.3,
-				transparent: true
-			}));
-		}
+			rollOverMesh.position = position;
 
-		scene.add(rollOverMesh);
-	});
+			if (typeAction == 'del' || typeAction == 'no')
+				rollOverMesh.visible = false;
+
+			scene.add(rollOverMesh);
+
+		}).on('click', "input[name='action']", function () {
+			scene.remove(rollOverMesh);
+
+			typeAction = $("input[name='action']:checked").val();
+			if (typeAction == 'no')
+				return;
+			else if (typeAction == 'add') {
+				rollOverMesh = addCube(dataTextureCube);
+				rollOverMesh.visible = true;
+			} else {
+				rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(51, 51, 51), new THREE.MeshBasicMaterial({
+					color: typeAction == 'del' ? 0xff0000 : 0xffff00,
+					opacity: 0.3,
+					transparent: true
+				}));
+			}
+			scene.add(rollOverMesh);
+		});
 });
 
 
@@ -106,9 +102,9 @@ function init() {
 
 	controls = new THREE.FirstPersonControls(camera, container);
 
-	controls.object.position.y = 100;
-	controls.object.position.x = -(dataRegion.x * 50 / 2);
-	controls.object.position.z = -(dataRegion.z * 50 / 2);
+	controls.object.position.y = 300;
+	controls.object.position.x = 0;
+	controls.object.position.z = 0;
 	controls.movementSpeed = 800;
 	controls.lookSpeed = 0.1;
 	controls.lookVertical = true;
@@ -131,7 +127,7 @@ function init() {
 	projector = new THREE.Projector();
 
 	// grid
-	var material = THREE.ImageUtils.loadTexture(dir_script + '../' + dataRegion.background);
+	var material = THREE.ImageUtils.loadTexture(dir_script + dataRegion.background);
 	material.wrapS = material.wrapT = THREE.RepeatWrapping;
 	material.repeat.set(dataRegion.x, dataRegion.z);
 	material.magFilter = THREE.NearestFilter;
@@ -358,7 +354,7 @@ function onDocumentMouseUp(event) {
 	typeAction = $("input[name='action']:checked").val();
 
 	if (typeAction == 'del') {
-		$.post(url_script + 'mapping/remove/', coordonnee);
+		$.post(url_script + 'editor/remove/', coordonnee);
 		for (key in obstacles)
 			if (obstacles[key].x == setCoordonnee.x && obstacles[key].y == setCoordonnee.y && obstacles[key].z == setCoordonnee.z)
 				delete obstacles[key];
@@ -367,42 +363,23 @@ function onDocumentMouseUp(event) {
 		getCubes();
 		return;
 	}
-
-	if (typeAction == 'edit') {
-		$.facebox({
-			ajax: url_script + 'mapping/form/' + dataRegion.id + '/' + coordonnee.x + '/' + coordonnee.y + '/' + coordonnee.z
-		});
-		return;
-	}
-
-	if (typeAction == 'mod') {
-		for (key in coordonnee.materials)
-			coordonnee.materials[key] = 'images/background/module.png';
-
-		setCoordonnee = coordonnee;
-		$.facebox({
-			ajax: url_script + 'mapping/form/' + dataRegion.id + '/' + coordonnee.x + '/' + coordonnee.y + '/' + coordonnee.z
-		});
-
-		obstacles.push(setCoordonnee);
-	}
 	else {
 		for (key in coordonnee.materials)
 			coordonnee.materials[key] = coordonnee.materials[key].replace(urlReplace, '');
 
-		$.post(url_script + 'mapping/add/', coordonnee);
+		$.post(url_script + 'editor/add/', coordonnee);
 
 		obstacles.push(setCoordonnee);
 	}
 
 	if (scene.children.length < 200) {
 		var dataSend = {
-			background_px: dir_script + '../' + coordonnee.materials[0],
-			background_nx: dir_script + '../' + coordonnee.materials[1],
-			background_py: dir_script + '../' + coordonnee.materials[2],
-			background_ny: dir_script + '../' + coordonnee.materials[3],
-			background_pz: dir_script + '../' + coordonnee.materials[4],
-			background_nz: dir_script + '../' + coordonnee.materials[5]
+			background_px: dir_script + coordonnee.materials[0],
+			background_nx: dir_script + coordonnee.materials[1],
+			background_py: dir_script + coordonnee.materials[2],
+			background_ny: dir_script + coordonnee.materials[3],
+			background_pz: dir_script + coordonnee.materials[4],
+			background_nz: dir_script + coordonnee.materials[5]
 		};
 
 		var voxel = addCube(dataSend);

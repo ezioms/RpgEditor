@@ -133,8 +133,10 @@ var initialize = function () {
  * Rendu du canvas
  */
 var render = function () {
-	if (!control)
+	if (!control) {
 		noCursor.style.display = 'block';
+		return app.renderer.render(app.scene, app.camera);
+	}
 
 	// listen others users with socket.io
 	var listUsers = app.node.listUser();

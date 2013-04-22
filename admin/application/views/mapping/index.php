@@ -17,6 +17,7 @@
 		<img id="bloc_6" class="cubeBackground" src="<?php echo url::base(); ?>../images/background/dirt.png" />
 		<div id="allCube">Appliquer à tous <br/><img id="bloc_all" class="cubeBackground" src="<?php echo url::base(); ?>../images/background/dirt.png" /></div>
 </div>
+<div id="containerMapping"></div>
 <script>
 		var urlReplace = '<?php echo str_replace('admin/','', url::base()); ?>';
 

@@ -24,6 +24,8 @@ THREE.Hero = function (app) {
 	var moveBackward = false;
 	var moveLeft = false;
 	var moveRight = false;
+	var pressClick = false;
+	var tmpMoveForward = false;
 
 	var heightJump = 13;
 	var jump = false;
@@ -109,17 +111,19 @@ THREE.Hero = function (app) {
 
 
 	/*
-	 * On relache le click sourie
+	 * On appuis le click sourie
 	 */
 	this.onMouseDown = function (event) {
-		if (!control || jump || grab)
-			return;
+		pressClick = true;
+		event.preventDefault();
+	};
 
-		jump = true;
-		this.currentdirection.jump = heightJump;
 
-		app.sound.effect('system/016-Jump02.ogg', 0.2);
-
+	/*
+	 * On relache le click sourie
+	 */
+	this.onMouseUp = function (event) {
+		pressClick = false;
 		event.preventDefault();
 	};
 
@@ -162,21 +166,7 @@ THREE.Hero = function (app) {
 					moveRight = true;
 				break;
 			case 32:
-				if (jump)
-					break;
-
-				if (grab && moveForward) {
-					moveForward = false;
-					setTimeout(function () {
-						moveForward = true;
-					}, 100);
-				}
-					this.currentdirection.jump = heightJump;
-
-				jump = true;
-
-
-				app.sound.effect('system/016-Jump02.ogg', 0.2);
+				pressClick = true;
 				break;
 			case 16 :
 				run = true;
@@ -214,6 +204,9 @@ THREE.Hero = function (app) {
 			case 68 : // Flèche droite, d, D
 				moveRight = false;
 				break;
+			case 32:
+				pressClick = false;
+				break;
 			case 16 :
 				run = false;
 				break;
@@ -227,6 +220,24 @@ THREE.Hero = function (app) {
 	 * UPDATE du héro
 	 */
 	this.update = function (app) {
+
+		if(pressClick && control && !jump) {
+			if (grab && moveForward) {
+				tmpMoveForward = true;
+				setTimeout(function () {
+					tmpMoveForward = false;
+					moveForward = true;
+				}, 100);
+			}
+			this.currentdirection.jump = heightJump;
+
+			jump = true;
+
+			app.sound.effect('system/016-Jump02.ogg', 0.2);
+		}
+
+		if( tmpMoveForward )
+			moveForward = false;
 
 		var clone = yawObject.clone();
 
@@ -431,6 +442,7 @@ THREE.Hero = function (app) {
 	 * EVENT
 	 */
 	document.addEventListener('mousedown', bind(this, this.onMouseDown), false);
+	document.addEventListener('mouseup', bind(this, this.onMouseUp), false);
 	document.addEventListener('mousemove', bind(this, this.onMouseMove), false);
 	window.addEventListener('keydown', bind(this, this.onKeyDown), false);
 	window.addEventListener('keyup', bind(this, this.onKeyUp), false);
