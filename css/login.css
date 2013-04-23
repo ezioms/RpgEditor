@@ -42,6 +42,23 @@ body, html {
     z-index: 2;
 }
 
+#instruction b {
+    color: #D93F37;
+    font-size: 24px;
+    text-shadow: 1px 1px #fff;
+}
+#instruction {
+    position: absolute;
+    top: 560px;
+    left: 50%;
+    margin-left: -340px;
+    width: 350px;
+    z-index: 2;
+    font-size: 18px;
+    color: #fff;
+    text-shadow: 1px 1px #000;
+}
+
 #formBg {
     float: left;
     margin-top: 10px;
@@ -103,6 +120,7 @@ input:-webkit-autofill{
     color: #ffffff;
     font-weight: bold;
     width: 100%;
+    text-shadow: 1px 1px #000;
 }
 
 #score {

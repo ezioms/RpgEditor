@@ -17,6 +17,8 @@
         <input name="send" id="send" type="button" data-action="<?php echo url::site('send'); ?>"/>
     </form>
 
+    <div id="instruction"><b>Aucune inscription !</b> Il vous suffit de mettre votre E-mail et un mot de passe.</div>
+
     <div id="score">
         <img src="<?php echo url::base(); ?>images/template/score.png" width="291" height="37"/>
     </div>

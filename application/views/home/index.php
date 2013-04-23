@@ -10,7 +10,8 @@
 <section id="noCursor">
     <div id="instructions">
             <span style="font-size:45px">Cliquez pour jouer</span>
-            <br/><span style="font-size:16px"><b>Z, Q, S, D ET LES FLECHES</b> = Déplacement</span>
+        <br/><span style="font-size:16px"><b>Z, Q, S, D ET LES FLECHES</b> = Déplacement</span>
+        <br/><span style="font-size:16px"><b>SHIFT</b> = Courrir</span>
             <br/><span style="font-size:16px"><b>ESPACE</b> = Sauter</span>
             <br/><span style="font-size:16px"><b>ENTRER</b> = Permet de faire des actions</span>
         <br/><span style="font-size:16px"><b>SOURIS</b> = Regarder</span>
