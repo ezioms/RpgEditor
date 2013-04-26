@@ -1,6 +1,6 @@
 if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-var container, stats;
+var container, stats, intervalClick;
 var camera, scene, renderer;
 var projector, plane, cube;
 var mouse2D, ray,
@@ -69,7 +69,7 @@ $(function () {
 
 			scene.add(rollOverMesh);
 
-		}).on('click', "input[name='action']", function () {
+		}).on('click', "input[name='action']",function () {
 			scene.remove(rollOverMesh);
 
 			typeAction = $("input[name='action']:checked").val();
@@ -86,7 +86,27 @@ $(function () {
 				}));
 			}
 			scene.add(rollOverMesh);
+		}).on('click', '#noCursor', function () {
+			controls.freeze = false;
+			$(this).remove();
+
+			$('#selectAction').animate({right: -260});
+			$('#controlCube').animate({right: -260});
+			$('#containerMapping > div').animate({right: -260});
 		});
+
+	$(document).keyup(function (e) {
+		if (e.keyCode == 27) {
+			if ($('#noCursor').length)
+				$('#noCursor').remove();
+
+			controls.freeze = $('#selectAction').css('right') == '10px' ? false : true;
+
+			$('#selectAction').animate({right: !controls.freeze ? -260 : 10});
+			$('#controlCube').animate({right: !controls.freeze ? -260 : 10});
+			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
+		}
+	});
 });
 
 

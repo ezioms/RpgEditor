@@ -126,6 +126,7 @@ section#main {
     bottom: 0;
     text-align: center;
     color: #FFFFFF;
+    z-index: 10;
 }
 
 #instructions {
