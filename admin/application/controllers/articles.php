@@ -63,6 +63,7 @@ class Articles_Controller extends Template_Controller {
 				$this->template->contenu->formulaire = new View( 'articles/show' );
 				$this->template->contenu->formulaire->row = $actualite;
 				$this->template->contenu->formulaire->actualiteCategories = $actualiteCategories;
+                $this->template->contenu->formulaire->regions = Region_Model::instance()->listing_parent();
 		}
 
 		/**
