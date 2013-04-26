@@ -43,7 +43,7 @@ class Map_Controller extends Authentic_Controller
         $elements = $modules = $items = FALSE;
 
         if (($rows = Map_Model::instance()->select(array(
-            'region_id' => $this->region->id), FALSE)) !== FALSE
+            'region_id' => $this->region->id, 'y >' => 0), FALSE)) !== FALSE
         ) {
             $prenoms = Name_Model::instance()->select();
 
