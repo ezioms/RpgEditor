@@ -15,6 +15,7 @@ var contentGraph = document.getElementById('ContenuGraphique');
 var userHp = document.getElementById('user_hp');
 var userScore = document.getElementById('user_argent');
 var userLevel = document.getElementById('user_niveau');
+var editor = document.getElementById('editor');
 var noCursor = document.getElementById('noCursor');
 var notifications = document.getElementById('notifications');
 var webGL = document.getElementById('debugWebGL');
@@ -51,7 +52,7 @@ var load = function () {
 		return setTimeout(load, 1000 / 25);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userLevel.style.display = userScore.style.display = 'block';
+	userHp.style.display = userLevel.style.display = userScore.style.display = editor.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
