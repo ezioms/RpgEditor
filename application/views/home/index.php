@@ -26,4 +26,4 @@
 
 <div id="debugWebGL"></div>
 
-<div id="editor"><a href="/editor"><img src="<?php echo url::base(); ?>images/template/editor.png"/></a></div>
+<div id="editor"><?php echo html::anchor( 'editor', html::image('images/template/editor.png')); ?></div>
