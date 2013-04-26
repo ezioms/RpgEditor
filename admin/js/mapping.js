@@ -1,6 +1,6 @@
 if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-var container, stats;
+var container, stats, intervalClick;
 var camera, scene, renderer;
 var projector, plane, cube;
 var mouse2D, ray,
@@ -35,6 +35,11 @@ $(function () {
 	$('#noCursor').click(function () {
 		controls.freeze = false;
 		$(this).remove();
+
+		$('#sidebar').animate({left: -210});
+		$('#selectAction').animate({right: -260});
+		$('#controlCube').animate({right: -260});
+		$('#containerMapping > div').animate({right: -260});
 	});
 
 	$(document).keyup(function (e) {
@@ -206,6 +211,8 @@ function init() {
 
 	container.addEventListener('mousemove', onDocumentMouseMove, false);
 	container.addEventListener('mouseup', onDocumentMouseUp, false);
+	container.addEventListener('mousedown', onDocumentMouseDown, false);
+
 	window.addEventListener('resize', onWindowResize, false);
 }
 
@@ -349,10 +356,25 @@ function onDocumentMouseMove(event) {
 		}
 	}
 }
-
-
 function onDocumentMouseUp(event) {
 	event.preventDefault();
+
+	clearInterval(intervalClick);
+}
+
+
+function onDocumentMouseDown(event) {
+	event.preventDefault();
+
+	intervalClick = setInterval(function() {
+		onDocumentMouseUpAction();
+	}, 100);
+
+	onDocumentMouseUpAction();
+}
+
+
+function onDocumentMouseUpAction() {
 
 	if (typeAction == 'no' || hoverTool || !ray.intersectObjects(scene.children).length)
 		return;
@@ -431,8 +453,10 @@ function onDocumentMouseUp(event) {
 
 		scene.add(voxel);
 	}
-	else
+	else {
+		scene.children.length = 0;
 		getCubes();
+	}
 }
 
 
