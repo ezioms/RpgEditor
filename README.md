@@ -35,7 +35,17 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 ### Change log ###
 
 
-22 avril 2013 00:27:53 - **r7**
+26 avril 2013 - **r8**
+
+* Ajout du clique continu pour l'éditeur admin/public
+* Admin + editor du jeu amélioré et prise en charge du bouton ESC pour déplacement de caméra
+* Prise en compte de module uniquement pour placer les bots (fini le aléatoire)
+* Ajout d'un champ réponse dans la partie article
+* Amélioration visuel et éditorial
+* Correctif de lien
+
+
+22 avril 2013 - **r7**
 
 * Read Me
 * Mise en place d'un nouvelle position du personnage quand t'il s'agrippe.
@@ -43,14 +53,14 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 * Correctif de l'affichage
 
 
-21 avril 2013 16:02:49 - **r6**
+21 avril 2013 - **r6**
 
 * Correction bug JUMP
 * Correction déplacement
 * Calcul différent pour collision entre bots
 
 
-21 avril 2013 01:44:05 - **r5**
+21 avril 2013 - **r5**
 
 * Variables avec Math.PI
 * Loader
@@ -59,7 +69,7 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 * Correction wording
 
 
-20 avril 2013 01:48:52 - **r4**
+20 avril 2013 - **r4**
 
 * Correction UI
 * Score UI
@@ -67,18 +77,18 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 * Mise à jour des commentaires dans le code
 
 
-19 avril 2013 21:01:27 - **r3**
+19 avril 2013 - **r3**
 
 * Mise a jour login et browser + mise en place de JQuery 2
 
 
-17 avril 2013 10:45:40 - **r2**
+17 avril 2013 - **r2**
 
 * Refonte global de la page de login
 * optimisation variables
 
 
-8 avril 2013 01:13:16 - **r1**
+8 avril 2013 - **r1**
 
 * Refonte changement carte
 * Réorganisation des fichiers
