@@ -1,4 +1,13 @@
 <?php defined( 'SYSPATH' ) OR die( 'No direct access allowed.' ) ?>
+
+<!-- la map -->
+<section id="noCursor">
+    <div id="instructions">
+        <span style="font-size:45px">Cliquez pour pivoter la caméra</span>
+        <br/><span style="font-size:16px"><b>ESC</b> = Activer / désactiver le mouvement de la caméra</span>
+    </div>
+</section>
+
 <div id="selectAction">
 		<div><label><input type="radio" checked name="action" value="no"/>Simple visite</label></div>
 		<div><label><input type="radio" name="action" value="add"/>Ajouter un cube</label></div>

@@ -79,14 +79,12 @@ THREE.FirstPersonControls = function (object, domElement) {
 	};
 
 	this.onMouseOver = function (event) {
-		console.log('over');
 		this.activeLook = true;
 		event.preventDefault();
 		event.stopPropagation();
 	};
 
 	this.onMouseOut = function (event) {
-		console.log('out');
 		this.activeLook = false;
 		event.preventDefault();
 		event.stopPropagation();

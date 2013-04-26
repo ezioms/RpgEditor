@@ -3,16 +3,15 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 var container, stats;
 var camera, scene, renderer;
 var projector, plane, cube;
-var mouse2D, mouse3D, ray,
-	rollOveredFace, isShiftDown = false,
-	theta = 45, isCtrlDown = false, sizeMap = 40, control, cubes;
+var mouse2D, ray,
+	theta = 45, controls, cubes;
 
 var hoverTool = false;
 var typeAction = 'no';
 
 var listImg = {}, obstacles = [], modules = [], listCube = {};
 
-var rollOverMesh, rollOverMaterial, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3();
+var rollOverMesh, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3();
 var i, intersector;
 var idClickMaterial;
 var dataTextureCube = {};
@@ -31,6 +30,25 @@ $(function () {
 			ajax: url_script + 'mapping/listing_material'
 		});
 		idClickMaterial = this.id;
+	});
+
+	$('#noCursor').click(function () {
+		controls.freeze = false;
+		$(this).remove();
+	});
+
+	$(document).keyup(function (e) {
+		if (e.keyCode == 27) {
+			if( $('#noCursor').length)
+				$('#noCursor').remove();
+
+			controls.freeze = $('#sidebar').css('left') == '0px' ? false : true;
+
+			$('#sidebar').animate({left: !controls.freeze ? -210 : 0});
+			$('#selectAction').animate({right: !controls.freeze ? -260 : 10});
+			$('#controlCube').animate({right: !controls.freeze ? -260 : 10});
+			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
+		}
 	});
 
 	$("#selectAction, #controlCube").hover(

@@ -112,3 +112,46 @@ section#main {
 		-webkit-box-shadow: 0 0 2px 1px #CCC;
 		box-shadow: 0 0 2px 1px #CCC;
 }
+
+
+#noCursor {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    color: #FFFFFF;
+}
+
+#instructions {
+
+    width: 100%;
+    height: 100%;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    box-pack: center;
+
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    box-align: center;
+
+    color: #ffffff;
+    text-align: center;
+
+    cursor: pointer;
+
+}
