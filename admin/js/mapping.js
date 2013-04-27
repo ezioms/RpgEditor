@@ -44,9 +44,8 @@ $(function () {
 	});
 
 	$(document).keyup(function (e) {
-		console.log(e.keyCode);
 		if (e.keyCode == 27) {
-			if( $('#noCursor').length)
+			if ($('#noCursor').length)
 				$('#noCursor').remove();
 
 			controls.freeze = $('#sidebar').css('left') == '0px' ? false : true;
@@ -57,7 +56,7 @@ $(function () {
 			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
 		} else if (e.keyCode == 80) {
 			savePNG();
-		}else if (e.keyCode == 71) {
+		} else if (e.keyCode == 71) {
 			setGrid();
 		}
 	});
@@ -182,7 +181,7 @@ function init() {
 	}));
 	grille.rotation.x = -Math.PI / 2;
 	grille.name = 'planeGrille';
-	scene.add( grille );
+	scene.add(grille);
 
 
 	var material = THREE.ImageUtils.loadTexture(dir_script + '../' + dataRegion.background_univers);
@@ -195,7 +194,7 @@ function init() {
 	var materialMesh = new THREE.MeshLambertMaterial({
 		map: material,
 		transparent: true,
-		side : 2
+		side: 2
 	});
 
 	var middleMaxX = dataRegion.x * 25;
@@ -415,8 +414,10 @@ function onDocumentMouseUp(event) {
 function onDocumentMouseDown(event) {
 	event.preventDefault();
 
-	intervalClick = setInterval(function() {
-		onDocumentMouseUpAction();
+	intervalClick = setInterval(function () {
+		typeAction = $("input[name='action']:checked").val();
+		if (typeAction != 'mod' && typeAction != 'edit')
+			onDocumentMouseUpAction();
 	}, 100);
 
 	onDocumentMouseUpAction();
@@ -574,13 +575,13 @@ function loadTexture(path) {
 
 function savePNG() {
 
-	window.open( renderer.domElement.toDataURL('image/png'), 'Capture' );
+	window.open(renderer.domElement.toDataURL('image/png'), 'Capture');
 
 }
 
 function setGrid() {
 
-	if(grille.visible)
+	if (grille.visible)
 		grille.visible = false;
 	else
 		grille.visible = true;
