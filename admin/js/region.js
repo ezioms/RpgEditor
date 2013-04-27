@@ -163,7 +163,7 @@ $(function() {
 		
 		$('.background').live('click', function() {
 				$('#imageBg').attr('src', dir_script+'../images/background/'+this.id);
-				$('#background').val(this.id);
+				$('#background').val('images/background/'+this.id);
 		});
 	
 		$('.terrain').live('click', function() {

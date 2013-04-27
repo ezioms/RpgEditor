@@ -71,7 +71,10 @@ class Regions_Controller extends Template_Controller {
 		 */
 		public function insert()
 		{
-				$idRegion = $this->region->insert( array( 'name' => Kohana::lang( 'region.map' ).' '.time(), 'id_parent' => cookie::get( 'id_map_parent', 0 ) ) );
+				$idRegion = $this->region->insert( array( 'name' => Kohana::lang( 'region.map' ).' '.time(),
+                    'background_color' => '0x8fa2ff',
+                    'id_parent' => cookie::get( 'id_map_parent', 0 )
+                ) );
 
 				return url::redirect( 'regions/show/'.$idRegion.'?msg='.urlencode( Kohana::lang( 'form.crea_valide' ) ) );
 		}
