@@ -112,6 +112,7 @@ var initialize = function () {
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
 	app.renderer.shadowMapEnabled = true;
+	app.renderer.shadowMapCascade = true;
 	app.renderer.sortObjects = false;
 
 	// load music

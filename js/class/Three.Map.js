@@ -8,9 +8,9 @@ THREE.Map = function (app) {
 
 	var geometry = new THREE.Geometry();
 
-	var ambient = new THREE.AmbientLight(0x666666);
+	var ambient = new THREE.AmbientLight(0x999999);
 
-	var light = new THREE.SpotLight(0xffffff, 1);
+	var light = new THREE.DirectionalLight(0xffffff, 0.5);
 	light.position.set(3000, 4000, 3000);
 	light.target.position.set(0, 0, 0);
 

@@ -105,6 +105,8 @@ $(function () {
 			$('#selectAction').animate({right: !controls.freeze ? -260 : 10});
 			$('#controlCube').animate({right: !controls.freeze ? -260 : 10});
 			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
+		} else if (e.keyCode == 80) {
+			savePNG();
 		}
 	});
 });
@@ -497,4 +499,8 @@ function loadTexture(path) {
 	return listImg[path].mesh;
 }
 
+function savePNG() {
 
+	window.open( renderer.domElement.toDataURL('image/png'), 'Capture' );
+
+}
