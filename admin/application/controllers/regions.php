@@ -63,7 +63,7 @@ class Regions_Controller extends Template_Controller {
 				$this->template->contenu->formulaire = new View( 'regions/show' );
 				$this->template->contenu->formulaire->row = $region;
 				$this->template->contenu->formulaire->listing = $this->region->listing_parent();
-				$this->template->contenu->formulaire->music = file::listing_dir( DOCROOT.'../audio/' );
+				$this->template->contenu->formulaire->music = file::listing_dir( DOCROOT.'../audio/ambience' );
 		}
 
 		/**
@@ -89,6 +89,7 @@ class Regions_Controller extends Template_Controller {
 
 						if( $type == 'sauve' || $type == 'valid' )
 						{
+                            $save['background_color'] = str_replace('#', '0x', $save['background_color']);
 								$map->delete(  '( x > '.$save['x'].' OR y > '.$save['y'].' OR z > '.$save['z'].' ) AND region_id = '.$idRegion );
 								$this->region->update( $save, $idRegion );
 						}

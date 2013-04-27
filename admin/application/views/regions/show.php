@@ -36,10 +36,15 @@
 						<label for="y" class="form-label"><?php echo Kohana::lang( 'region.nbr_case' ); ?> Y :</label>
 						<input name="y" id="y" value="<?php echo $row->y; ?>" class="inputbox input-text" type="text" maxlength="50" />
 				</p>
-				<p class="form-line">
-						<label for="z" class="form-label"><?php echo Kohana::lang( 'region.nbr_case' ); ?> Z :</label>
-						<input name="z" id="z" value="<?php echo $row->z; ?>" class="inputbox input-text" type="text" maxlength="50" />
-				</p>
+            <p class="form-line">
+                <label for="z" class="form-label"><?php echo Kohana::lang( 'region.nbr_case' ); ?> Z :</label>
+                <input name="z" id="z" value="<?php echo $row->z; ?>" class="inputbox input-text" type="text" maxlength="50" />
+            </p>
+
+            <p class="form-line">
+                <label for="background_color" class="form-label"><?php echo Kohana::lang( 'region.color' ); ?> :</label>
+                <input name="background_color" id="background_color" value="<?php echo str_replace('0x', '#',$row->background_color); ?>" class="inputbox input-text" type="color" maxlength="50" />
+            </p>
 
 				<p class="form-line">
 						<label class="form-label"><?php echo Kohana::lang( 'region.image_bg' ); ?> :</label>
@@ -92,14 +97,6 @@
 				<p class="form-line">
 						<label for="bot_hp_max" class="form-label"><?php echo Kohana::lang( 'region.bot_x_max', Kohana::lang( 'user.hp' ) ); ?> :</label>
 						<input name="bot_hp_max" id="bot_hp_max" value="<?php echo $row->bot_hp_max; ?>" class="inputbox input-text" type="text" maxlength="11" />
-				</p>
-				<p class="form-line">
-						<label for="bot_nbr_min" class="form-label"><?php echo Kohana::lang( 'region.bot_nbr_min' ); ?> :</label>
-						<input name="bot_nbr_min" id="bot_nbr_min" value="<?php echo $row->bot_nbr_min; ?>" class="inputbox input-text" type="text" maxlength="11" />
-				</p>
-				<p class="form-line">
-						<label for="bot_nbr_max" class="form-label"><?php echo Kohana::lang( 'region.bot_nbr_max' ); ?> :</label>
-						<input name="bot_nbr_max" id="bot_nbr_max" value="<?php echo $row->bot_nbr_max; ?>" class="inputbox input-text" type="text" maxlength="11" />
 				</p>
 		</div>
 </article>

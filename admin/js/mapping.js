@@ -44,6 +44,9 @@ $(function () {
 	});
 
 	$(document).keyup(function (e) {
+		if ($('#facebox').is(':visible'))
+		return;
+
 		if (e.keyCode == 27) {
 			if ($('#noCursor').length)
 				$('#noCursor').remove();
@@ -416,7 +419,7 @@ function onDocumentMouseDown(event) {
 
 	intervalClick = setInterval(function () {
 		typeAction = $("input[name='action']:checked").val();
-		if (typeAction != 'mod' && typeAction != 'edit')
+		if (typeAction != 'mod' && typeAction != 'edit' && typeAction != 'del')
 			onDocumentMouseUpAction();
 	}, 100);
 
