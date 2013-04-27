@@ -13,7 +13,7 @@ var listImg = {}, obstacles = [], modules = [], listCube = {};
 
 var rollOverMesh, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3();
 var i, intersector;
-var idClickMaterial;
+var idClickMaterial, grille;
 var dataTextureCube = {};
 var MeshFaceMaterial = new THREE.MeshFaceMaterial({
 	transparent: true
@@ -107,6 +107,8 @@ $(function () {
 			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
 		} else if (e.keyCode == 80) {
 			savePNG();
+		}else if (e.keyCode == 71) {
+			setGrid();
 		}
 	});
 });
@@ -133,7 +135,7 @@ function init() {
 	controls.lookVertical = true;
 
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2(dataRegion.background_color, 0.0006);
+	//scene.fog = new THREE.FogExp2(dataRegion.background_color, 0.0006);
 
 
 	// roll-over helpers
@@ -165,13 +167,55 @@ function init() {
 
 	scene.add(plane);
 
-	plane = new THREE.Mesh(new THREE.PlaneGeometry(dataRegion.x * 50, dataRegion.z * 50, dataRegion.x, dataRegion.z), new THREE.MeshBasicMaterial({
+	grille = new THREE.Mesh(new THREE.PlaneGeometry(dataRegion.x * 50, dataRegion.z * 50, dataRegion.x, dataRegion.z), new THREE.MeshBasicMaterial({
 		color: 0xffffff,
 		wireframe: true
 	}));
-	plane.rotation.x = -Math.PI / 2;
-	plane.name = 'planeGrille';
-	//scene.add( plane );
+	grille.rotation.x = -Math.PI / 2;
+	grille.name = 'planeGrille';
+	scene.add( grille );
+
+
+	var material = THREE.ImageUtils.loadTexture(dir_script + '../' + dataRegion.background_univers);
+	material.wrapS = material.wrapT = THREE.RepeatWrapping;
+	material.magFilter = THREE.NearestFilter;
+	material.minFilter = THREE.LinearMipMapLinearFilter;
+
+	var faceZ = new THREE.PlaneGeometry(dataRegion.x * 50, dataRegion.y * 50);
+	var faceX = new THREE.PlaneGeometry(dataRegion.z * 50, dataRegion.y * 50);
+	var materialMesh = new THREE.MeshLambertMaterial({
+		map: material,
+		transparent: true,
+		side : 2
+	});
+
+	var middleMaxX = dataRegion.x * 25;
+	var middleMaxY = dataRegion.y * 25;
+	var middleMaxZ = dataRegion.z * 25;
+	var PI = Math.PI / 180;
+
+	var nz = new THREE.Mesh(faceZ, materialMesh);
+	nz.position.z -= middleMaxZ;
+	nz.position.y = middleMaxY;
+	scene.add(nz);
+
+	var pz = new THREE.Mesh(faceZ, materialMesh);
+	pz.position.z = middleMaxZ;
+	pz.position.y = middleMaxY;
+	pz.rotation.y = -180 * PI;
+	scene.add(pz);
+
+	var nx = new THREE.Mesh(faceX, materialMesh);
+	nx.position.x -= middleMaxX;
+	nx.position.y = middleMaxY;
+	nx.rotation.y = 90 * PI;
+	scene.add(nx);
+
+	var px = new THREE.Mesh(faceX, materialMesh);
+	px.position.x = middleMaxX;
+	px.position.y = middleMaxY;
+	px.rotation.y = -90 * PI;
+	scene.add(px);
 
 	for (keyEl in dataElements)
 		obstacles.push(dataElements[keyEl]);
@@ -190,7 +234,8 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer({
 		clearColor: dataRegion.background_color,
-		antialias: false,
+		antialias: true,
+		preserveDrawingBuffer: true,
 		clearAlpha: true
 	});
 
@@ -502,5 +547,15 @@ function loadTexture(path) {
 function savePNG() {
 
 	window.open( renderer.domElement.toDataURL('image/png'), 'Capture' );
+
+}
+
+
+function setGrid() {
+
+	if(grille.visible)
+		grille.visible = false;
+	else
+		grille.visible = true;
 
 }

@@ -5,6 +5,8 @@
     <div id="instructions">
         <span style="font-size:45px">Cliquez pour pivoter la caméra</span>
         <br/><span style="font-size:16px"><b>ESC</b> = Activer / désactiver le mouvement de la caméra</span>
+        <br/><span style="font-size:16px"><b>P</b> = Capture écran</span>
+        <br/><span style="font-size:16px"><b>G</b> = Afficher / masquer la grille</span>
     </div>
 </section>
 
