@@ -45,34 +45,6 @@ THREE.Person = function (type, picture, name) {
 
 
 	/*
-	 * Load texture
-	 */
-	this.loadTexture = function (x, y, xSize, ySize) {
-		var path = x + '-' + y + '-' + xSize + '-' + ySize;
-
-		if (listImg[path] !== undefined)
-			return listImg[path];
-
-		var canvas = window.document.createElement('canvas');
-		canvas.width = xSize * 4;
-		canvas.height = ySize * 4;
-
-		var context = canvas.getContext('2d');
-
-		context.drawImage(picture, x * 4, y * 4, xSize * 4, ySize * 4, 0, 0, xSize * 4, ySize * 4);
-
-		var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
-		texture.needsUpdate = true;
-
-		return listImg[path] = new THREE.MeshLambertMaterial({
-			map: texture,
-			wireframe: this.wireframe,
-			transparent: true
-		});
-	};
-
-
-	/*
 	 * Initialisation position person
 	 */
 	this.initialGesture = function () {
@@ -179,6 +151,42 @@ THREE.Person = function (type, picture, name) {
 
 		this.leftleg.rotation.x = 0.1;
 		this.rightleg.rotation.x = -0.1;
+	};
+
+
+	/*
+	 * Load texture
+	 */
+	this.loadTexture = function (x, y, xSize, ySize) {
+
+		var ratio = picture.width / 16;
+
+		x *= ratio;
+		y *= ratio;
+		xSize *= ratio;
+		ySize *= ratio;
+
+		var path = x + '-' + y + '-' + xSize + '-' + ySize;
+
+		if (listImg[path] !== undefined)
+			return listImg[path];
+
+		var canvas = window.document.createElement('canvas');
+		canvas.width = xSize;
+		canvas.height = ySize;
+
+		var context = canvas.getContext('2d');
+
+		context.drawImage(picture, x, y, xSize, ySize, 0, 0, xSize, ySize);
+
+		var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
+		texture.needsUpdate = true;
+
+		return listImg[path] = new THREE.MeshLambertMaterial({
+			map: texture,
+			wireframe: this.wireframe,
+			transparent: true
+		});
 	};
 
 
