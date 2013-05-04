@@ -48,6 +48,7 @@ THREE.Hero = function (app) {
 	var memoryBarValue = 0;
 	var memoryScoreValue = 0;
 	var memoryAmmoValue = 0;
+	var memoryDistance = 0;
 
 	var light = new THREE.PointLight(0xffaa00, 1.2, 400);
 
@@ -63,6 +64,8 @@ THREE.Hero = function (app) {
 	yawObject.name = 'camera';
 	yawObject.add(pitchObject);
 	yawObject.rotation.y = this.currentdirection.x;
+
+	yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
 
 	var person = new THREE.Person('hero', this.img, this.hand_left, this.hand_right);
 	person.name = 'hero';
@@ -292,8 +295,6 @@ THREE.Hero = function (app) {
 			speedTmp = 0;
 
 
-		//	console.log(this.currentdirection.jump);
-
 		clone.position.y += this.currentdirection.jump -= this.gravity;
 
 		if (clone.position.y < sizeBloc) {
@@ -349,17 +350,17 @@ THREE.Hero = function (app) {
 		else if (clone.position.z > middleMaxZ - middle)
 			clone.position.z = middleMaxZ - middle;
 
-		if (moveForward)
+		if (moveForward || moveBackward || moveLeft || moveRight)
 			for (var key in app.scene.children)
 				if (app.scene.children[key].name != 'hero'
 					&& (app.scene.children[key] instanceof THREE.Bears
 					|| app.scene.children[key] instanceof THREE.Dog
 					|| app.scene.children[key] instanceof THREE.Person )) {
-					var distance = app.scene.children[key].position.distanceTo(person.position);
-					if (distance <= sizeBloc / 2) {
+					var distance = app.scene.children[key].position.distanceTo(clone.position);
+					if (distance < sizeBloc / 2 && memoryDistance > distance)
 						clone.position = yawObject.position.clone();
-						moveForward = moveBackward = false;
-					}
+
+					memoryDistance = distance;
 				}
 
 
@@ -416,6 +417,8 @@ THREE.Hero = function (app) {
 			this.hp = 100;
 			app.messages.push('GAME OVER');
 		}
+		else if (this.hp > 100)
+			this.hp = 100;
 
 		if (memoryBarValue != this.hp) {
 			memoryBarValue = this.hp;
@@ -441,7 +444,6 @@ THREE.Hero = function (app) {
 
 			}
 		}
-
 	};
 
 
@@ -462,6 +464,9 @@ THREE.Hero = function (app) {
 	 */
 	this.getData = function () {
 		return 'region=' + this.region + '\
+						&positionX=' + yawObject.position.x + '\
+						&positionY=' + yawObject.position.y + '\
+						&positionZ=' + yawObject.position.z + '\
 						&x=' + this.zone.x + '\
 						&y=' + this.zone.y + '\
 						&z=' + this.zone.z + '\
@@ -483,7 +488,4 @@ THREE.Hero = function (app) {
 	document.addEventListener('mousemove', bind(this, this.onMouseMove), false);
 	window.addEventListener('keydown', bind(this, this.onKeyDown), false);
 	window.addEventListener('keyup', bind(this, this.onKeyUp), false);
-
-
-	this.setPosition(this.zone.x, this.zone.y, this.zone.z);
 };

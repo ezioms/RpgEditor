@@ -39,6 +39,9 @@ THREE.Loader = function () {
 
 		this.map = this.datas.map;
 		this.my = this.datas.my;
+		this.my.positionX = parseFloat(this.my.positionX);
+		this.my.positionY = parseFloat(this.my.positionY);
+		this.my.positionZ = parseFloat(this.my.positionZ);
 		this.items = this.datas.items;
 		this.bots = this.datas.bots;
 
@@ -63,8 +66,8 @@ THREE.Loader = function () {
 			}
 
 			// items
-			for( var keyItems in this.items)
-				if ( this.items[keyItems].image ){
+			for (var keyItems in this.items)
+				if (this.items[keyItems].image) {
 					this.completedImage++;
 					this.nbrItems++;
 				}
@@ -102,18 +105,16 @@ THREE.Loader = function () {
 	};
 
 
-
-
 	/*
 	 * Items
 	 */
-	this.getItemsCompleted = function() {
+	this.getItemsCompleted = function () {
 		var noComplete = 0;
-		for( var keyItem in this.items ) {
-			if(  typeof this.items[keyItem].image =='string')
-				this.items[keyItem].image = this.loadImage( dir_script+'images/items/'+this.items[keyItem].image );
+		for (var keyItem in this.items) {
+			if (typeof this.items[keyItem].image == 'string')
+				this.items[keyItem].image = this.loadImage(dir_script + 'images/items/' + this.items[keyItem].image);
 
-			if( !this.items[keyItem].image.complete )
+			if (!this.items[keyItem].image.complete)
 				noComplete++;
 			else
 				this.noCompletedImage--;
@@ -208,7 +209,7 @@ THREE.Loader = function () {
 
 		this.listImg[path] = new Image();
 		this.listImg[path].src = path;
-		this.listImg[path].type = path.replace(dir_script + 'images/','');
+		this.listImg[path].type = path.replace(dir_script + 'images/', '');
 
 		return this.listImg[path];
 	};

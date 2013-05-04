@@ -174,6 +174,7 @@ THREE.Map = function (app) {
 		var x = Math.floor(position.x);
 		var y = Math.floor(position.y);
 		var z = Math.floor(position.z);
+
 		if (region.modules[x + '-' + y + '-' + z] != undefined)
 			return region.modules[x + '-' + y + '-' + z];
 

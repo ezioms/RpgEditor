@@ -69,6 +69,8 @@ class Map_Controller extends Authentic_Controller
                             'status' => 1), 1);
                         $modules[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "data" : ' . $action . ', "article" : ' . json_encode($article->article) . ' }';
                     } elseif ($row->module_map == 'bot' || $row->bot) {
+
+
                         $v = new stdClass;
                         $v->id = 0;
                         $v->name = $row->bot ? $row->title : $listName[array_rand($listName)];
@@ -77,10 +79,18 @@ class Map_Controller extends Authentic_Controller
                         $v->z = $row->z - 1;
                         $v->region_id = $row->region_id;
                         $v->user_id = $this->user->id;
-                        $v->image = 'character/' . $images[array_rand($images)];
+
+                        if ($row->bot == 2)
+                            $v->image = 'animals/bears.png';
+                        elseif ($row->bot == 3)
+                            $v->image = 'animals/dog.png';
+                        else
+                            $v->image = 'character/' . $images[array_rand($images)];
+
                         $v->hp_max = 100;
                         $v->hp = 100;
                         $v->leak = 0;
+                        $v->type = $row->bot;
                         $v->fixe = $row->bot ? 0 : 1;
                         $v->argent = 1000;
                         $v->xp = 10;
@@ -88,7 +98,7 @@ class Map_Controller extends Authentic_Controller
 
                         $this->botFixe[] = $v;
                     } else
-                        $modules[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "data" : ' . $action . ', "article" : "" }';
+                        $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "data" : ' . $action . ', "article" : "" }';
                 }
             }
         }

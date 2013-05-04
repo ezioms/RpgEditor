@@ -37,6 +37,7 @@ app.renderer = {};
 app.hero = {};
 app.map = {};
 app.bots = {};
+app.modules = {};
 app.messages = [];
 app.alert = false;
 app.group = [];
@@ -105,6 +106,16 @@ var initialize = function () {
 			app.scene.add(bot.getPerson());
 		}
 
+	// generate bots and add in scene
+	var modules = app.map.getModules();
+	if (modules)
+		for (var keyCaseModule in modules) {
+			var module = new THREE.Item(app, app.loader.items['item_' + modules[keyCaseModule].data.id_item].image);
+			module.setPosition(modules[keyCaseModule].x, modules[keyCaseModule].y, modules[keyCaseModule].z);
+			app.modules[modules[keyCaseModule].x + '-' + modules[keyCaseModule].y + '-' + modules[keyCaseModule].z] = module;
+			app.scene.add(module);
+		}
+
 
 	//generate render
 	app.renderer = new THREE.WebGLRenderer({
@@ -146,6 +157,10 @@ var render = function () {
 	// update bots in scene
 	for (var keyBot in app.bots)
 		app.bots[keyBot].update(app);
+
+	// update module in scene
+	for (var keyModule in app.modules)
+		app.modules[keyModule].update(app);
 
 	// update hero
 	app.hero.update(app);
@@ -292,6 +307,23 @@ var updateHeroVisual = function () {
 					$('#content_action').html(data);
 				});
 			}
+			else if (module.data.module == 'item') {
+				app.sound.effect('system/105-Heal01.ogg', 0.4);
+
+				var itemOver = app.loader.items['item_' + module.data.id_item];
+
+				if (itemOver.hp != 0)
+					app.hero.hp += parseInt(itemOver.hp);
+
+				if (itemOver.ammo != 0)
+					app.hero.ammo += parseInt(itemOver.ammo);
+
+				app.scene.remove(app.modules[module.x + '-' + module.y + '-' + module.z]);
+				delete app.modules[module.x + '-' + module.y + '-' + module.z];
+
+				if (module.data.title)
+					app.messages.push(module.data.title);
+			}
 
 			action = true;
 		}
@@ -316,7 +348,7 @@ var updateHeroVisual = function () {
 	if (app.alert) {
 		var alertUser = $('#alertUser');
 		if (!alertUser.is(':visible')) {
-			app.sound.play('system/159-Skill03.ogg', 0.4);
+			app.sound.effect('system/159-Skill03.ogg', 0.4);
 			alertUser.show().fadeOut(app.alert);
 		}
 		app.alert = false;

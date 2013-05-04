@@ -29,13 +29,9 @@ class User_Controller extends Template_Controller
         if (($z = $this->input->get('z')))
             $this->user->z = $z - 1;
 
-        if ($this->user->x < 1)
-            $this->user->x = 1;
-        if ($this->user->y < 1)
-            $this->user->y = 1;
-        if ($this->user->z < 1)
-            $this->user->z = 1;
-
+        $this->user->positionX = $this->input->get('positionX', $this->user->positionX);
+        $this->user->positionY = $this->input->get('positionY', $this->user->positionY);
+        $this->user->positionZ = $this->input->get('positionZ', $this->user->positionZ);
         $this->user->region_id = $this->input->get('region', $this->user->region_id);
         $this->user->currentdirection_x = $this->input->get('currentdirection_x', $this->user->currentdirection_x);
         $this->user->gravity = $this->input->get('gravity', $this->user->gravity);
@@ -48,6 +44,9 @@ class User_Controller extends Template_Controller
         $this->user->update();
 
         if (!$noScript) {
+            echo 'app.hero.position.x = ' . $this->user->positionX . ';' . "\n";
+            echo 'app.hero.position.y = ' . $this->user->positionY . ';' . "\n";
+            echo 'app.hero.position.z = ' . $this->user->positionZ . ';' . "\n";
             echo 'app.hero.zone.x = ' . $this->user->x . ';' . "\n";
             echo 'app.hero.zone.y = ' . $this->user->y . ';' . "\n";
             echo 'app.hero.zone.z = ' . $this->user->z . ';' . "\n";

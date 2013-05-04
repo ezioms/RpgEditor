@@ -15,6 +15,8 @@ THREE.Bot = function (app, dataBot) {
 	this.speedMin = 0.5;
 	this.speedMax = 2;
 
+	var lastAction = false;
+
 	var target = new THREE.Vector3(0, 0, 0);
 
 	var timeSpeed = false;
@@ -35,14 +37,12 @@ THREE.Bot = function (app, dataBot) {
 
 	var person;
 
-	if (this.fixe)
-		person = new THREE.Person('bot', dataBot.img, dataBot.name);
-	else if (dataBot.img.type == 'animals/bears.png')
+	if (dataBot.type == 2)
 		person = new THREE.Bears(dataBot.img, this.id);
-	else if (dataBot.img.type == 'animals/dog.png')
+	else if (dataBot.type == 3)
 		person = new THREE.Dog(dataBot.img, this.id);
 	else
-		return;
+		person = new THREE.Person('bot', dataBot.img, null, null, this.id);
 
 	person.name = 'bot';
 	person.rotation.y = PIDivise2;
@@ -69,6 +69,24 @@ THREE.Bot = function (app, dataBot) {
 	};
 
 
+	this.speack = function (app) {
+		console.log('speack');
+		if (notifications.innerHTML != '' || this.fixe)
+			return;
+
+		if (this.position.distanceTo(app.hero.getPerson().position) < 100) {
+			var last = new Date().getTime();
+			if (last - lastAction < 5000) {
+				app.messages.push('...');
+				return;
+			}
+			lastAction = last;
+
+			app.messages.push(app.map.getArticles());
+		}
+	};
+
+
 	/*
 	 * UPDATE
 	 */
@@ -76,6 +94,9 @@ THREE.Bot = function (app, dataBot) {
 
 		if (person.getDie())
 			return;
+
+		if (buttonEnter)
+			this.speack(app);
 
 		var hero = app.hero.getCamera().position;
 

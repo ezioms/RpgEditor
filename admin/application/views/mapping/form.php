@@ -17,8 +17,10 @@ defined( 'SYSPATH' ) OR die( 'No direct access allowed.' );
 				<div class="row_form">
 						<label><span class="titreSpanForm"><?php echo Kohana::lang( 'editeur.form_label_bot' ); ?></span>
 								<select class="input-select" id="bot" name="bot">
-										<option class="rouge" value="0"><?php echo Kohana::lang( 'editeur.form_no_bot' ); ?></option>
-										<option <?php if( isset( $row->bot ) && $row->bot == 1 ) echo 'selected="selected"'; ?> class="vert" value="1"><?php echo Kohana::lang( 'editeur.form_yes_bot' ); ?></option>
+									<option value="0"><?php echo Kohana::lang( 'editeur.form_no_bot' ); ?></option>
+                                    <option <?php if( isset( $row->bot ) && $row->bot == 1 ) echo 'selected="selected"'; ?> value="1"><?php echo Kohana::lang( 'editeur.form_yes_bot' ); ?></option>
+                                    <option <?php if( isset( $row->bot ) && $row->bot == 2 ) echo 'selected="selected"'; ?> value="2"><?php echo Kohana::lang( 'editeur.form_yes_bears' ); ?></option>
+                                    <option <?php if( isset( $row->bot ) && $row->bot == 3 ) echo 'selected="selected"'; ?> value="3"><?php echo Kohana::lang( 'editeur.form_yes_dog' ); ?></option>
 								</select>
 						</label>
 						<div class="spacer"></div>

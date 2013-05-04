@@ -3,7 +3,6 @@
 <?php
 if( in_array( 'item', $acces )
 				|| in_array( 'carte', $acces )
-				|| in_array( 'sort', $acces )
 				|| in_array( 'article', $acces )
 				|| in_array( 'quete', $acces )
 				|| in_array( 'element', $acces )
@@ -28,12 +27,6 @@ if( in_array( 'item', $acces )
 				<?php if( in_array( 'quete', $acces ) || in_array( 'admin', $acces ) ) : ?>
 						<li class="icn_quete"><?php echo html::anchor( 'quetes', Kohana::lang( 'menu.quete' ) ); ?></li>
 				<?php endif ?>
-				<?php if( in_array( 'item', $acces ) || in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_object"><?php echo html::anchor( 'items', Kohana::lang( 'menu.item_game' ) ); ?></li>
-				<?php endif ?>
-				<?php if( in_array( 'sort', $acces ) || in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_sort"><?php echo html::anchor( 'sorts', Kohana::lang( 'menu.sort_fight' ) ); ?></li>
-				<?php endif ?>
 		</ul>
 		<div class="clear"></div>
 		<hr/>
@@ -50,12 +43,6 @@ if( in_array( 'item', $acces )
 				<?php endif ?>
 				<?php if( in_array( 'quete', $acces ) || in_array( 'admin', $acces ) ) : ?>
 						<li class="icn_quete_add"><?php echo html::anchor( 'quetes/insert', Kohana::lang( 'menu.add_quete' ) ); ?></li>
-				<?php endif ?>
-				<?php if( in_array( 'item', $acces ) || in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_object_add"><?php echo html::anchor( 'items/insert', Kohana::lang( 'menu.add_item_game' ) ); ?></li>
-				<?php endif ?>
-				<?php if( in_array( 'sort', $acces ) || in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_sort_add"><?php echo html::anchor( 'sorts/insert', Kohana::lang( 'menu.add_sort_fight' ) ); ?></li>
 				<?php endif ?>
 		</ul>
 		<div class="clear"></div>

@@ -3,9 +3,12 @@
 	"my" : {
 		"id" : <?php echo $my->id; ?>,
 		"username" : "<?php echo $my->username; ?>",
-		"x" : <?php echo $my->x; ?>,
-		"y" : <?php echo $my->y; ?>,
-		"z" : <?php echo $my->z; ?>,
+        "x" : <?php echo $my->x; ?>,
+        "y" : <?php echo $my->y + 1; ?>,
+        "z" : <?php echo $my->z; ?>,
+        "positionX" : "<?php echo $my->positionX; ?>",
+        "positionY" : "<?php echo $my->positionY; ?>",
+        "positionZ" : "<?php echo $my->positionZ; ?>",
 		"logins" : <?php echo $my->logins; ?>,
 		"gravity" : <?php echo number_format($my->gravity, 10); ?>,
 		"speed" : <?php echo $my->speed; ?>,
@@ -47,9 +50,10 @@
                     "x" : <?php echo $region->bot->x; ?>,
                     "y" : <?php echo $region->bot->y; ?>,
                     "z" : <?php echo $region->bot->z; ?>,
+                    "type" : <?php echo $region->bot->type; ?>,
                     "fixe" : <?php echo $region->bot->fixe; ?>,
                     "leak" : <?php echo $region->bot->leak; ?>,
-                    "img" : "<?php echo $region->bot->fixe ? $region->bot->image : ( rand(0,1) == 1 ? 'animals/bears.png' : 'animals/dog.png' ) ?>",
+                    "img" : "<?php echo $region->bot->image; ?>",
                     "hp" : <?php echo $region->bot->hp; ?>,
                     "hpMax" : <?php echo $region->bot->hp_max; ?>
                 } <?php if( $key < count($region->bots) - 1) echo ","; ?>

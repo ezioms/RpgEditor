@@ -6,11 +6,11 @@ THREE.Item = function (app, img) {
 
 	this.size = 24;
 
-	this.dept = 1;
+	this.name = 'item';
 
 	this.speedRotation = 0.02;
 
-	this.visible = false;
+	this.visible = true;
 
 	this.wireframe = false;
 
@@ -34,14 +34,17 @@ THREE.Item = function (app, img) {
 			this.position.set(x, y, z);
 			return;
 		}
-		this.position.set(-middleMaxX + (x * sizeBloc + middle), y * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc + middle));
+		this.position.set(-middleMaxX + (x * sizeBloc - middle), y * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc - middle));
 	};
 
 
 	/*
 	 * UPDATE
 	 */
-	this.update = function () {
+	this.update = function (app) {
+		if(!this.visible)
+		return;
+
 		this.geometry.rotation.y += this.speedRotation;
 	};
 

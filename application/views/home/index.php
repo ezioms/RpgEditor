@@ -16,6 +16,7 @@
         <br/><span style="font-size:16px"><b>CLIQUE SOURIS</b> = Tirer</span>
         <br/><span style="font-size:16px"><b>ESPACE</b> = Sauter</span>
         <br/><span style="font-size:16px"><b>ENTRER</b> = Permet de faire des actions</span>
+        <br/><span style="font-size:16px"><b>L</b> = Allumer/eteindre la torche</span>
         <br/><span style="font-size:16px"><b>P</b> = Capture écran</span>
         <br/><span style="font-size:16px"><b>ESC</b> = Réactiver le curseur</span>
     </div>

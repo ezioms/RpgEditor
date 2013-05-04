@@ -1,4 +1,4 @@
-THREE.Person = function (type, picture, hand_left, hand_right) {
+THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	THREE.Object3D.call(this);
 
@@ -9,6 +9,10 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	this.wireframe = false;
 
 	this.text = false;
+
+	this.idBot = id;
+
+	this.hp = random(2, 4);
 
 	this.name = type;
 
@@ -23,7 +27,13 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	 * Get he's die
 	 */
 	this.getDie = function () {
-		return false;
+
+		if (this.hp == 0) {
+			this.hp--;
+			this.die();
+		}
+
+		return this.hp < 0 ? true : false;
 	}
 
 	/*
@@ -70,6 +80,25 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 
 		this.rightleg.rotation.x = -0.1;
 		this.leftleg.rotation.x = 0.1;
+	};
+
+
+	/*
+	 * Position person STOP
+	 */
+	this.die = function () {
+		app.sound.effect('system/ours.mp3', 0.4);
+		this.initialGesture();
+
+		this.rightarm.rotation.x = -1.5;
+		this.leftarm.rotation.x = 1.5;
+		this.rightarm.rotation.z = 0;
+		this.leftarm.rotation.z = 0;
+
+		this.rightleg.rotation.x = -0.5;
+		this.leftleg.rotation.x = 0.5;
+		this.position.y -= 6;
+		this.rotation.z = 1.5;
 	};
 
 
@@ -246,6 +275,7 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 		this.loadTexture(0, 2, 2, 2),
 		this.loadTexture(4, 2, 2, 2)
 	];
+
 	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 7, 0, 0, 0, this.materialHead), faceMesh);
 	this.head.position.y = 18;
 
@@ -325,9 +355,15 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
 
+	this.ray = new THREE.Mesh(new THREE.CubeGeometry(26, 20, 24));
+	this.ray.visible = false;
+	this.ray.position.y = 8;
+	this.ray.name = 'rayBear';
+
 	this.add(this.bodyGroup);
 	this.add(this.head);
 	this.add(this.headAccessory);
+	this.add(this.ray);
 
 	this.rotation.y = PIDivise2;
 

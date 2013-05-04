@@ -96,7 +96,6 @@ fieldset {
     width: 100%;
     background-color: #000000;
     z-index: 1;
-    min-height: 60px;
 }
 
 #barBottom {
@@ -108,7 +107,6 @@ fieldset {
     width: 100%;
     background-color: #000000;
     z-index: 1;
-    min-height: 60px;
 }
 
 #helpLoading {
@@ -175,7 +173,7 @@ fieldset {
 
 #notifications {
     position: absolute;
-    bottom: 50px;
+    bottom: 12%;
     right: 200px;
     left: 200px;
     z-index: 100;
@@ -214,7 +212,7 @@ fieldset {
 
 #user_hp {
     position: absolute;
-    top: 25px;
+    top: 11%;
     left: 20px;
     z-index: 20;
     display: none;
@@ -235,7 +233,7 @@ fieldset {
 #user_ammo {
     position: absolute;
     z-index: 20;
-    bottom: 20px;
+    bottom: 11%;
     right: 20px;
     text-align: left;
     font-size: 26px;
@@ -251,7 +249,7 @@ fieldset {
 #user_argent {
     position: absolute;
     z-index: 20;
-    top: 20px;
+    top: 11%;
     right: 20px;
     text-align: left;
     font-size: 26px;
