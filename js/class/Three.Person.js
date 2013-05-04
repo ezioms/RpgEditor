@@ -233,7 +233,7 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 		this.loadTexture(8, 2, 2, 2),
 		this.loadTexture(12, 2, 2, 2)
 	];
-	this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10, 0, 0, 0, this.materialHeadAccessory), faceMesh);
+	this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 9, 0, 0, 0, this.materialHeadAccessory), faceMesh);
 	this.headAccessory.position.x = -1;
 	this.headAccessory.position.y = 18;
 
@@ -246,7 +246,7 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 		this.loadTexture(0, 2, 2, 2),
 		this.loadTexture(4, 2, 2, 2)
 	];
-	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8, 0, 0, 0, this.materialHead), faceMesh);
+	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 7, 0, 0, 0, this.materialHead), faceMesh);
 	this.head.position.y = 18;
 
 
