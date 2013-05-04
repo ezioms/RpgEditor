@@ -123,6 +123,7 @@ THREE.Map = function (app) {
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
 			ambient: 0xbbbbbb,
 			wireframe: this.wireframe,
+			transparent : true,
 			side : 2
 		});
 		material.map.needsUpdate = true;
