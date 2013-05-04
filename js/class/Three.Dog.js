@@ -8,7 +8,7 @@ THREE.Dog = function (picture, id) {
 
 	this.idBot = id;
 
-	this.hp = random(5, 10);
+	this.hp = random(2, 5);
 
 	this.name = 'bears';
 

@@ -15,6 +15,7 @@ THREE.Hero = function (app) {
 	this.speed = app.loader.my.speed;
 	this.hand_left = app.loader.my.hand_left;
 	this.hand_right = app.loader.my.hand_right;
+	this.ammo = app.loader.my.ammo;
 	this.zone = new THREE.Vector3(app.loader.my.x, app.loader.my.y, app.loader.my.z);
 	this.currentdirection = {
 		x: app.loader.datas.my.currentdirection_x,
@@ -46,6 +47,7 @@ THREE.Hero = function (app) {
 	// memory stat hero
 	var memoryBarValue = 0;
 	var memoryScoreValue = 0;
+	var memoryAmmoValue = 0;
 
 	var light = new THREE.PointLight(0xffaa00, 1.2, 400);
 
@@ -74,6 +76,18 @@ THREE.Hero = function (app) {
 	 */
 	this.getCamera = function () {
 		return yawObject;
+	}
+
+
+	/*
+	 *	DELETE le nombre de munition
+	 */
+	this.deleteAmmo = function () {
+		this.ammo--;
+		if (this.ammo < 0)
+			this.ammo = 0;
+
+		return this.ammo;
 	}
 
 	/*
@@ -131,6 +145,7 @@ THREE.Hero = function (app) {
 		// var global voir map.js
 		if (!control)
 			return;
+
 		shootgun = 1;
 
 		event.preventDefault();
@@ -410,7 +425,12 @@ THREE.Hero = function (app) {
 
 		if (memoryScoreValue != this.argent) {
 			memoryScoreValue = this.argent;
-			userScore.innerHTML = 'Score : ' + number_format(this.argent) + ' pt' + (this.argent > 1 ? 's' : '');
+			userScore.innerHTML = number_format(this.argent) + ' pt' + (this.argent > 1 ? 's' : '');
+		}
+
+		if (memoryAmmoValue != this.ammo) {
+			memoryAmmoValue = this.ammo;
+			userAmmo.innerHTML = number_format(this.ammo);
 		}
 
 		if (shootgun) {

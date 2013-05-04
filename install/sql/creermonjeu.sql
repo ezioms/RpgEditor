@@ -9,7 +9,7 @@
  Target Server Version : 50168
  File Encoding         : utf-8
 
- Date: 05/04/2013 16:01:33 PM
+ Date: 05/04/2013 17:09:57 PM
 */
 
 SET NAMES utf8;
@@ -334,6 +334,7 @@ CREATE TABLE `users` (
   `job_id` tinyint(3) unsigned DEFAULT '0',
   `item_id_handLeft` int(11) unsigned DEFAULT '0',
   `item_id_handRight` int(11) unsigned DEFAULT '0',
+  `ammo` tinyint(3) unsigned DEFAULT '32',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_username` (`username`),
   UNIQUE KEY `uniq_email` (`email`),
@@ -345,7 +346,7 @@ CREATE TABLE `users` (
 --  Records of `users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES ('11', 'contact@rpg.com', 'admin', 'b9d40c221a967a1c1d4100e5fe9d4fe949109325116478114e', '40', '1367676053', '1367676053', '0', '127.0.0.1', 'default.png', '1', '16', '1', '9', '2', '0.7', '-955', '60993', '2', '215', '77', '100', '100', '100', '0', '0', '42');
+INSERT INTO `users` VALUES ('11', 'contact@rpg.com', 'admin', 'b9d40c221a967a1c1d4100e5fe9d4fe949109325116478114e', '40', '1367676053', '1367680183', '0', '127.0.0.1', 'default.png', '1', '8', '1', '11', '2', '0.7', '-975', '66112', '2', '215', '61', '100', '100', '100', '0', '0', '42', '32');
 COMMIT;
 
 -- ----------------------------

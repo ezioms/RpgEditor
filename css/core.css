@@ -96,6 +96,7 @@ fieldset {
     width: 100%;
     background-color: #000000;
     z-index: 1;
+    min-height: 60px;
 }
 
 #barBottom {
@@ -107,6 +108,7 @@ fieldset {
     width: 100%;
     background-color: #000000;
     z-index: 1;
+    min-height: 60px;
 }
 
 #helpLoading {
@@ -212,7 +214,7 @@ fieldset {
 
 #user_hp {
     position: absolute;
-    top: 20px;
+    top: 25px;
     left: 20px;
     z-index: 20;
     display: none;
@@ -221,7 +223,7 @@ fieldset {
 #user_niveau {
     position: absolute;
     z-index: 20;
-    top: 60px;
+    top: 0px;
     left: 20px;
     text-align: left;
     font-size: 26px;
@@ -230,15 +232,30 @@ fieldset {
     display: none;
 }
 
+#user_ammo {
+    position: absolute;
+    z-index: 20;
+    bottom: 20px;
+    right: 20px;
+    text-align: left;
+    font-size: 26px;
+    color: #FFF;
+    text-shadow: #222 1px 1px 2px;
+    display: none;
+    background-image: url('../images/template/bullet.png');
+    background-position: right center;
+    background-repeat: no-repeat;
+    padding-right: 30px;
+}
+
 #user_argent {
     position: absolute;
     z-index: 20;
-    top: 25px;
-    right: 30px;
+    top: 20px;
+    right: 20px;
     text-align: left;
     font-size: 26px;
-    color: #facd00;
-    font-weight: bold;
+    color: #ffffff;
     text-shadow: #222 1px 1px 2px;
     display: none;
 }
@@ -299,7 +316,7 @@ fieldset {
 }
 
 #ConteneurGraphique {
-    height: 30px;
+    height: 20px;
     position: relative;
     background: rgb(169, 3, 41); /* Old browsers */
     background: -moz-linear-gradient(top, rgba(169, 3, 41, 1) 0%, rgba(142, 35, 35, 1) 51%, rgba(109, 0, 25, 1) 100%); /* FF3.6+ */
@@ -309,15 +326,15 @@ fieldset {
     background: -ms-linear-gradient(top, rgba(169, 3, 41, 1) 0%, rgba(142, 35, 35, 1) 51%, rgba(109, 0, 25, 1) 100%); /* IE10+ */
     background: linear-gradient(to bottom, rgba(169, 3, 41, 1) 0%, rgba(142, 35, 35, 1) 51%, rgba(109, 0, 25, 1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a90329', endColorstr='#6d0019', GradientType=0); /* IE6-9 */
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
     border-radius: 8px;
     box-shadow: #222 1px 1px 2px;
-    border: 3px solid #FFF;
+    border: 2px solid #FFF;
 }
 
 #ContenuGraphique {
-    height: 30px;
+    height: 20px;
     float: left;
     background: rgb(191, 210, 85); /* Old browsers */
     background: -moz-linear-gradient(top, rgba(191, 210, 85, 1) 0%, rgba(142, 185, 42, 1) 50%, rgba(114, 170, 0, 1) 51%, rgba(158, 203, 45, 1) 100%); /* FF3.6+ */
@@ -328,14 +345,13 @@ fieldset {
     background: linear-gradient(to bottom, rgba(191, 210, 85, 1) 0%, rgba(142, 185, 42, 1) 50%, rgba(114, 170, 0, 1) 51%, rgba(158, 203, 45, 1) 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#bfd255', endColorstr='#9ecb2d', GradientType=0); /* IE6-9 */
 
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
 }
 
 #infoGraphique {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 16px;
     color: #fff;
     position: absolute;
     top: 0;

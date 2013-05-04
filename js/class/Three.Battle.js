@@ -10,8 +10,15 @@ THREE.Battle = function () {
 	 */
 	this.add = function (app) {
 
+		if( !app.hero.ammo ) {
+			console.log('click');
+			app.sound.effect('system/gunEmpty.mp3', 0.3);
+			return;
+		}
+
 		app.sound.effect('system/magnum.mp3', 0.3);
 		app.hero.getPerson().lightGun.intensity = 5;
+		app.hero.deleteAmmo();
 
 		var vector = new THREE.Vector3(0, 0, 0.5);
 		projector.unprojectVector(vector, app.camera);
