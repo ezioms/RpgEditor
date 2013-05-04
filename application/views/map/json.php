@@ -4,7 +4,7 @@
 		"id" : <?php echo $my->id; ?>,
 		"username" : "<?php echo $my->username; ?>",
 		"x" : <?php echo $my->x; ?>,
-		"y" : <?php echo $my->y; ?>,
+		"y" : <?php echo $my->y + 1; ?>,
 		"z" : <?php echo $my->z; ?>,
 		"logins" : <?php echo $my->logins; ?>,
 		"gravity" : <?php echo number_format($my->gravity, 10); ?>,
@@ -17,7 +17,9 @@
 		"argent" : <?php echo $my->argent; ?>,
 		"xp" : <?php echo $my->xp; ?>,
 		"xpMax" : <?php echo $my->niveau_suivant(); ?>,
-		"region" : <?php echo $my->region_id; ?>
+		"region" : <?php echo $my->region_id; ?>,
+        "hand_left" : <?php echo $my->item_id_handLeft ? $my->item_id_handLeft : 0; ?>,
+        "hand_right" : <?php echo $my->item_id_handRight ? $my->item_id_handRight : 0; ?>
 	},
     "map" : {
                 "id" : "<?php echo $region->map->region->id; ?>",
@@ -33,7 +35,7 @@
                 "articles" :  [ <?php echo $region->map->articles; ?> ],
                 "elements" :  [ <?php echo str_replace('images/background/', '', $region->map->elements); ?> ],
                 "modules" :  [ <?php echo $region->map->modules; ?> ]
-        },
+    },
     "bots" : {
             "list" : [
             <?php if( $region->bots ) : ?>
@@ -46,12 +48,17 @@
                     "z" : <?php echo $region->bot->z; ?>,
                     "fixe" : <?php echo $region->bot->fixe; ?>,
                     "leak" : <?php echo $region->bot->leak; ?>,
-                    "img" : "<?php echo $region->bot->image; ?>",
+                    "img" : "<?php echo 'animals/bears.png';//$region->bot->image; ?>",
                     "hp" : <?php echo $region->bot->hp; ?>,
                     "hpMax" : <?php echo $region->bot->hp_max; ?>
                 } <?php if( $key < count($region->bots) - 1) echo ","; ?>
                     <?php endforeach ?>
             <?php endif ?>
         ]
-    }
+    },
+    "items" : {
+    <?php foreach( $items as $keyItem => $item ) : ?>
+        "item_<?php echo $item->id; ?>" : <?php echo json_encode($item); ?><?php if( $keyItem < count($items) - 1) echo ","; ?>
+    <?php endforeach ?>
+}
 }

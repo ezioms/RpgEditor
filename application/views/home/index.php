@@ -1,4 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
+<div id="barTop"></div>
 <section id="content_loading"></section>
 <section id="notifications"></section>
 
@@ -26,5 +27,4 @@
 <section id="content_action"></section>
 
 <div id="debugWebGL"></div>
-
-<div id="editor"><?php echo html::anchor( 'editor', html::image('images/template/editor.png')); ?></div>
+<div id="barBottom"></div>

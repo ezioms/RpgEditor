@@ -8,16 +8,16 @@ THREE.Map = function (app) {
 
 	var geometry = new THREE.Geometry();
 
-	var ambient = new THREE.AmbientLight(0x999999);
+	var ambient = new THREE.AmbientLight(0x222222);
 
-	var light = new THREE.DirectionalLight(0xffffff, 0.5);
-	light.position.set(3000, 4000, 3000);
-	light.target.position.set(0, 0, 0);
+	var light = new THREE.DirectionalLight(0xffffff, 0);
+	//light.position.set(3000, 4000, 3000);
+	//light.target.position.set(0, 0, 0);
 
-	light.shadowCameraVisible = this.wireframe;
-	light.shadowCameraNear = 0.01;
-	light.castShadow = true;
-	light.shadowDarkness = 0.5;
+	//light.shadowCameraVisible = this.wireframe;
+	//light.shadowCameraNear = 0.01;
+	//light.castShadow = true;
+	//light.shadowDarkness = 0.5;
 
 	var region = {};
 
@@ -123,7 +123,7 @@ THREE.Map = function (app) {
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
 			ambient: 0xbbbbbb,
 			wireframe: this.wireframe,
-			side : 2
+			side: 2
 		});
 		material.map.needsUpdate = true;
 
@@ -183,59 +183,6 @@ THREE.Map = function (app) {
 	/*
 	 * CONSTRUCTOR
 	 */
-	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter);
-	material.wrapS = material.wrapT = THREE.RepeatWrapping;
-	material.repeat.set(infoSize.xMax, infoSize.zMax);
-	material.needsUpdate = true;
-
-
-	var mesh = new THREE.Mesh(new THREE.PlaneGeometry(maxX, maxZ), new THREE.MeshLambertMaterial({
-		map: material,
-		wireframe: this.wireframe
-	}));
-	mesh.position.y = sizeBloc / 2;
-	mesh.rotation.x = -Math.PI / 2;
-	mesh.receiveShadow = true;
-
-	univers.add(mesh);
-
-	material = new THREE.Texture(app.loader.map.univers, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter);
-	material.wrapS = material.wrapT = THREE.RepeatWrapping;
-	material.needsUpdate = true;
-
-	var faceZ = new THREE.PlaneGeometry(maxX, maxY);
-	var faceX = new THREE.PlaneGeometry(maxZ, maxY);
-	var materialMesh = new THREE.MeshLambertMaterial({
-		map: material,
-		wireframe: this.wireframe,
-		transparent: true
-	});
-
-	var PI = Math.PI / 180;
-
-	var nz = new THREE.Mesh(faceZ, materialMesh);
-	nz.position.z -= middleMaxZ;
-	nz.position.y = middleMaxY;
-	univers.add(nz);
-
-	var pz = new THREE.Mesh(faceZ, materialMesh);
-	pz.position.z = middleMaxZ;
-	pz.position.y = middleMaxY;
-	pz.rotation.y = -180 * PI;
-	univers.add(pz);
-
-	var nx = new THREE.Mesh(faceX, materialMesh);
-	nx.position.x -= middleMaxX;
-	nx.position.y = middleMaxY;
-	nx.rotation.y = 90 * PI;
-	univers.add(nx);
-
-	var px = new THREE.Mesh(faceX, materialMesh);
-	px.position.x = middleMaxX;
-	px.position.y = middleMaxY;
-	px.rotation.y = -90 * PI;
-	univers.add(px);
-
 	var obstacles = {};
 	var modules = {};
 
@@ -263,12 +210,27 @@ THREE.Map = function (app) {
 		THREE.GeometryUtils.merge(geometry, cube);
 	}
 
+	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
+	material.wrapS = material.wrapT = THREE.RepeatWrapping;
+	material.repeat.set(infoSize.xMax, infoSize.zMax);
+	material.needsUpdate = true;
+
+	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, 10, maxZ, 0, 0, 0, new THREE.MeshLambertMaterial({
+		map: material,
+		wireframe: this.wireframe,
+		ambient: 0xbbbbbb
+	}), {px: false, nx: false, py: true, ny: false, pz: false, nz: false}));
+	mesh.position.y = sizeBloc / 2;
+
+	//THREE.GeometryUtils.merge(geometry, mesh);
+
 	var element = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
-	element.castShadow = true;
-	element.receiveShadow = true;
+	//element.castShadow = true;
+	//element.receiveShadow = true;
 
 
 	univers.add(element);
+
 	univers.name = 'map';
 
 	region = {

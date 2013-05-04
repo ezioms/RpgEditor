@@ -3,7 +3,7 @@
 defined( 'SYSPATH' ) or die( 'No direct access allowed.' );
 
 /**
- * Afficher du HTML sur la map.
+ * Afficher des bots sur la map.
  *
  * @package Action_HTML
  * @author Pasquelin Alban
@@ -13,8 +13,6 @@ defined( 'SYSPATH' ) or die( 'No direct access allowed.' );
 class Plugin_Bot_Controller extends Action_Controller {
 
 		/**
-		 * Affiche le code HTML dans l'alerte.
-		 * 
 		 * @return  void
 		 */
 		public function index()

@@ -14,8 +14,6 @@ var valueGraph = document.getElementById('valueMoyenneGraph');
 var contentGraph = document.getElementById('ContenuGraphique');
 var userHp = document.getElementById('user_hp');
 var userScore = document.getElementById('user_argent');
-var userLevel = document.getElementById('user_niveau');
-var editor = document.getElementById('editor');
 var noCursor = document.getElementById('noCursor');
 var notifications = document.getElementById('notifications');
 var webGL = document.getElementById('debugWebGL');
@@ -42,6 +40,7 @@ app.bots = {};
 app.users = {};
 app.messages = [];
 app.alert = false;
+app.group = [];
 
 /*
  * Initialize datas, node and scene
@@ -52,10 +51,11 @@ var load = function () {
 		return setTimeout(load, 1000 / 25);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userLevel.style.display = userScore.style.display = editor.style.display = 'block';
+	userHp.style.display = userScore.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
+	info(app.loader.nbrItems + ' item(s)');
 
 	//stat for le debug
 	if (debug) {
@@ -88,6 +88,9 @@ var initialize = function () {
 	app.scene.add(app.hero.getCamera());
 	// add physic hero (camera) in scene
 	app.scene.add(app.hero.getPerson());
+	// add torch hero
+	var torch = app.hero.getTorch();
+	app.scene.add(torch);
 
 	// add physic map in scene
 	app.scene.add(app.map.getUnivers());
@@ -102,6 +105,7 @@ var initialize = function () {
 		for (var keyBot in bots) {
 			var bot = new THREE.Bot(app, bots[keyBot]);
 			app.bots[bot.id] = bot;
+			app.group.push(bot.getRay());
 			app.scene.add(bot.getPerson());
 		}
 
@@ -340,17 +344,10 @@ var updateHeroVisual = function () {
 	if (app.alert) {
 		var alertUser = $('#alertUser');
 		if (!alertUser.is(':visible')) {
-			app.sound.play('system/159-Skill03.ogg', app.hero.getPerson().position);
+			app.sound.play('system/159-Skill03.ogg', 0.4);
 			alertUser.show().fadeOut(app.alert);
 		}
 		app.alert = false;
-	}
-
-
-	// changement de niveau
-	if (app.hero.xp >= app.hero.xpMax) {
-		app.loader.request('user/update?' + app.hero.getData());
-		app.messages.push('Vous êtes passé au niveau : ' + app.hero.niveau);
 	}
 
 };

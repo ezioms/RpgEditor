@@ -12,6 +12,10 @@ THREE.Loader = function () {
 
 	this.nbrElements = 0;
 
+	this.items = null;
+
+	this.nbrItems = null;
+
 	this.completedImage = 0;
 
 	this.noCompletedImage = 0;
@@ -35,6 +39,7 @@ THREE.Loader = function () {
 
 		this.map = this.datas.map;
 		this.my = this.datas.my;
+		this.items = this.datas.items;
 		this.bots = this.datas.bots;
 
 		if (!this.completedImage) {
@@ -56,11 +61,18 @@ THREE.Loader = function () {
 
 				this.nbrElements++;
 			}
+
+			// items
+			for( var keyItems in this.items)
+				if ( this.items[keyItems].image ){
+					this.completedImage++;
+					this.nbrItems++;
+				}
 		}
 
 		this.noCompletedImage = this.completedImage;
 
-		if (this.getMapCompleted() && this.getBotCompleted() && this.getMyCompleted()) {
+		if (this.getMapCompleted() && this.getBotCompleted() && this.getItemsCompleted() && this.getMyCompleted()) {
 			this.setMapCurrent();
 			this.stat('Chargement fini', this.noCompletedImage);
 			return true;
@@ -86,6 +98,28 @@ THREE.Loader = function () {
 
 		this.stat('Chargement du héro', this.noCompletedImage);
 
+		return noComplete ? false : true;
+	};
+
+
+
+
+	/*
+	 * Items
+	 */
+	this.getItemsCompleted = function() {
+		var noComplete = 0;
+		for( var keyItem in this.items ) {
+			if(  typeof this.items[keyItem].image =='string')
+				this.items[keyItem].image = this.loadImage( dir_script+'images/items/'+this.items[keyItem].image );
+
+			if( !this.items[keyItem].image.complete )
+				noComplete++;
+			else
+				this.noCompletedImage--;
+
+			this.stat('Chargement des objets', this.noCompletedImage);
+		}
 		return noComplete ? false : true;
 	};
 

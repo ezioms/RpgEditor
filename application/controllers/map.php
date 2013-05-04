@@ -39,6 +39,8 @@ class Map_Controller extends Authentic_Controller
         if (!($this->region = Region_Model::instance()->select(array('id' => $this->user->region_id), 1)))
             return FALSE;
 
+        $json->items = Item_Model::instance()->select();
+
 
         $elements = $modules = $items = FALSE;
 

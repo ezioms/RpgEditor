@@ -1,6 +1,10 @@
-THREE.Person = function (type, picture, name) {
+THREE.Person = function (type, picture, hand_left, hand_right) {
 
 	THREE.Object3D.call(this);
+
+	this.handLeft = new THREE.Object3D();
+
+	this.handRight = new THREE.Object3D();
 
 	this.wireframe = false;
 
@@ -25,17 +29,11 @@ THREE.Person = function (type, picture, name) {
 			case 1 :
 				this.run();
 				break;
-			case 3 :
-				this.happy();
-				break;
-			case 4 :
-				this.guard();
-				break;
-			case 5 :
+			case 2 :
 				this.stop();
 				break;
-			case 6 :
-				this.grab();
+			case 3 :
+				this.shootgun();
 				break;
 			default :
 				this.walk();
@@ -48,34 +46,10 @@ THREE.Person = function (type, picture, name) {
 	 * Initialisation position person
 	 */
 	this.initialGesture = function () {
-		this.rightarm.rotation.set(0, 0, 0);
-		this.leftarm.rotation.set(0, 0, 0);
+		this.rightarm.rotation.set(0, 0, 0.5);
+		this.leftarm.rotation.set(0, 0, 0.3);
 		this.rightleg.rotation.set(0, 0, 0);
 		this.leftleg.rotation.set(0, 0, 0);
-	};
-
-
-	/*
-	 * Position person GUARD
-	 */
-	this.guard = function () {
-		this.rightarm.rotation.z = 2;
-		this.rightarm.rotation.x = 0.2;
-	};
-
-
-	/*
-	 * Position person GRAB
-	 */
-	this.grab = function () {
-		this.rightarm.rotation.z = 1;
-		this.rightarm.rotation.x = -0.8;
-
-		this.leftarm.rotation.z = 1;
-		this.leftarm.rotation.x = 0.8;
-
-		this.leftleg.rotation.z = -0.1;
-		this.rightleg.rotation.z = -0.1;
 	};
 
 
@@ -88,6 +62,15 @@ THREE.Person = function (type, picture, name) {
 
 		this.rightleg.rotation.x = -0.1;
 		this.leftleg.rotation.x = 0.1;
+	};
+
+
+	/*
+	 * Position person STOP
+	 */
+	this.shootgun = function () {
+		this.rightarm.rotation.z = 1.3;
+		this.rightarm.rotation.x = -0.2;
 	};
 
 
@@ -140,17 +123,56 @@ THREE.Person = function (type, picture, name) {
 
 
 	/*
-	 * Position person HAPPY
+	 * Change item hand left
 	 */
-	this.happy = function () {
-		this.rightarm.rotation.z = 2.5;
-		this.leftarm.rotation.z = 2.5;
+	this.changeLeft = function ( id ) {
+		for ( var i = this.handLeft.children.length - 1; i >= 0 ; i -- )
+			this.handLeft.remove(this.handLeft.children[ i ]);
 
-		this.rightarm.rotation.x = 1;
-		this.leftarm.rotation.x = -1;
+		if(!id  || app.loader.items['item_'+id] == undefined || app.loader.items['item_'+id].image == undefined )
+			return;
 
-		this.leftleg.rotation.x = 0.1;
-		this.rightleg.rotation.x = -0.1;
+		this.handLeft.add(this.loadItem(-30, app.loader.items['item_'+id].image ));
+		this.leftarm.add(this.handLeft);
+	};
+
+
+	/*
+	 * Change item hand right
+	 */
+	this.changeRight = function ( id ) {
+		for ( var i = this.handRight.children.length - 1; i >= 0 ; i -- )
+			this.handRight.remove(this.handRight.children[ i ]);
+
+		if(!id  || app.loader.items['item_'+id] == undefined || app.loader.items['item_'+id].image == undefined )
+			return;
+
+		this.handRight.add(this.loadItem(-45, app.loader.items['item_'+id].image ));
+
+		console.log('arme')
+		this.rightarm.add(this.handRight);
+	};
+
+
+	/*
+	 * Load item for hands
+	 */
+	this.loadItem = function ( rotation, image ) {
+		if(  typeof image =='string' ) {
+			var path = dir_script+'images/items/'+image
+			image = new Image();
+			image.src = path;
+		}
+
+		var item = new THREE.Item( app, image );
+		item.scale.x = 0.6;
+		item.scale.y = 0.6;
+		item.scale.z = 0.6;
+		item.position.y = -10;
+		item.position.z = -2;
+		item.position.x = 2;
+		item.rotation.z = rotation * Math.PI / 180 - 0.5;
+		return item;
 	};
 
 
@@ -205,8 +227,6 @@ THREE.Person = function (type, picture, name) {
 		this.loadTexture(12, 2, 2, 2)
 	];
 	this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10, 0, 0, 0, this.materialHeadAccessory), faceMesh);
-	this.headAccessory.receiveShadow = true;
-	this.headAccessory.castShadow = true;
 	this.headAccessory.position.x = -1;
 	this.headAccessory.position.y = 18;
 
@@ -220,8 +240,6 @@ THREE.Person = function (type, picture, name) {
 		this.loadTexture(4, 2, 2, 2)
 	];
 	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8, 0, 0, 0, this.materialHead), faceMesh);
-	this.head.receiveShadow = true;
-	this.head.castShadow = true;
 	this.head.position.y = 18;
 
 
@@ -247,11 +265,6 @@ THREE.Person = function (type, picture, name) {
 	this.leftarm.position.y = 14;
 	this.rightarm.position.y = 14;
 
-	this.leftarm.receiveShadow = true;
-	this.leftarm.castShadow = true;
-	this.rightarm.receiveShadow = true;
-	this.rightarm.castShadow = true;
-
 	this.bodyGroup.add(this.leftarm);
 	this.bodyGroup.add(this.rightarm);
 
@@ -268,8 +281,7 @@ THREE.Person = function (type, picture, name) {
 
 	this.body = new THREE.Mesh(new THREE.CubeGeometry(4, 12, 8, 0, 0, 0, this.materialBody), faceMesh);
 	this.body.position.y = 8;
-	this.body.receiveShadow = true;
-	this.body.castShadow = true;
+
 	this.bodyGroup.add(this.body);
 
 
@@ -293,16 +305,15 @@ THREE.Person = function (type, picture, name) {
 	this.rightleg.position.z = 2;
 	this.leftleg.position.y = 2;
 	this.rightleg.position.y = 2;
-	this.leftleg.receiveShadow = true;
-	this.leftleg.castShadow = true;
-	this.rightleg.receiveShadow = true;
-	this.rightleg.castShadow = true;
+
+	if(hand_right != undefined && hand_right )
+		this.changeRight(hand_right);
+
+	if(hand_left != undefined && hand_left )
+		this.changeLeft(hand_left);
 
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
-
-	//this.head.position.x = -2;
-	//this.bodyGroup.position.x = -2;
 
 	this.add(this.bodyGroup);
 	this.add(this.head);
@@ -310,32 +321,7 @@ THREE.Person = function (type, picture, name) {
 
 	this.rotation.y = PIDivise2;
 
-	this.scale.set(2.5, 2.5, 2.5);
-
-	if (name) {
-		var text3d = new THREE.TextGeometry(name, {
-			size: 2,
-			height: 0.5,
-			font: "helvetiker"
-		});
-
-		text3d.computeBoundingBox();
-
-		this.text = new THREE.Mesh(text3d, new THREE.MeshBasicMaterial({
-			color: 0xffffff,
-			overdraw: true,
-			wireframe: this.wireframe
-		}));
-
-		this.text.position.z = ( text3d.boundingBox.max.x - text3d.boundingBox.min.x ) / 2;
-		this.text.position.y = 23;
-
-		this.text.rotation.y = PIDivise2;
-
-		this.text.doubleSided = false;
-
-		this.add(this.text);
-	}
+	this.scale.set(0.9, 0.9, 0.9);
 };
 
 THREE.Person.prototype = Object.create(THREE.Object3D.prototype);
