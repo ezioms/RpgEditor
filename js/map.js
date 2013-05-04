@@ -107,8 +107,10 @@ var initialize = function () {
 
 	//generate render
 	app.renderer = new THREE.WebGLRenderer({
+		clearColor: app.map.getBackgroundColor(),
+		antialias: true,
 		clearAlpha: true,
-		clearColor: app.map.getBackgroundColor()
+		preserveDrawingBuffer: true
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
 	app.renderer.shadowMapEnabled = true;
@@ -426,7 +428,9 @@ $(function () {
 				buttonEnter = simulate_key = false;
 		})
 		.keydown(function (event) {
-			if (event.keyCode === 13) {
+			if (event.keyCode === 80)
+				window.open(app.renderer.domElement.toDataURL('image/png'), 'Capture');
+			else if (event.keyCode === 13) {
 				killSpeackBot();
 				simulEnter();
 				buttonEnter = simulate_key = true;

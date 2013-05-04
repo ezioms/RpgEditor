@@ -265,9 +265,9 @@ THREE.Dog = function (picture, id) {
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
 
-	this.ray = new THREE.Mesh(new THREE.CubeGeometry(26, 20, 24));
+	this.ray = new THREE.Mesh(new THREE.CubeGeometry(26, 20, 14));
 	this.ray.visible = false;
-	this.ray.position.y = 8;
+	this.ray.position.y = 4;
 	this.ray.name = 'rayDog';
 
 	this.add(this.bodyGroup);
