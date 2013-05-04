@@ -34,9 +34,16 @@ THREE.Bot = function (app, dataBot) {
 	var middleMaxZ = infoSize.zMax * sizeBloc / 2;
 
 	var person;
-	var person = new THREE.Bears(dataBot.img, this.id);
-	//var person = new THREE.Dog(dataBot.img);
-	//var person = new THREE.Person('bot', dataBot.img, dataBot.name);
+
+	if (this.fixe)
+		person = new THREE.Person('bot', dataBot.img, dataBot.name);
+	else if (dataBot.img.type == 'animals/bears.png')
+		person = new THREE.Bears(dataBot.img, this.id);
+	else if (dataBot.img.type == 'animals/dog.png')
+		person = new THREE.Dog(dataBot.img, this.id);
+	else
+		return;
+
 	person.name = 'bot';
 	person.rotation.y = PIDivise2;
 
@@ -212,7 +219,7 @@ THREE.Bot = function (app, dataBot) {
 				this.position.set(clone.position.x, clone.position.y, clone.position.z);
 
 			if (person.position.x != this.position.x || person.position.y != this.position.y - 50 || person.position.z != this.position.z)
-				person.update(speedTmp >= 2 ? 1 : 0);
+				person.update(speedTmp >= 2 ? 1 : this.fixe ? 2 : 0);
 		} else
 			person.update(2);
 

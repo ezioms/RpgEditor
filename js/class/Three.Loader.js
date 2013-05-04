@@ -208,6 +208,7 @@ THREE.Loader = function () {
 
 		this.listImg[path] = new Image();
 		this.listImg[path].src = path;
+		this.listImg[path].type = path.replace(dir_script + 'images/','');
 
 		return this.listImg[path];
 	};

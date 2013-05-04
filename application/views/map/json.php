@@ -48,7 +48,7 @@
                     "z" : <?php echo $region->bot->z; ?>,
                     "fixe" : <?php echo $region->bot->fixe; ?>,
                     "leak" : <?php echo $region->bot->leak; ?>,
-                    "img" : "<?php echo 'animals/bears.png';//$region->bot->image; ?>",
+                    "img" : "<?php echo $region->bot->fixe ? $region->bot->image : ( rand(0,1) == 1 ? 'animals/bears.png' : 'animals/dog.png' ) ?>",
                     "hp" : <?php echo $region->bot->hp; ?>,
                     "hpMax" : <?php echo $region->bot->hp_max; ?>
                 } <?php if( $key < count($region->bots) - 1) echo ","; ?>

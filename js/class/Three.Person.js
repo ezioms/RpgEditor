@@ -20,6 +20,13 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 
 
 	/*
+	 * Get he's die
+	 */
+	this.getDie = function () {
+		return false;
+	}
+
+	/*
 	 * Update person et position
 	 */
 	this.update = function (type) {
@@ -125,14 +132,14 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	/*
 	 * Change item hand left
 	 */
-	this.changeLeft = function ( id ) {
-		for ( var i = this.handLeft.children.length - 1; i >= 0 ; i -- )
+	this.changeLeft = function (id) {
+		for (var i = this.handLeft.children.length - 1; i >= 0; i--)
 			this.handLeft.remove(this.handLeft.children[ i ]);
 
-		if(!id  || app.loader.items['item_'+id] == undefined || app.loader.items['item_'+id].image == undefined )
+		if (!id || app.loader.items['item_' + id] == undefined || app.loader.items['item_' + id].image == undefined)
 			return;
 
-		this.handLeft.add(this.loadItem(-30, app.loader.items['item_'+id].image ));
+		this.handLeft.add(this.loadItem(-30, app.loader.items['item_' + id].image));
 		this.leftarm.add(this.handLeft);
 	};
 
@@ -140,16 +147,15 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	/*
 	 * Change item hand right
 	 */
-	this.changeRight = function ( id ) {
-		for ( var i = this.handRight.children.length - 1; i >= 0 ; i -- )
+	this.changeRight = function (id) {
+		for (var i = this.handRight.children.length - 1; i >= 0; i--)
 			this.handRight.remove(this.handRight.children[ i ]);
 
-		if(!id  || app.loader.items['item_'+id] == undefined || app.loader.items['item_'+id].image == undefined )
+		if (!id || app.loader.items['item_' + id] == undefined || app.loader.items['item_' + id].image == undefined)
 			return;
 
-		this.handRight.add(this.loadItem(-45, app.loader.items['item_'+id].image ));
+		this.handRight.add(this.loadItem(-45, app.loader.items['item_' + id].image));
 
-		console.log('arme')
 		this.rightarm.add(this.handRight);
 	};
 
@@ -157,14 +163,14 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	/*
 	 * Load item for hands
 	 */
-	this.loadItem = function ( rotation, image ) {
-		if(  typeof image =='string' ) {
-			var path = dir_script+'images/items/'+image
+	this.loadItem = function (rotation, image) {
+		if (typeof image == 'string') {
+			var path = dir_script + 'images/items/' + image
 			image = new Image();
 			image.src = path;
 		}
 
-		var item = new THREE.Item( app, image );
+		var item = new THREE.Item(app, image);
 		item.scale.x = 0.6;
 		item.scale.y = 0.6;
 		item.scale.z = 0.6;
@@ -306,10 +312,10 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	this.leftleg.position.y = 2;
 	this.rightleg.position.y = 2;
 
-	if(hand_right != undefined && hand_right )
+	if (hand_right != undefined && hand_right)
 		this.changeRight(hand_right);
 
-	if(hand_left != undefined && hand_left )
+	if (hand_left != undefined && hand_left)
 		this.changeLeft(hand_left);
 
 	this.bodyGroup.add(this.leftleg);

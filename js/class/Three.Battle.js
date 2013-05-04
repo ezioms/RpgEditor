@@ -29,13 +29,6 @@ THREE.Battle = function () {
 			app.hero.argent += Math.round(intersects[0].distance / 100);
 		}
 	}
-
-	/*
-	 * Création d'un sort
-	 */
-	this.update = function (app) {
-	}
-
 };
 
 THREE.Battle.prototype = Object.create(THREE.Object3D.prototype);

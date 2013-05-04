@@ -1,4 +1,4 @@
-THREE.Dog = function (picture) {
+THREE.Dog = function (picture, id) {
 
 	THREE.Object3D.call(this);
 
@@ -6,7 +6,11 @@ THREE.Dog = function (picture) {
 
 	this.text = false;
 
-	this.name = 'dog';
+	this.idBot = id;
+
+	this.hp = random(5, 10);
+
+	this.name = 'bears';
 
 	this.bodyGroup = new THREE.Object3D();
 
@@ -14,24 +18,35 @@ THREE.Dog = function (picture) {
 
 	var listImg = {};
 
+	/*
+	 * Get he's die
+	 */
+	this.getDie = function () {
+
+		if (this.hp == 0) {
+			this.hp--;
+			this.die();
+		}
+
+		return this.hp < 0 ? true : false;
+	}
+
 
 	/*
 	 * Update person et position
 	 */
 	this.update = function (type) {
+
 		this.initialGesture();
+
+		if (this.hp <= 0)
+			return;
 
 		switch (type) {
 			case 1 :
 				this.run();
 				break;
-			case 3 :
-				this.happy();
-				break;
-			case 4 :
-				this.guard();
-				break;
-			case 5 :
+			case 2 :
 				this.stop();
 				break;
 			default :
@@ -62,6 +77,19 @@ THREE.Dog = function (picture) {
 
 
 	/*
+	 * Position person STOP
+	 */
+	this.die = function () {
+		app.sound.effect('system/dog.mp3', 0.4);
+		this.initialGesture();
+
+		this.rightleg.rotation.z = this.rightarm.rotation.z = 1.3;
+		this.leftleg.rotation.z = this.leftarm.rotation.z = 1.3;
+		this.position.y -= 9;
+	};
+
+
+	/*
 	 * Position person MARCHER
 	 */
 	this.walk = function () {
@@ -70,8 +98,8 @@ THREE.Dog = function (picture) {
 
 		var sinSpeed = Math.sin(speed);
 
-		this.head.rotation.y = this.headAccessory.rotation.y = Math.sin(time * 1.5) / 5;
-		this.head.rotation.z = this.headAccessory.rotation.z = Math.sin(time) / 5;
+		this.head.rotation.y = this.headAccessory.y = Math.sin(time * 1.5) / 5;
+		this.head.rotation.z = this.headAccessory.z = Math.sin(time) / 5;
 
 		this.leftleg.rotation.z = this.rightarm.rotation.z = sinSpeed / 3;
 		this.rightleg.rotation.z = this.leftarm.rotation.z = -sinSpeed / 3;
@@ -87,8 +115,8 @@ THREE.Dog = function (picture) {
 		var x = 2.812 * time;
 		var cosZ = Math.cos(z);
 
-		this.head.rotation.y = this.headAccessory.rotation.y = Math.sin(time * 1.5) / 5;
-		this.head.rotation.z = this.headAccessory.rotation.z = Math.sin(time) / 5;
+		this.head.rotation.y = this.headAccessory.y = Math.sin(time * 1.5) / 5;
+		this.head.rotation.z = this.headAccessory.z = Math.sin(time) / 5;
 
 		this.rightleg.rotation.z = this.leftarm.rotation.z = 1.4 * cosZ;
 		this.leftleg.rotation.z = this.rightarm.rotation.z = 1.4 * Math.cos(z + PI);
@@ -123,7 +151,7 @@ THREE.Dog = function (picture) {
 		var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
 		texture.needsUpdate = true;
 
-		return listImg[path] = new THREE.MeshLambertMaterial({
+		return listImg[path] = new THREE.MeshPhongMaterial({
 			map: texture,
 			wireframe: this.wireframe,
 			transparent: true
@@ -237,9 +265,15 @@ THREE.Dog = function (picture) {
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
 
+	this.ray = new THREE.Mesh(new THREE.CubeGeometry(26, 20, 24));
+	this.ray.visible = false;
+	this.ray.position.y = 8;
+	this.ray.name = 'rayDog';
+
 	this.add(this.bodyGroup);
 	this.add(this.head);
 	this.add(this.headAccessory);
+	this.add(this.ray);
 
 	this.rotation.y = PIDivise2;
 

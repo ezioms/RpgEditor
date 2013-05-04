@@ -114,7 +114,6 @@ abstract class Template_Controller extends Authentic_Controller
             'js/lib/three',
             'js/lib/detector',
             'js/lib/stats',
-            'js/lib/socket',
             'js/lib/tools',
             'index.php/js_phpjs');
 

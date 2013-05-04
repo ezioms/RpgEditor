@@ -29,7 +29,6 @@ app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHei
 app.loader = new THREE.Loader;
 app.clock = new THREE.Clock;
 app.sound = new THREE.Sound;
-app.node = new THREE.Node;
 app.overlay = new THREE.Overlay;
 
 
@@ -37,13 +36,12 @@ app.renderer = {};
 app.hero = {};
 app.map = {};
 app.bots = {};
-app.users = {};
 app.messages = [];
 app.alert = false;
 app.group = [];
 
 /*
- * Initialize datas, node and scene
+ * Initialize datas and scene
  */
 var load = function () {
 	// load elements
@@ -65,9 +63,6 @@ var load = function () {
 		stats.domElement.style.left = '0';
 		document.body.appendChild(stats.domElement);
 	}
-
-	// initialize Socket.io
-	app.node.init(app);
 
 	// initialize the scene with objects
 	initialize();
@@ -145,39 +140,12 @@ var render = function () {
 		return app.renderer.render(app.scene, app.camera);
 	}
 
-	// listen others users with socket.io
-	var listUsers = app.node.listUser();
-	if (listUsers)
-		for (var keyUser in listUsers)
-			// ID is not my ID
-			if (listUsers[keyUser].id != app.hero.id) {
-				// if user existe and he's in my region
-				if (listUsers[keyUser] != false && listUsers[keyUser].region == app.hero.region) {
-					// user exist in memory
-					if (app.users[keyUser] == undefined) {
-						app.users[keyUser] = new THREE.User(listUsers[keyUser], app.loader, app.sound);
-						app.scene.add(app.users[keyUser].getPerson());
-					}
-					else
-						app.users[keyUser].update(listUsers[keyUser]);
-				} else if (listUsers[keyUser] == false && app.users[keyUser] != undefined) {
-					app.scene.remove(app.users[keyUser].getPerson());
-					app.renderer.deallocateObject(app.users[keyUser].getPerson());
-					delete app.users[keyUser];
-					app.node.deleteUser(keyUser);
-				}
-			}
-
-
 	// update bots in scene
 	for (var keyBot in app.bots)
 		app.bots[keyBot].update(app);
 
 	// update hero
 	app.hero.update(app);
-
-	// send my information with socket.io
-	app.node.send(app.hero);
 
 	// update sound for the volume distance with hero and environment
 	app.sound.update(app);
