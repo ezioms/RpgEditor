@@ -31,6 +31,7 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 	 */
 	this.update = function (type) {
 		this.initialGesture();
+		this.lightGun.intensity = 0;
 
 		switch (type) {
 			case 1 :
@@ -317,6 +318,9 @@ THREE.Person = function (type, picture, hand_left, hand_right) {
 
 	if (hand_left != undefined && hand_left)
 		this.changeLeft(hand_left);
+
+	this.lightGun= new THREE.PointLight(0xfbcb6c, 0, 600);
+	this.handRight.add(this.lightGun);
 
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);

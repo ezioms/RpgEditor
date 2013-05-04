@@ -11,6 +11,7 @@ THREE.Battle = function () {
 	this.add = function (app) {
 
 		app.sound.effect('system/magnum.mp3', 0.3);
+		app.hero.getPerson().lightGun.intensity = 5;
 
 		var vector = new THREE.Vector3(0, 0, 0.5);
 		projector.unprojectVector(vector, app.camera);

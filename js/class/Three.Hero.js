@@ -30,7 +30,6 @@ THREE.Hero = function (app) {
 	var heightJump = 9;
 	var jump = false;
 	var run = false;
-	var contactSol = false;
 
 	var timeFall = 0;
 	var speedTmp = 0;
