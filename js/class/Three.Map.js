@@ -138,12 +138,12 @@ THREE.Map = function (app) {
 	this.addCube = function (row, obstacles) {
 		var title = [];
 		var faces = {
-			px: obstacles[row.x + 1][row.y][row.z] ? false : true,
-			nx: obstacles[row.x - 1][row.y][row.z] ? false : true,
-			py: obstacles[row.x][row.y + 1][row.z] ? false : true,
-			ny: obstacles[row.x][row.y - 1][row.z] ? false : true,
-			pz: obstacles[row.x][row.y][row.z + 1] ? false : true,
-			nz: obstacles[row.x][row.y][row.z - 1] ? false : true
+			px: /*obstacles[row.x + 1][row.y][row.z] ? false :*/ true,
+			nx: /*obstacles[row.x - 1][row.y][row.z] ? false :*/ true,
+			py: /*obstacles[row.x][row.y + 1][row.z] ? false :*/ true,
+			ny: /*obstacles[row.x][row.y - 1][row.z] ? false :*/ true,
+			pz: /*obstacles[row.x][row.y][row.z + 1] ? false :*/ true,
+			nz: /*obstacles[row.x][row.y][row.z - 1] ? false :*/ true
 		};
 
 		if (Object.prototype.toString.apply(row.materials) === '[object Array]') {
