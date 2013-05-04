@@ -33,6 +33,7 @@ THREE.Bot = function (app, dataBot) {
 	var middleMaxX = infoSize.xMax * sizeBloc / 2;
 	var middleMaxZ = infoSize.zMax * sizeBloc / 2;
 
+	var person;
 	var person = new THREE.Bears(dataBot.img, this.id);
 	//var person = new THREE.Dog(dataBot.img);
 	//var person = new THREE.Person('bot', dataBot.img, dataBot.name);

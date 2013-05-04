@@ -112,6 +112,7 @@ var initialize = function () {
 
 	//generate render
 	app.renderer = new THREE.WebGLRenderer({
+		clearAlpha: true,
 		clearColor: app.map.getBackgroundColor()
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);

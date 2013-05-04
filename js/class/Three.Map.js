@@ -123,6 +123,7 @@ THREE.Map = function (app) {
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
 			ambient: 0xbbbbbb,
 			wireframe: this.wireframe,
+			transparent: true,
 			side: 2
 		});
 		material.map.needsUpdate = true;
@@ -222,7 +223,7 @@ THREE.Map = function (app) {
 	}), {px: false, nx: false, py: true, ny: false, pz: false, nz: false}));
 	mesh.position.y = sizeBloc / 2;
 
-	//THREE.GeometryUtils.merge(geometry, mesh);
+	THREE.GeometryUtils.merge(geometry, mesh);
 
 	var element = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
 	//element.castShadow = true;
