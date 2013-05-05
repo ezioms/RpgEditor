@@ -60,6 +60,7 @@ THREE.Dog = function (picture, id) {
 	 * Initialisation position person
 	 */
 	this.initialGesture = function () {
+		this.ray.visible = false;
 		this.rightarm.rotation.set(0, 0, 0);
 		this.leftarm.rotation.set(0, 0, 0);
 		this.rightleg.rotation.set(0, 0, 0);

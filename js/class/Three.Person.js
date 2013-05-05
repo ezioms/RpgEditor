@@ -64,6 +64,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Initialisation position person
 	 */
 	this.initialGesture = function () {
+		this.ray.visible = false;
 		this.rightarm.rotation.set(0, 0, 0.5);
 		this.leftarm.rotation.set(0, 0, 0.3);
 		this.rightleg.rotation.set(0, 0, 0);

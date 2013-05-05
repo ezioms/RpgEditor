@@ -89,7 +89,7 @@ class Map_Controller extends Authentic_Controller
                         $v->hp = 100;
                         $v->leak = 0;
                         $v->type = $row->bot;
-                        $v->fixe = 1;
+                        $v->fixe = $row->bot && !$row->module_map ? 0 : 1;
                         $v->argent = 1000;
                         $v->xp = 10;
                         $v->niveau = 0;
