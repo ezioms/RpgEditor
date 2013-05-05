@@ -10,7 +10,7 @@ THREE.Bot = function (app, dataBot) {
 	this.fixe = dataBot.fixe;
 	this.leak = dataBot.leak;
 	this.radar = 200;
-	this.farViewBot = 2000;
+	this.farViewBot = 1000;
 	this.speed = 0.5;
 	this.speedMin = 0.5;
 	this.speedMax = 2;
@@ -127,8 +127,8 @@ THREE.Bot = function (app, dataBot) {
 				person.traverse(function (child) {
 					child.visible = false;
 				});
-				return;
 			}
+			return;
 		} else if (!person.visible) {
 			person.visible = true;
 			person.traverse(function (child) {
@@ -173,24 +173,27 @@ THREE.Bot = function (app, dataBot) {
 			speedTmp = this.speed;
 
 
-		//Collision
+		//Collision X
 		var wallX = Math.floor(((clone.position.x + (clone.position.x > this.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
 		var wallY = Math.floor(clone.position.y / sizeBloc);
 		var wallZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		if (app.map.hasObstacle(wallX, wallY, wallZ) || app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
+		if (app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
 			clone.position.x = this.position.x;
 			speedTmp -= 0.2;
 			turn = true;
+			console.log('colision X', distance);
 		}
 
+		//Collision Z
 		wallX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		wallZ = Math.floor(((clone.position.z + (clone.position.z > this.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
 
-		if (app.map.hasObstacle(wallX, wallY, wallZ) || app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
+		if (app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
 			clone.position.z = this.position.z;
 			speedTmp -= 0.2;
 			turn = true;
+			console.log('colision Z', distance);
 		}
 
 		if (clone.position.x < -middleMaxX + middle) {
@@ -210,18 +213,20 @@ THREE.Bot = function (app, dataBot) {
 		}
 
 		if (turn)
-			if (app.clock.elapsedTime % 20 > 10)
+			if (app.clock.elapsedTime % 5 < 2.5)
 				moveRight = true;
 			else
 				moveLeft = true;
 
 		clone.position.y += currentdirection.y -= this.gravity;
 
+
+		//Collision Y
 		wallX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
 		wallY = Math.floor(clone.position.y / sizeBloc);
 		wallZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		if (app.map.hasObstacle(wallX, wallY, wallZ) || app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
+		if (app.map.hasObstacle(wallX, wallY - 1, wallZ)) {
 			clone.position.y = this.position.y;
 			currentdirection.y = 0;
 		}
@@ -241,15 +246,6 @@ THREE.Bot = function (app, dataBot) {
 		else if (moveRight)
 			currentdirection.x -= rand / 50;
 
-		for (var key in app.scene.children)
-			if ((app.scene.children[key] instanceof THREE.Bears
-				|| app.scene.children[key] instanceof THREE.Dog
-				|| app.scene.children[key] instanceof THREE.Person ) && app.scene.children[key].position.distanceTo(clone.position) <= sizeBloc / 2) {
-				distance = 0;
-				clone.position = this.position.clone();
-				break;
-			}
-
 
 		if (distance > sizeBloc + (sizeBloc / 2)) {
 			if (this.fixe)
@@ -264,9 +260,8 @@ THREE.Bot = function (app, dataBot) {
 
 
 		// si c est un bot et a porté du hero on peut attaquer
-
 		if (dataBot.type == 2 || dataBot.type == 3) {
-			if (distance < sizeBloc + (sizeBloc / 2)) {
+			if (distance < sizeBloc + (sizeBloc/2)) {
 				if (app.clock.elapsedTime % 1 < 0.2)
 					if (random(0, 5) < 1) {
 						person.update(3);
@@ -276,7 +271,7 @@ THREE.Bot = function (app, dataBot) {
 							battle.addForAnimalDog(app, person.position.distanceTo(app.hero.getCamera().position));
 					}
 			}
-		} else if (!this.fixe && distance < this.radar) {
+		} else if (!this.fixe && dataBot.type != 2 && dataBot.type != 3 && distance < this.radar) {
 			if (app.clock.elapsedTime % 1 < 0.2)
 				if (random(0, 5) < 1) {
 					person.update(3);
