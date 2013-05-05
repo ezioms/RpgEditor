@@ -87,7 +87,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Position person STOP
 	 */
 	this.die = function () {
-		app.sound.effect('system/chute.mp3', 0.6);
+		app.sound.effect('fall.mp3', 0.6);
 		this.initialGesture();
 
 		this.rightarm.rotation.x = -1.5;

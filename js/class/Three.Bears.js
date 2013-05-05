@@ -80,7 +80,7 @@ THREE.Bears = function (picture, id) {
 	 * Position person STOP
 	 */
 	this.die = function () {
-		app.sound.effect('system/ours.mp3', 0.4);
+		app.sound.effect('bears.mp3', 0.4);
 		this.initialGesture();
 
 		this.rightleg.rotation.x = this.rightarm.rotation.x = -1.3;
