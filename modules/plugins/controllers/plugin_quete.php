@@ -98,23 +98,35 @@ class Plugin_Quete_Controller extends Action_Controller
         if (!isset($list_user_quete[$quete->id_quete]) && (!$quete->quete_id_parent || (isset($list_user_quete[$quete->quete_id_parent]) && $list_user_quete[$quete->quete_id_parent]))) {
             $quete->valid = 0;
             $quete->article = $quete->article_start;
+            $quete->audio = $quete->audio_start;
         } elseif (isset($list_user_quete[$quete->id_quete]) && $list_user_quete[$quete->id_quete]->status == 2 && $quete->element_detail_id_stop == $this->data->id_module) {
             $quete->valid = 2;
             $quete->article = $quete->article_stop;
+            $quete->audio = $quete->audio_stop;
         } elseif (isset($list_user_quete[$quete->id_quete]) && $list_user_quete[$quete->id_quete]->status == 1) {
             $quete->valid = 1;
             $quete->article = $quete->article_help;
+            $quete->audio = null;
         } else
             return;
+
+        if ($quete->audio) {
+            $currentCookie = explode('||', cookie::get('sounds'));
+            if (in_array($quete->audio, $currentCookie))
+                $quete->audio = null;
+            else {
+                $currentCookie[] = $quete->audio;
+                $quete->article = null;
+
+            }
+
+            cookie::set('sounds', implode('||', $currentCookie));
+        }
 
         if (isset($quete->article))
             $quete->article = str_replace('{{joueur}}', $this->user->username, $quete->article);
 
-
         $this->auto_render = FALSE;
-
-        echo html::stylesheet('index.php/css_' . base64_encode(implode('--', array('quete', 'coda'))));
-
 
         $v = new View('quete/plugin_show');
         $v->data = $quete;

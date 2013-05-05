@@ -11,3 +11,9 @@
 				<input type="button" id="accepter" class="button vert" value="<?php echo Kohana::lang( 'quete.button_accept' ); ?>"/>
 		<?php endif ?>
 </div>
+
+<?php if( $data->audio ) : ?>
+<script>
+    app.sound.effect('<?php echo $data->audio; ?>', 1);
+</script>
+<?php endif ?>

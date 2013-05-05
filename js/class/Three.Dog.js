@@ -81,6 +81,7 @@ THREE.Dog = function (picture, id) {
 	 */
 	this.die = function () {
 		app.sound.effect('dog.mp3', 0.6);
+		app.sound.effect('fall.mp3', 0.6);
 		this.initialGesture();
 
 		this.rightleg.rotation.z = this.rightarm.rotation.z = 1.3;

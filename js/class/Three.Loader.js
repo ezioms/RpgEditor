@@ -225,7 +225,7 @@ THREE.Loader = function () {
 			if (this.listAudio[this.sounds[keySound]] !== undefined)
 				continue;
 
-			this.listAudio[this.sounds[keySound]] = new Audio(dir_script + 'audio/' + this.sounds[keySound]);
+			this.listAudio[this.sounds[keySound]] = new Audio(dir_script + 'audios/' + this.sounds[keySound]);
 			this.listAudio[this.sounds[keySound]].load();
 
 			if (!this.listAudio[this.sounds[keySound]].complete)

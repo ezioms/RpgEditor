@@ -126,7 +126,7 @@ class Map_Controller extends Authentic_Controller
         $json->region = $this->region;
 
 
-        $sounds = file::listing_dir(DOCROOT . 'audio');
+        $sounds = file::listing_dir(DOCROOT . 'audios');
 
         $json->sounds = $sounds ? json_encode($sounds) : FALSE;
 

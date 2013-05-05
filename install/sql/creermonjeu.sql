@@ -9,7 +9,7 @@
  Target Server Version : 50168
  File Encoding         : utf-8
 
- Date: 05/05/2013 02:41:42 AM
+ Date: 05/05/2013 16:07:29 PM
 */
 
 SET NAMES utf8;
@@ -69,7 +69,7 @@ CREATE TABLE `items` (
   `hp` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `ammo` mediumint(8) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 --  Records of `items`
@@ -203,6 +203,8 @@ CREATE TABLE `quetes` (
   `article_start` text,
   `article_stop` text,
   `article_help` text,
+  `audio_start` varchar(255) DEFAULT NULL,
+  `audio_stop` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id_quete`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
@@ -210,7 +212,7 @@ CREATE TABLE `quetes` (
 --  Records of `quetes`
 -- ----------------------------
 BEGIN;
-INSERT INTO `quetes` VALUES ('12', '31168', '31193', 'Astuce du guide', '0', '0', '1000', '50', '0', '1', '', 'Nous sommes enfin arrivé à l\'entrée de la grotte qui te permettra d\'entrer dans les ruines du tombeau du roi d\'Ayodhya Bhagiratha.<br />\nFais attention à toi car il y a des animaux sauvages.<br />\nTu trouveras au fond à droite un passage qui te permettra d\'avancer.', 'Tu as réussi à trouver un passage ! ', ' Pour réussir à avancer dans ta quête va au fond a gauche et mon sur un bloc de pierre pour pouvoir ensuite sauter sur un autre bloc de pierre et un si de suite.');
+INSERT INTO `quetes` VALUES ('12', '31168', '31193', 'Astuce du guide', '0', '0', '1000', '50', '0', '1', '', 'Nous sommes enfin arrivé à l\'entrée de la grotte qui te permettra d\'entrer dans les ruines du tombeau du roi d\'Ayodhya Bhagiratha.<br />\nFais attention à toi car il y a des animaux sauvages.<br />\nTu trouveras au fond à droite un passage qui te permettra d\'avancer.', 'Tu as réussi à trouver un passage ! ', ' Pour réussir à avancer dans ta quête va au fond a gauche et mon sur un bloc de pierre pour pouvoir ensuite sauter sur un autre bloc de pierre et un si de suite.', 'guide.ogg', null);
 COMMIT;
 
 -- ----------------------------
@@ -245,7 +247,7 @@ CREATE TABLE `regions` (
   `background` varchar(255) DEFAULT 'images/background/grass.png',
   `background_color` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 --  Records of `regions`
@@ -340,7 +342,7 @@ CREATE TABLE `users` (
 --  Records of `users`
 -- ----------------------------
 BEGIN;
-INSERT INTO `users` VALUES ('11', 'contact@rpg.com', 'admin', 'b9d40c221a967a1c1d4100e5fe9d4fe949109325116478114e', '40', '1367676053', '1367714404', '0', '127.0.0.1', 'default.png', '1', '4', '1', '3', '-1939', '100', '-2076', '2', '0.7', '-94.434', '80189', '2', '240', '61', '100', '100', '100', '0', '0', '1', '32');
+INSERT INTO `users` VALUES ('11', 'contact@rpg.com', 'admin', 'b9d40c221a967a1c1d4100e5fe9d4fe949109325116478114e', '41', '1367750123', '1367762625', '0', '127.0.0.1', 'default.png', '1', '7', '0', '8', '-2121.05', '100', '-2084.77', '2', '0.7', '-93.654', '84237', '2', '240', '42', '100', '100', '100', '0', '0', '1', '32');
 COMMIT;
 
 -- ----------------------------
@@ -393,12 +395,5 @@ CREATE TABLE `users_quetes` (
   CONSTRAINT `users_quetes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   CONSTRAINT `users_quetes_ibfk_2` FOREIGN KEY (`quete_id`) REFERENCES `quetes` (`id_quete`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
-
--- ----------------------------
---  Records of `users_quetes`
--- ----------------------------
-BEGIN;
-INSERT INTO `users_quetes` VALUES ('11', '12', '2');
-COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

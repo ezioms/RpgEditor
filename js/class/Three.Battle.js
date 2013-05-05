@@ -15,7 +15,7 @@ THREE.Battle = function () {
 			return;
 		}
 
-		app.sound.effect('gunFire.mp3', 0.3);
+		app.sound.effect('gunFire.mp3', 0.5);
 		app.hero.getPerson().lightGun.intensity = 5;
 		app.hero.deleteAmmo();
 
@@ -33,7 +33,10 @@ THREE.Battle = function () {
 
 			app.bots[intersects[0].object.parent.idBot].setJump(2);
 			app.hero.argent += Math.round(intersects[0].distance / 100);
-		}
+		} else
+			setTimeout(function () {
+				app.sound.effect('ricoche.mp3', 0.4);
+			}, 50);
 	}
 };
 
