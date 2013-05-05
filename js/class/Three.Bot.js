@@ -57,6 +57,12 @@ THREE.Bot = function (app, dataBot) {
 	};
 
 	this.setJump = function (value) {
+		if( dataBot.type == 2)
+			app.sound.play('touch_bears.ogg', person);
+		else if( dataBot.type == 3)
+			app.sound.play('touch_dog.ogg', person);
+		else
+			app.sound.play('touch.ogg', person);
 		currentdirection.y = value;
 	};
 

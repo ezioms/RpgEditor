@@ -210,7 +210,7 @@ THREE.Hero = function (app) {
 				jump = true;
 				this.currentdirection.jump = heightJump;
 
-				app.sound.effect('jump.ogg', 0.2);
+				app.sound.effect('jump.ogg', 0.1);
 				break;
 			case 76 :
 				if (light.visible)
@@ -300,6 +300,8 @@ THREE.Hero = function (app) {
 		if (clone.position.y < sizeBloc) {
 			clone.position.y = sizeBloc;
 			this.currentdirection.jump = 0;
+			if(jump)
+				app.sound.effect('jump2.ogg', 0.1);
 			jump = false;
 		}
 
@@ -311,6 +313,8 @@ THREE.Hero = function (app) {
 
 		if (app.map.hasObstacle(dirYx, dirYyTop, dirYz) || app.map.hasObstacle(dirYx, dirYyBottom, dirYz)) {
 			clone.position.y = yawObject.position.y;
+			if(jump)
+				app.sound.effect('jump2.ogg', 0.1);
 			jump = false;
 			this.currentdirection.jump = 0;
 		}

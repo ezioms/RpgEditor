@@ -6,13 +6,17 @@ THREE.Sound = function () {
 		volume: 0.1
 	};
 
-	this.play = function (data, position) {
+	this.play = function (data, position, distance) {
 		if (!data || !position)
 			return;
 
-		var distance = this.distance(position, this.position);
-		var volume = 1 - distance / 1000;
+		if (!distance)
+			distance = this.position.distanceTo(position.position);
 
+		var volume = 1 - distance / 400;
+
+
+		console.log(volume);
 		if (volume < 0)
 			return;
 
