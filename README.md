@@ -35,6 +35,25 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 ### Change log ###
 
 
+05 mai 2013 - **r9**
+
+* Correction avec les bloc à position Y
+* Ajout de la capture d'écran avec la touche P sur toutes les cartes dans ladministration et le jeu.
+* Touche G pour afficher ou masquer la grille dans ladministration.
+* Correction clique continu sur les modules
+* Correction supprimer élément dans l'admin
+* Ajout d'images
+* Prise en charge es caractère en HD
+* Correction transparence
+* Correction selection class animal
+* Mise a jour data
+* Mise en place d'une lumière pour les coups de feu
+* Amélioration admin bot (choix entre person, ours ou chien) Issue #16
+* Gestion des items a ramasser sur la map
+* Mise en place de nouveau sons
+* Correction option quête - possibilité de rajouter un humain sur une quête
+
+
 26 avril 2013 - **r8**
 
 * Ajout du clique continu pour l'éditeur admin/public
