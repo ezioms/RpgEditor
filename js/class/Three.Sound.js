@@ -62,7 +62,6 @@ THREE.Sound = function () {
 
 
 	this.move = function (play) {
-
 		this.audioMove = app.loader.listAudio['move.ogg'];
 		try {
 			if (!play) {
