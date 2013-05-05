@@ -16,17 +16,23 @@ THREE.Loader = function () {
 
 	this.nbrItems = null;
 
-	this.completedImage = 0;
+	this.sounds = null;
 
-	this.noCompletedImage = 0;
+	this.nbrSounds = 0;
+
+	this.completedImage = 0;
 
 	this.listImg = {};
 
+	this.listAudio = {};
+
 	var contentLoading = document.getElementById('content_loading');
+
+	var noCompletedImage = 0;
 
 
 	this.stat = function (text) {
-		var valid = this.completedImage - this.noCompletedImage;
+		var valid = this.completedImage - noCompletedImage;
 		var pourcentage = Math.floor(valid / this.completedImage * 100);
 		contentLoading.innerHTML = text + '<br/><progress value="' + pourcentage + '" max="100"></progress><br/> ' + number_format(valid) + ' / ' + number_format(this.completedImage);
 	};
@@ -44,6 +50,7 @@ THREE.Loader = function () {
 		this.my.positionZ = parseFloat(this.my.positionZ);
 		this.items = this.datas.items;
 		this.bots = this.datas.bots;
+		this.sounds = this.datas.sounds;
 
 		if (!this.completedImage) {
 			// hero
@@ -71,13 +78,19 @@ THREE.Loader = function () {
 					this.completedImage++;
 					this.nbrItems++;
 				}
+
+			// sounds
+			for (var keySounds in this.sounds) {
+				this.completedImage++;
+				this.nbrSounds++;
+			}
 		}
 
-		this.noCompletedImage = this.completedImage;
+		noCompletedImage = this.completedImage;
 
-		if (this.getMapCompleted() && this.getBotCompleted() && this.getItemsCompleted() && this.getMyCompleted()) {
+		if (this.getMapCompleted() && this.getBotCompleted() && this.getItemsCompleted() && this.getMyCompleted() && this.getSoundsCompleted()) {
 			this.setMapCurrent();
-			this.stat('Chargement fini', this.noCompletedImage);
+			this.stat('Chargement fini', noCompletedImage);
 			return true;
 		}
 
@@ -97,9 +110,9 @@ THREE.Loader = function () {
 		if (!this.my.img.complete)
 			noComplete++;
 		else
-			this.noCompletedImage--;
+			noCompletedImage--;
 
-		this.stat('Chargement du héro', this.noCompletedImage);
+		this.stat('Chargement du héro', noCompletedImage);
 
 		return noComplete ? false : true;
 	};
@@ -117,9 +130,9 @@ THREE.Loader = function () {
 			if (!this.items[keyItem].image.complete)
 				noComplete++;
 			else
-				this.noCompletedImage--;
+				noCompletedImage--;
 
-			this.stat('Chargement des objets', this.noCompletedImage);
+			this.stat('Chargement des objets', noCompletedImage);
 		}
 		return noComplete ? false : true;
 	};
@@ -142,7 +155,7 @@ THREE.Loader = function () {
 					if (!row[keyImg].complete)
 						noComplete++;
 					else
-						this.noCompletedImage--;
+						noCompletedImage--;
 				}
 			}
 			else if (row) {
@@ -152,9 +165,9 @@ THREE.Loader = function () {
 				if (!row.complete)
 					noComplete++;
 				else
-					this.noCompletedImage--;
+					noCompletedImage--;
 			}
-			this.stat('Chargement des images pour la carte', this.noCompletedImage);
+			this.stat('Chargement des images pour la carte', noCompletedImage);
 		}
 
 		if (typeof this.map.materials == 'string')
@@ -163,8 +176,8 @@ THREE.Loader = function () {
 		if (!this.map.materials.complete)
 			noComplete++;
 		else
-			this.noCompletedImage--;
-		this.stat('Chargement des images pour la carte', this.noCompletedImage);
+			noCompletedImage--;
+		this.stat('Chargement des images pour la carte', noCompletedImage);
 
 		if (typeof this.map.univers == 'string')
 			this.map.univers = this.loadImage(dir_script + this.map.univers);
@@ -172,8 +185,8 @@ THREE.Loader = function () {
 		if (!this.map.univers.complete)
 			noComplete++;
 		else
-			this.noCompletedImage--;
-		this.stat('Chargement des images pour la carte', this.noCompletedImage);
+			noCompletedImage--;
+		this.stat('Chargement des images pour la carte', noCompletedImage);
 
 		return noComplete ? false : true;
 	};
@@ -192,10 +205,37 @@ THREE.Loader = function () {
 			if (!this.bots.list[key].img.complete)
 				noComplete++;
 			else
-				this.noCompletedImage--;
+				noCompletedImage--;
 
-			this.stat('Chargement des habitants', this.noCompletedImage);
+			this.stat('Chargement des habitants', noCompletedImage);
 		}
+		return noComplete ? false : true;
+	};
+
+
+	/*
+	 * Sound
+	 */
+	this.getSoundsCompleted = function () {
+		var noComplete = 0;
+
+
+		for (var keySound in this.sounds) {
+
+			if (this.listAudio[this.sounds[keySound]] !== undefined)
+				continue;
+
+			this.listAudio[this.sounds[keySound]] = new Audio(dir_script + 'audio/' + this.sounds[keySound]);
+			this.listAudio[this.sounds[keySound]].load();
+
+			if (!this.listAudio[this.sounds[keySound]].complete)
+				noComplete++;
+			else
+				noCompletedImage--;
+		}
+
+		this.stat('Chargement des sons', noCompletedImage);
+
 		return noComplete ? false : true;
 	};
 

@@ -115,6 +115,7 @@ class Map_Controller extends Authentic_Controller
             foreach ($articles as $row)
                 $articlesList[] = json_encode($row->reponse ? $row->article . '<div class="reponse">' . $row->reponse . '</div>' : $row->article);
 
+
         $this->region->map = new stdClass;
         $this->region->map->region = $this->region;
         $this->region->map->elements = $elements ? implode(',', $elements) : FALSE;
@@ -123,6 +124,11 @@ class Map_Controller extends Authentic_Controller
         $this->region->map->region->bots = $this->botFixe;
 
         $json->region = $this->region;
+
+
+        $sounds = file::listing_dir(DOCROOT . 'audio');
+
+        $json->sounds = $sounds ? json_encode($sounds) : FALSE;
 
         return $json->render($render);
     }

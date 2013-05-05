@@ -65,5 +65,6 @@
     <?php foreach( $items as $keyItem => $item ) : ?>
         "item_<?php echo $item->id; ?>" : <?php echo json_encode($item); ?><?php if( $keyItem < count($items) - 1) echo ","; ?>
     <?php endforeach ?>
-}
+    },
+    "sounds" :  <?php echo $sounds; ?>
 }

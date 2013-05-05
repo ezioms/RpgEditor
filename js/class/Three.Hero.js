@@ -210,7 +210,7 @@ THREE.Hero = function (app) {
 				jump = true;
 				this.currentdirection.jump = heightJump;
 
-				app.sound.effect('system/016-Jump02.ogg', 0.2);
+				app.sound.effect('jump.ogg', 0.2);
 				break;
 			case 76 :
 				if (light.visible)

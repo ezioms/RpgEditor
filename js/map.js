@@ -56,6 +56,7 @@ var load = function () {
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
 	info(app.loader.nbrItems + ' item(s)');
+	info(app.loader.nbrSounds + ' son(s)');
 
 	//stat for le debug
 	if (debug) {
@@ -310,7 +311,7 @@ var updateHeroVisual = function () {
 				});
 			}
 			else if (module.data.module == 'item') {
-				app.sound.effect('system/105-Heal01.ogg', 0.4);
+				app.sound.effect('life.ogg', 0.4);
 
 				var itemOver = app.loader.items['item_' + module.data.id_item];
 
@@ -350,7 +351,7 @@ var updateHeroVisual = function () {
 	if (app.alert) {
 		var alertUser = $('#alertUser');
 		if (!alertUser.is(':visible')) {
-			app.sound.effect('system/159-Skill03.ogg', 0.4);
+			app.sound.effect('alert.ogg', 0.4);
 			alertUser.show().fadeOut(app.alert);
 		}
 		app.alert = false;

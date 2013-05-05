@@ -16,17 +16,8 @@ THREE.Sound = function () {
 		if (volume < 0)
 			return;
 
-		var audioElement = document.getElementById(data);
+		var audioElement = app.loader.listAudio[data];
 		try {
-			if (!audioElement) {
-				audioElement = document.getElementById('content_body').appendChild(document.createElement("audio"));
-				audioElement.src = dir_script + 'audio/' + data;
-				audioElement.id = data;
-				audioElement.volume = volume;
-				audioElement.load();
-				return;
-			}
-
 			audioElement.currentTime = 0;
 			audioElement.volume = volume;
 			audioElement.play();
@@ -44,17 +35,8 @@ THREE.Sound = function () {
 		if (!volume)
 			volume = 0.5;
 
-		var audioElement = document.getElementById(data);
+		var audioElement = app.loader.listAudio[data];
 		try {
-			if (!audioElement) {
-				audioElement = document.getElementById('content_body').appendChild(document.createElement("audio"));
-				audioElement.src = dir_script + 'audio/' + data;
-				audioElement.id = data;
-				audioElement.volume = volume;
-				audioElement.load();
-				return;
-			}
-
 			audioElement.currentTime = 0;
 			audioElement.volume = volume;
 			audioElement.play();
@@ -68,19 +50,9 @@ THREE.Sound = function () {
 		if (!data)
 			return;
 
-		var audioElement = document.getElementById(data);
+		var audioElement = app.loader.listAudio[data];
 
 		try {
-			if (!audioElement) {
-				audioElement = document.getElementById('content_body').appendChild(document.createElement("audio"));
-				audioElement.src = dir_script + 'audio/' + data;
-				audioElement.id = data;
-				audioElement.loop = true;
-				audioElement.volume = volume;
-				audioElement.load();
-				return;
-			}
-
 			audioElement.volume = 0.5;
 			audioElement.play();
 		}
@@ -91,18 +63,8 @@ THREE.Sound = function () {
 
 	this.move = function (play) {
 
-		this.audioMove = document.getElementById('moveHero');
+		this.audioMove = app.loader.listAudio['move.ogg'];
 		try {
-			if (!this.audioMove) {
-				this.audioMove = document.getElementById('content_body').appendChild(document.createElement("audio"));
-				this.audioMove.src = dir_script + 'audio/system/013-Move01.ogg';
-				this.audioMove.id = 'moveHero';
-				this.audioMove.loop = true;
-				this.audioMove.volume = volume;
-				this.audioMove.load();
-				return;
-			}
-
 			if (!play) {
 				this.audioMove.currentTime = 0;
 				this.audioMove.pause();
