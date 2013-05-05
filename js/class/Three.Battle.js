@@ -42,14 +42,17 @@ THREE.Battle = function () {
 	/*
 	 * Création d'un tire pour un bot
 	 */
-	this.addForBot = function (app, distance) {
+	this.addForBot = function (app, distance, noGun) {
 		if (random(0, distance) < 50) {
 			var pt = random(3, 12);
 			app.hero.hp -= pt;
 			app.alert = pt * 1000;
 		}
 
-		app.sound.play('gunFire.mp3', null, distance);
+		if (noGun)
+			app.sound.play('poing.mp3', null, distance);
+		else
+			app.sound.play('gunFire.mp3', null, distance);
 	}
 
 	/*

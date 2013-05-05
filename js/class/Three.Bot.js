@@ -182,7 +182,6 @@ THREE.Bot = function (app, dataBot) {
 			clone.position.x = this.position.x;
 			speedTmp -= 0.2;
 			turn = true;
-			console.log('colision X', distance);
 		}
 
 		//Collision Z
@@ -193,7 +192,6 @@ THREE.Bot = function (app, dataBot) {
 			clone.position.z = this.position.z;
 			speedTmp -= 0.2;
 			turn = true;
-			console.log('colision Z', distance);
 		}
 
 		if (clone.position.x < -middleMaxX + middle) {
@@ -275,7 +273,7 @@ THREE.Bot = function (app, dataBot) {
 			if (app.clock.elapsedTime % 1 < 0.2)
 				if (random(0, 5) < 1) {
 					person.update(3);
-					battle.addForBot(app, person.position.distanceTo(app.hero.getCamera().position));
+					battle.addForBot(app, person.position.distanceTo(app.hero.getCamera().position), dataBot.fixe);
 				}
 		}
 
