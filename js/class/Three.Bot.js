@@ -35,14 +35,20 @@ THREE.Bot = function (app, dataBot) {
 	var middleMaxX = infoSize.xMax * sizeBloc / 2;
 	var middleMaxZ = infoSize.zMax * sizeBloc / 2;
 
+	// les battle
+	var battle = new THREE.Battle();
+
 	var person;
 
 	if (dataBot.type == 2)
 		person = new THREE.Bears(dataBot.img, this.id);
 	else if (dataBot.type == 3)
 		person = new THREE.Dog(dataBot.img, this.id);
-	else
+	else {
 		person = new THREE.Person('bot', dataBot.img, null, null, this.id);
+		if (!this.fixe)
+			person.changeRight(1);
+	}
 
 	person.name = 'bot';
 	person.rotation.y = PIDivise2;
@@ -57,12 +63,15 @@ THREE.Bot = function (app, dataBot) {
 	};
 
 	this.setJump = function (value) {
-		if( dataBot.type == 2)
+		this.fixe = false;
+
+		if (dataBot.type == 2)
 			app.sound.play('touch_bears.ogg', person);
-		else if( dataBot.type == 3)
+		else if (dataBot.type == 3)
 			app.sound.play('touch_dog.ogg', person);
 		else
 			app.sound.play('touch.ogg', person);
+
 		currentdirection.y = value;
 	};
 
@@ -76,7 +85,6 @@ THREE.Bot = function (app, dataBot) {
 
 
 	this.speack = function (app) {
-		console.log('speack');
 		if (notifications.innerHTML != '' || this.fixe)
 			return;
 
@@ -140,15 +148,14 @@ THREE.Bot = function (app, dataBot) {
 		var clone = this.clone();
 
 		// On vérifie que le bot se trouve dans la partie action du hero
+		this.speed = this.speedMin;
+
 		if (distance < this.radar) {
 			timeSpeed = app.clock.elapsedTime + random(3, 10);
 			turn = false;
+			if (!this.fixe)
+				this.speed = this.speedMax;
 		}
-
-		this.speed = this.speedMin;
-
-		if (this.leak && timeSpeed > app.clock.elapsedTime)
-			this.speed = this.speedMax;
 
 
 		//Calcul du déplacement
@@ -228,6 +235,7 @@ THREE.Bot = function (app, dataBot) {
 			var theta = Math.atan2(person.position.x - hero.x, person.position.z - hero.z);
 
 			currentdirection.x = ( ((theta / PI * 180) + (theta > 0 ? 0 : 360) + 90) * PIDivise180 ) / PIDivise180 + 90;
+
 		} else if (moveLeft)
 			currentdirection.x += rand / 50;
 		else if (moveRight)
@@ -253,6 +261,28 @@ THREE.Bot = function (app, dataBot) {
 				person.update(speedTmp >= 2 ? 1 : this.fixe ? 2 : 0);
 		} else
 			person.update(2);
+
+
+		// si c est un bot et a porté du hero on peut attaquer
+
+		if (dataBot.type == 2 || dataBot.type == 3) {
+			if (distance < sizeBloc + (sizeBloc / 2)) {
+				if (app.clock.elapsedTime % 1 < 0.2)
+					if (random(0, 5) < 1) {
+						person.update(3);
+						if (dataBot.type == 2)
+							battle.addForAnimalBears(app, person.position.distanceTo(app.hero.getCamera().position));
+						else if (dataBot.type == 3)
+							battle.addForAnimalDog(app, person.position.distanceTo(app.hero.getCamera().position));
+					}
+			}
+		} else if (!this.fixe && distance < this.radar) {
+			if (app.clock.elapsedTime % 1 < 0.2)
+				if (random(0, 5) < 1) {
+					person.update(3);
+					battle.addForBot(app, person.position.distanceTo(app.hero.getCamera().position));
+				}
+		}
 
 
 		person.position.set(this.position.x, this.position.y - 68, this.position.z);

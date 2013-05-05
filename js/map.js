@@ -351,10 +351,8 @@ var updateHeroVisual = function () {
 	// Vue en rouge en cas d'accident'
 	if (app.alert) {
 		var alertUser = $('#alertUser');
-		if (!alertUser.is(':visible')) {
-			app.sound.effect('alert.ogg', 0.4);
-			alertUser.show().fadeOut(app.alert);
-		}
+		app.sound.effect('sorrow.mp3', 0.4);
+		alertUser.stop(true,true).show().fadeOut(app.alert);
 		app.alert = false;
 	}
 

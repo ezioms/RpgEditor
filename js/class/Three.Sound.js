@@ -7,7 +7,7 @@ THREE.Sound = function () {
 	};
 
 	this.play = function (data, position, distance) {
-		if (!data || !position)
+		if ((!data && !position ) || (!data && !distance))
 			return;
 
 		if (!distance)
@@ -15,8 +15,6 @@ THREE.Sound = function () {
 
 		var volume = 1 - distance / 400;
 
-
-		console.log(volume);
 		if (volume < 0)
 			return;
 

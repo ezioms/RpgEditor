@@ -12,7 +12,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	this.idBot = id;
 
-	this.hp = random(2, 4);
+	this.hp = random(4, 8);
 
 	this.name = type;
 
@@ -21,6 +21,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	var faceMesh = new THREE.MeshFaceMaterial();
 
 	var listImg = {};
+
+	var tire = -1;
 
 
 	/*
@@ -40,7 +42,11 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Update person et position
 	 */
 	this.update = function (type) {
-		this.initialGesture();
+		if( this.name == 'bot' && tire >= 0 && tire < 5) {
+			tire++;
+			return;
+		} else
+			this.initialGesture();
 		this.lightGun.intensity = 0;
 
 		switch (type) {
@@ -105,9 +111,10 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 
 	/*
-	 * Position person STOP
+	 * Position person GUN FIRE
 	 */
 	this.shootgun = function () {
+		tire = 0;
 		this.rightarm.rotation.z = 1.3;
 		this.rightarm.rotation.x = -0.2;
 	};

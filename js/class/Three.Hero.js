@@ -420,6 +420,7 @@ THREE.Hero = function (app) {
 			this.setPosition(1, 1, 1)
 			this.hp = 100;
 			app.messages.push('GAME OVER');
+
 		}
 		else if (this.hp > 100)
 			this.hp = 100;

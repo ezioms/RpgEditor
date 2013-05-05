@@ -8,7 +8,7 @@ THREE.Dog = function (picture, id) {
 
 	this.idBot = id;
 
-	this.hp = random(2, 5);
+	this.hp = random(3, 6);
 
 	this.name = 'bears';
 
@@ -17,6 +17,8 @@ THREE.Dog = function (picture, id) {
 	var faceMesh = new THREE.MeshFaceMaterial();
 
 	var listImg = {};
+
+	var frappe = -1;
 
 	/*
 	 * Get he's die
@@ -37,7 +39,11 @@ THREE.Dog = function (picture, id) {
 	 */
 	this.update = function (type) {
 
-		this.initialGesture();
+		if( frappe >= 0 && frappe < 15) {
+			frappe++;
+			return;
+		} else
+			this.initialGesture();
 
 		if (this.hp <= 0)
 			return;
@@ -48,6 +54,9 @@ THREE.Dog = function (picture, id) {
 				break;
 			case 2 :
 				this.stop();
+				break;
+			case 3 :
+				this.attack();
 				break;
 			default :
 				this.walk();
@@ -88,6 +97,15 @@ THREE.Dog = function (picture, id) {
 		this.rightleg.rotation.z = this.rightarm.rotation.z = 1.3;
 		this.leftleg.rotation.z = this.leftarm.rotation.z = 1.3;
 		this.position.y -= 9;
+	};
+
+
+	/*
+	 * Position person ATTAQUE
+	 */
+	this.attack = function () {
+		frappe = 0;
+		this.rightarm.rotation.z = 1.3;
 	};
 
 
