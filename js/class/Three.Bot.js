@@ -92,8 +92,12 @@ THREE.Bot = function (app, dataBot) {
 	 */
 	this.update = function (app) {
 
-		if (person.getDie())
+		if (person.getDie()) {
+			if (person.name == 'bot')
+				app.map.deleteOverModule(this.zone);
 			return;
+
+		}
 
 		if (buttonEnter)
 			this.speack(app);

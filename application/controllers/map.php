@@ -68,8 +68,7 @@ class Map_Controller extends Authentic_Controller
                             'article_category_id' => 2,
                             'status' => 1), 1);
                         $modules[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "data" : ' . $action . ', "article" : ' . json_encode($article->article) . ' }';
-                    } elseif ($row->module_map == 'bot' || $row->bot) {
-
+                    } elseif ($row->bot) {
 
                         $v = new stdClass;
                         $v->id = 0;
@@ -83,20 +82,23 @@ class Map_Controller extends Authentic_Controller
                         if ($row->bot == 2)
                             $v->image = 'animals/bears.png';
                         elseif ($row->bot == 3)
-                            $v->image = 'animals/dog.png';
-                        else
+                            $v->image = 'animals/dog.png'; else
                             $v->image = 'character/' . $images[array_rand($images)];
 
                         $v->hp_max = 100;
                         $v->hp = 100;
                         $v->leak = 0;
                         $v->type = $row->bot;
-                        $v->fixe = $row->bot ? 0 : 1;
+                        $v->fixe = 1;
                         $v->argent = 1000;
                         $v->xp = 10;
                         $v->niveau = 0;
 
                         $this->botFixe[] = $v;
+
+                        if ($row->module_map == 'quete')
+                            $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "data" : ' . $action . ', "article" : "" }';
+
                     } else
                         $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "data" : ' . $action . ', "article" : "" }';
                 }

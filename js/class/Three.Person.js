@@ -87,7 +87,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Position person STOP
 	 */
 	this.die = function () {
-		app.sound.effect('system/ours.mp3', 0.4);
+		app.sound.effect('system/chute.mp3', 0.6);
 		this.initialGesture();
 
 		this.rightarm.rotation.x = -1.5;
@@ -355,7 +355,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
 
-	this.ray = new THREE.Mesh(new THREE.CubeGeometry(26, 20, 24));
+	this.ray = new THREE.Mesh(new THREE.CubeGeometry(15, 28, 15));
 	this.ray.visible = false;
 	this.ray.position.y = 8;
 	this.ray.name = 'rayBear';

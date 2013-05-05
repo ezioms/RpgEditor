@@ -10,8 +10,7 @@ THREE.Battle = function () {
 	 */
 	this.add = function (app) {
 
-		if( !app.hero.ammo ) {
-			console.log('click');
+		if (!app.hero.ammo) {
 			app.sound.effect('system/gunEmpty.mp3', 0.3);
 			return;
 		}
@@ -32,7 +31,6 @@ THREE.Battle = function () {
 			if (intersects[0].object.parent.hp)
 				app.hero.argent += 100;
 
-			console.log(app.bots[intersects[0].object.parent.idBot]);
 			app.bots[intersects[0].object.parent.idBot].setJump(2);
 			app.hero.argent += Math.round(intersects[0].distance / 100);
 		}

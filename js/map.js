@@ -110,6 +110,8 @@ var initialize = function () {
 	var modules = app.map.getModules();
 	if (modules)
 		for (var keyCaseModule in modules) {
+			if (app.loader.items['item_' + modules[keyCaseModule].data.id_item] == undefined)
+				continue;
 			var module = new THREE.Item(app, app.loader.items['item_' + modules[keyCaseModule].data.id_item].image);
 			module.setPosition(modules[keyCaseModule].x, modules[keyCaseModule].y, modules[keyCaseModule].z);
 			app.modules[modules[keyCaseModule].x + '-' + modules[keyCaseModule].y + '-' + modules[keyCaseModule].z] = module;

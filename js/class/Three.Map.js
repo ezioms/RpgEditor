@@ -183,6 +183,19 @@ THREE.Map = function (app) {
 
 
 	/*
+	 * GET if over module
+	 */
+	this.deleteOverModule = function (position) {
+		var x = Math.floor(position.x);
+		var y = Math.floor(position.y) - 1;
+		var z = Math.floor(position.z);
+
+		if (region.modules[x + '-' + y + '-' + z] != undefined)
+			delete region.modules[x + '-' + y + '-' + z];
+	};
+
+
+	/*
 	 * CONSTRUCTOR
 	 */
 	var obstacles = {};
