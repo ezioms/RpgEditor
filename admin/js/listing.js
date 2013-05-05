@@ -5,12 +5,7 @@ $(function(){
 		}]);
 		tableau ('#json_items', url_script+'items/resultatAjax', [null, {
 				'bSortable': false
-		}, null, null, null, null, null, {
-				'bSortable': false
-		}]);
-		tableau ('#json_sorts', url_script+'sorts/resultatAjax', [null, {
-				'bSortable': false
-		}, null, null, null, null, null, {
+		}, null, {
 				'bSortable': false
 		}]);
 		tableau ('#json_quetes', url_script+'quetes/resultatAjax', [null, null, null, null, null, null, null, {

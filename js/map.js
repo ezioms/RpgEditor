@@ -14,8 +14,7 @@ var valueGraph = document.getElementById('valueMoyenneGraph');
 var contentGraph = document.getElementById('ContenuGraphique');
 var userHp = document.getElementById('user_hp');
 var userScore = document.getElementById('user_argent');
-var userLevel = document.getElementById('user_niveau');
-var editor = document.getElementById('editor');
+var userAmmo = document.getElementById('user_ammo');
 var noCursor = document.getElementById('noCursor');
 var notifications = document.getElementById('notifications');
 var webGL = document.getElementById('debugWebGL');
@@ -31,7 +30,6 @@ app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHei
 app.loader = new THREE.Loader;
 app.clock = new THREE.Clock;
 app.sound = new THREE.Sound;
-app.node = new THREE.Node;
 app.overlay = new THREE.Overlay;
 
 
@@ -39,12 +37,13 @@ app.renderer = {};
 app.hero = {};
 app.map = {};
 app.bots = {};
-app.users = {};
+app.modules = {};
 app.messages = [];
 app.alert = false;
+app.group = [];
 
 /*
- * Initialize datas, node and scene
+ * Initialize datas and scene
  */
 var load = function () {
 	// load elements
@@ -52,10 +51,11 @@ var load = function () {
 		return setTimeout(load, 1000 / 25);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userLevel.style.display = userScore.style.display = editor.style.display = 'block';
+	userHp.style.display = userScore.style.display = userAmmo.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
+	info(app.loader.nbrItems + ' item(s)');
 
 	//stat for le debug
 	if (debug) {
@@ -65,9 +65,6 @@ var load = function () {
 		stats.domElement.style.left = '0';
 		document.body.appendChild(stats.domElement);
 	}
-
-	// initialize Socket.io
-	app.node.init(app);
 
 	// initialize the scene with objects
 	initialize();
@@ -88,6 +85,9 @@ var initialize = function () {
 	app.scene.add(app.hero.getCamera());
 	// add physic hero (camera) in scene
 	app.scene.add(app.hero.getPerson());
+	// add torch hero
+	var torch = app.hero.getTorch();
+	app.scene.add(torch);
 
 	// add physic map in scene
 	app.scene.add(app.map.getUnivers());
@@ -102,13 +102,29 @@ var initialize = function () {
 		for (var keyBot in bots) {
 			var bot = new THREE.Bot(app, bots[keyBot]);
 			app.bots[bot.id] = bot;
+			app.group.push(bot.getRay());
 			app.scene.add(bot.getPerson());
+		}
+
+	// generate bots and add in scene
+	var modules = app.map.getModules();
+	if (modules)
+		for (var keyCaseModule in modules) {
+			if (app.loader.items['item_' + modules[keyCaseModule].data.id_item] == undefined)
+				continue;
+			var module = new THREE.Item(app, app.loader.items['item_' + modules[keyCaseModule].data.id_item].image);
+			module.setPosition(modules[keyCaseModule].x, modules[keyCaseModule].y, modules[keyCaseModule].z);
+			app.modules[modules[keyCaseModule].x + '-' + modules[keyCaseModule].y + '-' + modules[keyCaseModule].z] = module;
+			app.scene.add(module);
 		}
 
 
 	//generate render
 	app.renderer = new THREE.WebGLRenderer({
-		clearColor: app.map.getBackgroundColor()
+		clearColor: app.map.getBackgroundColor(),
+		antialias: true,
+		clearAlpha: true,
+		preserveDrawingBuffer: true
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
 	app.renderer.shadowMapEnabled = true;
@@ -140,39 +156,16 @@ var render = function () {
 		return app.renderer.render(app.scene, app.camera);
 	}
 
-	// listen others users with socket.io
-	var listUsers = app.node.listUser();
-	if (listUsers)
-		for (var keyUser in listUsers)
-			// ID is not my ID
-			if (listUsers[keyUser].id != app.hero.id) {
-				// if user existe and he's in my region
-				if (listUsers[keyUser] != false && listUsers[keyUser].region == app.hero.region) {
-					// user exist in memory
-					if (app.users[keyUser] == undefined) {
-						app.users[keyUser] = new THREE.User(listUsers[keyUser], app.loader, app.sound);
-						app.scene.add(app.users[keyUser].getPerson());
-					}
-					else
-						app.users[keyUser].update(listUsers[keyUser]);
-				} else if (listUsers[keyUser] == false && app.users[keyUser] != undefined) {
-					app.scene.remove(app.users[keyUser].getPerson());
-					app.renderer.deallocateObject(app.users[keyUser].getPerson());
-					delete app.users[keyUser];
-					app.node.deleteUser(keyUser);
-				}
-			}
-
-
 	// update bots in scene
 	for (var keyBot in app.bots)
 		app.bots[keyBot].update(app);
 
+	// update module in scene
+	for (var keyModule in app.modules)
+		app.modules[keyModule].update(app);
+
 	// update hero
 	app.hero.update(app);
-
-	// send my information with socket.io
-	app.node.send(app.hero);
 
 	// update sound for the volume distance with hero and environment
 	app.sound.update(app);
@@ -316,6 +309,23 @@ var updateHeroVisual = function () {
 					$('#content_action').html(data);
 				});
 			}
+			else if (module.data.module == 'item') {
+				app.sound.effect('system/105-Heal01.ogg', 0.4);
+
+				var itemOver = app.loader.items['item_' + module.data.id_item];
+
+				if (itemOver.hp != 0)
+					app.hero.hp += parseInt(itemOver.hp);
+
+				if (itemOver.ammo != 0)
+					app.hero.ammo += parseInt(itemOver.ammo);
+
+				app.scene.remove(app.modules[module.x + '-' + module.y + '-' + module.z]);
+				delete app.modules[module.x + '-' + module.y + '-' + module.z];
+
+				if (module.data.title)
+					app.messages.push(module.data.title);
+			}
 
 			action = true;
 		}
@@ -340,17 +350,10 @@ var updateHeroVisual = function () {
 	if (app.alert) {
 		var alertUser = $('#alertUser');
 		if (!alertUser.is(':visible')) {
-			app.sound.play('system/159-Skill03.ogg', app.hero.getPerson().position);
+			app.sound.effect('system/159-Skill03.ogg', 0.4);
 			alertUser.show().fadeOut(app.alert);
 		}
 		app.alert = false;
-	}
-
-
-	// changement de niveau
-	if (app.hero.xp >= app.hero.xpMax) {
-		app.loader.request('user/update?' + app.hero.getData());
-		app.messages.push('Vous êtes passé au niveau : ' + app.hero.niveau);
 	}
 
 };
@@ -460,7 +463,9 @@ $(function () {
 				buttonEnter = simulate_key = false;
 		})
 		.keydown(function (event) {
-			if (event.keyCode === 13) {
+			if (event.keyCode === 80)
+				window.open(app.renderer.domElement.toDataURL('image/png'), 'Capture');
+			else if (event.keyCode === 13) {
 				killSpeackBot();
 				simulEnter();
 				buttonEnter = simulate_key = true;

@@ -6,21 +6,20 @@ THREE.Bot = function (app, dataBot) {
 
 	this.wireframe = false;
 
-	this.gravity = 1;
+	this.gravity = 0.5;
 	this.fixe = dataBot.fixe;
 	this.leak = dataBot.leak;
 	this.radar = 200;
 	this.farViewBot = 2000;
 	this.speed = 0.5;
 	this.speedMin = 0.5;
-	this.speedMax = 3;
+	this.speedMax = 2;
+
+	var lastAction = false;
 
 	var target = new THREE.Vector3(0, 0, 0);
 
 	var timeSpeed = false;
-	var lastTimeChange = 0;
-
-	var lastAction = false;
 
 	var currentdirection = {
 		x: 0,
@@ -36,17 +35,30 @@ THREE.Bot = function (app, dataBot) {
 	var middleMaxX = infoSize.xMax * sizeBloc / 2;
 	var middleMaxZ = infoSize.zMax * sizeBloc / 2;
 
-	var person = new THREE.Person('bot', dataBot.img, dataBot.name);
+	var person;
+
+	if (dataBot.type == 2)
+		person = new THREE.Bears(dataBot.img, this.id);
+	else if (dataBot.type == 3)
+		person = new THREE.Dog(dataBot.img, this.id);
+	else
+		person = new THREE.Person('bot', dataBot.img, null, null, this.id);
+
 	person.name = 'bot';
 	person.rotation.y = PIDivise2;
-
-	var distance = this.position.distanceTo(app.hero.getPerson().position);
 
 
 	this.getPerson = function () {
 		return person;
 	};
 
+	this.getRay = function () {
+		return person.ray;
+	};
+
+	this.setJump = function (value) {
+		currentdirection.y = value;
+	};
 
 	/*
 	 *	SET position du héro
@@ -58,6 +70,7 @@ THREE.Bot = function (app, dataBot) {
 
 
 	this.speack = function (app) {
+		console.log('speack');
 		if (notifications.innerHTML != '' || this.fixe)
 			return;
 
@@ -79,10 +92,19 @@ THREE.Bot = function (app, dataBot) {
 	 */
 	this.update = function (app) {
 
+		if (person.getDie()) {
+			if (person.name == 'bot')
+				app.map.deleteOverModule(this.zone);
+			return;
+
+		}
+
+		if (buttonEnter)
+			this.speack(app);
+
 		var hero = app.hero.getCamera().position;
 
-		distance = this.position.distanceTo(hero);
-
+		var distance = this.position.distanceTo(hero);
 
 		// Afficher le bot ou non selon sa distance avec le hero
 		if (distance > this.farViewBot) {
@@ -102,8 +124,6 @@ THREE.Bot = function (app, dataBot) {
 
 		var rand = random(0, 100);
 
-		var zoneHero = false;
-
 		// On fait tourner le bot aléatoirement
 		var turn = (rand > 90) ? true : false;
 
@@ -116,7 +136,6 @@ THREE.Bot = function (app, dataBot) {
 		// On vérifie que le bot se trouve dans la partie action du hero
 		if (distance < this.radar) {
 			timeSpeed = app.clock.elapsedTime + random(3, 10);
-			zoneHero = true;
 			turn = false;
 		}
 
@@ -197,49 +216,43 @@ THREE.Bot = function (app, dataBot) {
 		if (clone.position.y < 100)
 			clone.position.y = 100;
 
-		//Look
-		if (moveLeft)
+
+		// On vérifie que le bot se trouve dans la partie action du hero
+		if (distance < this.radar) {
+			var theta = Math.atan2(person.position.x - hero.x, person.position.z - hero.z);
+
+			currentdirection.x = ( ((theta / PI * 180) + (theta > 0 ? 0 : 360) + 90) * PIDivise180 ) / PIDivise180 + 90;
+		} else if (moveLeft)
 			currentdirection.x += rand / 50;
 		else if (moveRight)
 			currentdirection.x -= rand / 50;
 
-		var newRotation = (currentdirection.x + 270 % 360) * PIDivise180;
-
-		person.position.set(this.position.x, this.position.y - 50, this.position.z);
-		person.rotation.y = newRotation;
-
-		if ((!this.leak && zoneHero) || this.fixe) {
-			// Look Camera
-			var theta = Math.atan2(person.position.x - hero.x, person.position.z - hero.z);
-
-			var direction = ((theta / PI * 180) + (theta > 0 ? 0 : 360) + 90) * PIDivise180;
-
-			if (direction != person.rotation.y)
-				person.rotation.y = direction;
-
-			if (buttonEnter)
-				this.speack(app);
-
-			person.initialGesture();
-			person.stop();
-
-			if (lastTimeChange < app.clock.elapsedTime) {
-				if (!this.fixe)
-					this.leak = (random(0, 100) > dataBot.leak) ? true : false;
-
-				person.update(random(3, 5));
-
-				lastTimeChange = app.clock.elapsedTime + random(5, 30);
+		for (var key in app.scene.children)
+			if ((app.scene.children[key] instanceof THREE.Bears
+				|| app.scene.children[key] instanceof THREE.Dog
+				|| app.scene.children[key] instanceof THREE.Person ) && app.scene.children[key].position.distanceTo(clone.position) <= sizeBloc / 2) {
+				distance = 0;
+				clone.position = this.position.clone();
+				break;
 			}
-			this.position.set(this.position.x, clone.position.y, this.position.z);
-		}
-		else {
-			this.position.set(clone.position.x, clone.position.y, clone.position.z);
 
-			if (person.position.x != this.position.x || person.position.y != this.position.y - 50
-				|| person.position.z != this.position.z || person.rotation.y != newRotation)
-				person.update(speedTmp >= 2 ? 1 : 0);
-		}
+
+		if (distance > sizeBloc + (sizeBloc / 2)) {
+			if (this.fixe)
+				this.position.set(this.position.x, clone.position.y, this.position.z);
+			else
+				this.position.set(clone.position.x, clone.position.y, clone.position.z);
+
+			if (person.position.x != this.position.x || person.position.y != this.position.y - 50 || person.position.z != this.position.z)
+				person.update(speedTmp >= 2 ? 1 : this.fixe ? 2 : 0);
+		} else
+			person.update(2);
+
+
+		person.position.set(this.position.x, this.position.y - 68, this.position.z);
+
+		person.rotation.y = (currentdirection.x + 270 % 360) * PIDivise180;
+
 
 		this.zone.set(Math.floor((this.position.x + middleMaxX) / sizeBloc) + 1, Math.floor(this.position.y / sizeBloc) - 1, Math.floor((this.position.z + middleMaxZ) / sizeBloc) + 1);
 

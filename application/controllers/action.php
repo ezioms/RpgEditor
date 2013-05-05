@@ -42,7 +42,7 @@ class Action_Controller extends Map_Controller
         if (($this->data = Map_Model::instance()->select(array('region_id' => $this->user->region_id,
             'module_map !=' => '',
             'x' => $this->user->x,
-            'y' => $this->user->y,
+            'y' => $this->user->y +1,
             'z' => $this->user->z), 1))
             && $this->data->action_map
             && ($this->data->action_map = @unserialize($this->data->action_map))

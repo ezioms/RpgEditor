@@ -13,6 +13,9 @@ THREE.Hero = function (app) {
 	this.niveau = app.loader.my.niveau;
 	this.gravity = app.loader.my.gravity;
 	this.speed = app.loader.my.speed;
+	this.hand_left = app.loader.my.hand_left;
+	this.hand_right = app.loader.my.hand_right;
+	this.ammo = app.loader.my.ammo;
 	this.zone = new THREE.Vector3(app.loader.my.x, app.loader.my.y, app.loader.my.z);
 	this.currentdirection = {
 		x: app.loader.datas.my.currentdirection_x,
@@ -24,14 +27,10 @@ THREE.Hero = function (app) {
 	var moveBackward = false;
 	var moveLeft = false;
 	var moveRight = false;
-	var pressClick = false;
-	var tmpMoveForward = false;
 
-	var heightJump = 13;
+	var heightJump = 9;
 	var jump = false;
 	var run = false;
-	var grab = false;
-	var contactSol = false;
 
 	var timeFall = 0;
 	var speedTmp = 0;
@@ -48,20 +47,31 @@ THREE.Hero = function (app) {
 	// memory stat hero
 	var memoryBarValue = 0;
 	var memoryScoreValue = 0;
-	var memoryLevelValue = 0;
+	var memoryAmmoValue = 0;
+	var memoryDistance = 0;
+
+	var light = new THREE.PointLight(0xffaa00, 1.2, 400);
+
+	// les battle
+	var battle = new THREE.Battle();
 
 	//camera
 	var pitchObject = new THREE.Object3D();
-	pitchObject.position.z = 0;
+	//pitchObject.position.z = 50;
 	pitchObject.add(app.camera);
 
 	var yawObject = new THREE.Object3D();
+	yawObject.name = 'camera';
 	yawObject.add(pitchObject);
 	yawObject.rotation.y = this.currentdirection.x;
 
-	var person = new THREE.Person('hero', this.img);
+	yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
+
+	var person = new THREE.Person('hero', this.img, this.hand_left, this.hand_right);
 	person.name = 'hero';
 	person.rotation.y = PIDivise2;
+
+	var shootgun = false;
 
 
 	/*
@@ -70,6 +80,26 @@ THREE.Hero = function (app) {
 	this.getCamera = function () {
 		return yawObject;
 	}
+
+
+	/*
+	 *	DELETE le nombre de munition
+	 */
+	this.deleteAmmo = function () {
+		this.ammo--;
+		if (this.ammo < 0)
+			this.ammo = 0;
+
+		return this.ammo;
+	}
+
+	/*
+	 *	GET myRay
+	 */
+	this.getTorch = function () {
+		return light;
+	}
+
 
 	/*
 	 *	GET person du héro
@@ -84,13 +114,14 @@ THREE.Hero = function (app) {
 	 */
 	this.setPosition = function (x, y, z) {
 		this.zone.set(x, y, z);
-		yawObject.position.set(-middleMaxX + (x * sizeBloc + middle), y * sizeBloc + (sizeBloc * 2), -middleMaxZ + (z * sizeBloc + middle));
+		yawObject.position.set(-middleMaxX + (x * sizeBloc + middle), y * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc + middle));
 	};
 
 
 	/*
 	 * Position de la sourie
 	 */
+	var INTERSECTED, raycaster;
 	this.onMouseMove = function (event) {
 		// var global voir map.js
 		if (!control)
@@ -102,7 +133,7 @@ THREE.Hero = function (app) {
 		yawObject.rotation.y -= movementX * 0.002;
 		pitchObject.rotation.x -= movementY * 0.002;
 
-		pitchObject.rotation.x = Math.max(-0.8, Math.min(1, pitchObject.rotation.x));
+		pitchObject.rotation.x = Math.max(-1, Math.min(1, pitchObject.rotation.x));
 
 		this.currentdirection.x = yawObject.rotation.y;
 
@@ -114,7 +145,12 @@ THREE.Hero = function (app) {
 	 * On appuis le click sourie
 	 */
 	this.onMouseDown = function (event) {
-		pressClick = true;
+		// var global voir map.js
+		if (!control)
+			return;
+
+		shootgun = 1;
+
 		event.preventDefault();
 	};
 
@@ -123,7 +159,9 @@ THREE.Hero = function (app) {
 	 * On relache le click sourie
 	 */
 	this.onMouseUp = function (event) {
-		pressClick = false;
+
+		shootgun = false;
+
 		event.preventDefault();
 	};
 
@@ -166,7 +204,19 @@ THREE.Hero = function (app) {
 					moveRight = true;
 				break;
 			case 32:
-				pressClick = true;
+				if (jump)
+					return;
+
+				jump = true;
+				this.currentdirection.jump = heightJump;
+
+				app.sound.effect('system/016-Jump02.ogg', 0.2);
+				break;
+			case 76 :
+				if (light.visible)
+					light.visible = false;
+				else
+					light.visible = true;
 				break;
 			case 16 :
 				run = true;
@@ -186,6 +236,7 @@ THREE.Hero = function (app) {
 			case 90 :
 			case 87 : // Flèche haut, z, w, Z, W
 				moveForward = false;
+				person.update(5);
 				break;
 			case 37 :
 			case 113 :
@@ -198,14 +249,12 @@ THREE.Hero = function (app) {
 			case 115 :
 			case 83 : // Flèche bas, s, S
 				moveBackward = false;
+				person.update(5);
 				break;
 			case 39 :
 			case 100 :
 			case 68 : // Flèche droite, d, D
 				moveRight = false;
-				break;
-			case 32:
-				pressClick = false;
 				break;
 			case 16 :
 				run = false;
@@ -219,26 +268,9 @@ THREE.Hero = function (app) {
 	/*
 	 * UPDATE du héro
 	 */
-	this.update = function (app) {
+	this.update = function (appNew) {
 
-		if(pressClick && control && !jump) {
-			if (grab && moveForward) {
-				tmpMoveForward = true;
-				setTimeout(function () {
-					tmpMoveForward = false;
-					moveForward = true;
-				}, 100);
-			}
-			this.currentdirection.jump = heightJump;
-
-			jump = true;
-
-			app.sound.effect('system/016-Jump02.ogg', 0.2);
-		}
-
-		if( tmpMoveForward )
-			moveForward = false;
-
+		app = appNew;
 		var clone = yawObject.clone();
 
 		if (moveLeft && !moveRight)
@@ -248,16 +280,11 @@ THREE.Hero = function (app) {
 			clone.translateX(this.speed);
 
 		if (moveForward) {
-			if (run)
-				speedTmp += 0.2;
+			speedTmp += 0.05;
 			clone.translateZ(-(this.speed + speedTmp));
 		}
 		else if (moveBackward)
 			clone.translateZ(this.speed);
-
-
-		if (!run && speedTmp > 0.2)
-			speedTmp -= 0.2;
 
 
 		if (!moveForward && !moveBackward)
@@ -267,52 +294,50 @@ THREE.Hero = function (app) {
 		else if (speedTmp < 0)
 			speedTmp = 0;
 
+
 		clone.position.y += this.currentdirection.jump -= this.gravity;
 
-		if (clone.position.y < 100)
-			clone.position.y = 100;
-
+		if (clone.position.y < sizeBloc) {
+			clone.position.y = sizeBloc;
+			this.currentdirection.jump = 0;
+			jump = false;
+		}
 
 		//collision Y
 		var dirYx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirYy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
+		var dirYyTop = Math.floor((clone.position.y + sizeBloc / 2) / sizeBloc);
+		var dirYyBottom = Math.floor(clone.position.y / sizeBloc);
 		var dirYz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		contactSol = app.map.hasObstacle(dirYx, dirYy - 2, dirYz);
-		grab = app.map.hasObstacle(dirYx, dirYy - 1, dirYz);
-
-		//si on grab son ralentit direct à 0
-		if (grab) {
-			clone.position.x = yawObject.position.x;
-			clone.position.z = yawObject.position.z;
-			speedTmp = 0;
-		}
-
-		if (contactSol || grab || app.map.hasObstacle(dirYx, dirYy, dirYz)) {
-			clone.position.y = Math.floor(yawObject.position.y / sizeBloc) * sizeBloc;
+		if (app.map.hasObstacle(dirYx, dirYyTop, dirYz) || app.map.hasObstacle(dirYx, dirYyBottom, dirYz)) {
+			clone.position.y = yawObject.position.y;
 			jump = false;
 			this.currentdirection.jump = 0;
 		}
 
+
 		// collision X
-		var dirXx = Math.floor(((clone.position.x + (clone.position.x > yawObject.position.x ? middle : -middle)) + middleMaxX) / sizeBloc) + 1;
-		var dirXy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
+		var dirXx = Math.floor(((clone.position.x + (clone.position.x > yawObject.position.x ? 10 : -10)) + middleMaxX) / sizeBloc) + 1;
+		var dirXyTop = Math.floor((clone.position.y + sizeBloc / 2) / sizeBloc);
+		var dirXyBottom = Math.floor(clone.position.y / sizeBloc);
 		var dirXz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-
-		if (app.map.hasObstacle(dirXx, dirXy, dirXz) || app.map.hasObstacle(dirXx, dirXy - 1, dirXz)) {
+		if (app.map.hasObstacle(dirXx, dirXyTop, dirXz) || app.map.hasObstacle(dirXx, dirXyBottom, dirXz)) {
 			clone.position.x = yawObject.position.x;
-			speedTmp -= 0.2;
+			speedTmp -= 0.05;
 		}
+
 
 		// collision Z
 		var dirZx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirZy = Math.ceil(Math.round(clone.position.y * 10) / 10 / sizeBloc);
-		var dirZz = Math.floor(((clone.position.z + (clone.position.z > yawObject.position.z ? middle : -middle)) + middleMaxZ) / sizeBloc) + 1;
-		if (app.map.hasObstacle(dirZx, dirZy, dirZz) || app.map.hasObstacle(dirZx, dirZy - 1, dirZz)) {
+		var dirZyTop = Math.floor((clone.position.y + sizeBloc / 2) / sizeBloc);
+		var dirZyBottom = Math.floor(clone.position.y / sizeBloc);
+		var dirZz = Math.floor(((clone.position.z + (clone.position.z > yawObject.position.z ? 10 : -10)) + middleMaxZ) / sizeBloc) + 1;
+		if (app.map.hasObstacle(dirZx, dirZyTop, dirZz) || app.map.hasObstacle(dirZx, dirZyBottom, dirZz)) {
 			clone.position.z = yawObject.position.z;
-			speedTmp -= 0.2;
+			speedTmp -= 0.05;
 		}
+
 
 		// no out map
 		if (clone.position.x < -middleMaxX + middle)
@@ -325,43 +350,40 @@ THREE.Hero = function (app) {
 		else if (clone.position.z > middleMaxZ - middle)
 			clone.position.z = middleMaxZ - middle;
 
-		if (moveForward)
+		if (moveForward || moveBackward || moveLeft || moveRight)
 			for (var key in app.scene.children)
-				if (app.scene.children[key] instanceof THREE.Person && app.scene.children[key].name != 'hero') {
-					var distance = app.scene.children[key].position.distanceTo(person.position);
-					if (distance <= sizeBloc / 2) {
-						clone.position.x = yawObject.position.x;
-						clone.position.y = yawObject.position.y;
-						clone.position.z = yawObject.position.z;
-					}
+				if (app.scene.children[key].name != 'hero'
+					&& (app.scene.children[key] instanceof THREE.Bears
+					|| app.scene.children[key] instanceof THREE.Dog
+					|| app.scene.children[key] instanceof THREE.Person )) {
+					var distance = app.scene.children[key].position.distanceTo(clone.position);
+					if (distance < sizeBloc / 2 && memoryDistance > distance)
+						clone.position = yawObject.position.clone();
+
+					memoryDistance = distance;
 				}
 
 
 		if (yawObject.position.y != clone.position.y && yawObject.position.y > clone.position.y)
 			timeFall += yawObject.position.y - clone.position.y;
-		else
-			timeFall = 0;
-
-		if (timeFall > 300 && ( contactSol || grab )) {
+		else if (timeFall > 150) {
 			app.alert = timeFall * 10;
-			app.messages.push('Chute de ' + (Math.round(timeFall) / 100) + 'm');
+			app.messages.push('Chute de ' + (Math.round(timeFall) / 20) + 'm');
 			app.hero.hp -= Math.round(Math.round(timeFall) / 10);
 			timeFall = 0;
 		}
+		else
+			timeFall = 0;
 
-		if (!grab) {
-			if ((moveForward || moveBackward || moveLeft || moveRight) && contactSol)
-				app.sound.move(true);
-			else
-				app.sound.move(false);
-		}
+		if ((moveForward || moveBackward || moveLeft || moveRight) && !jump)
+			app.sound.move(true);
+		else
+			app.sound.move(false);
 
 		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
-			person.update(( grab ? 6 : speedTmp >= 2 ? 1 : 0));
-			if (grab)
-				app.sound.audioMove.volume = 0;
-			else
-				app.sound.audioMove.volume = 0.1;
+			person.update(( !moveForward && !moveBackward ? (shootgun ? 3 : 2) : (speedTmp >= 1 ? 1 : 0)));
+
+			app.sound.audioMove.volume = 0.1;
 		}
 		else
 			app.sound.audioMove.volume = 0;
@@ -373,13 +395,21 @@ THREE.Hero = function (app) {
 
 		yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
 		this.zone.set(newZoneX, newZoneY, newZoneZ);
-		person.position.set(clone.position.x, clone.position.y - sizeBloc, clone.position.z);
+		person.position.set(clone.position.x, clone.position.y - 16, clone.position.z);
 		person.rotation.y = PIDivise2 + yawObject.rotation.y;
 
+		var maxTorch = speedTmp >= 1 ? 50 : 10;
 
-		if (Date.now() % 60 == 0)
-			if (this.hp < 100)
-				this.hp++;
+		if (app.clock.getDelta() * 1000 == 16)
+			light.intensity = random(70, 100) / 100;
+
+		light.position.set(yawObject.position.x + random(0, maxTorch), yawObject.position.y + 16, yawObject.position.z + random(0, maxTorch));
+
+		/*
+		 if (Date.now() % 60 == 0)
+		 if (this.hp < 100)
+		 this.hp++;
+		 */
 
 
 		if (this.hp <= 0) {
@@ -387,6 +417,8 @@ THREE.Hero = function (app) {
 			this.hp = 100;
 			app.messages.push('GAME OVER');
 		}
+		else if (this.hp > 100)
+			this.hp = 100;
 
 		if (memoryBarValue != this.hp) {
 			memoryBarValue = this.hp;
@@ -396,15 +428,22 @@ THREE.Hero = function (app) {
 
 		if (memoryScoreValue != this.argent) {
 			memoryScoreValue = this.argent;
-			userScore.innerHTML = 'Score : ' + number_format(this.argent) + ' pt' + (this.argent > 1 ? 's' : '');
+			userScore.innerHTML = number_format(this.argent) + ' pt' + (this.argent > 1 ? 's' : '');
 		}
 
-		if (memoryLevelValue != this.niveau) {
-			memoryLevelValue = this.niveau;
-			userLevel.innerHTML = 'Niveau : ' + this.niveau;
+		if (memoryAmmoValue != this.ammo) {
+			memoryAmmoValue = this.ammo;
+			userAmmo.innerHTML = number_format(this.ammo);
 		}
 
+		if (shootgun) {
+			var now = Date.now();
+			if (now - shootgun > 300) {
+				battle.add(app);
+				shootgun = now;
 
+			}
+		}
 	};
 
 
@@ -425,6 +464,9 @@ THREE.Hero = function (app) {
 	 */
 	this.getData = function () {
 		return 'region=' + this.region + '\
+						&positionX=' + yawObject.position.x + '\
+						&positionY=' + yawObject.position.y + '\
+						&positionZ=' + yawObject.position.z + '\
 						&x=' + this.zone.x + '\
 						&y=' + this.zone.y + '\
 						&z=' + this.zone.z + '\
@@ -446,7 +488,4 @@ THREE.Hero = function (app) {
 	document.addEventListener('mousemove', bind(this, this.onMouseMove), false);
 	window.addEventListener('keydown', bind(this, this.onKeyDown), false);
 	window.addEventListener('keyup', bind(this, this.onKeyUp), false);
-
-
-	this.setPosition(this.zone.x, this.zone.y, this.zone.z);
 };

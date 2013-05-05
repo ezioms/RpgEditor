@@ -3,9 +3,12 @@
 	"my" : {
 		"id" : <?php echo $my->id; ?>,
 		"username" : "<?php echo $my->username; ?>",
-		"x" : <?php echo $my->x; ?>,
-		"y" : <?php echo $my->y; ?>,
-		"z" : <?php echo $my->z; ?>,
+        "x" : <?php echo $my->x; ?>,
+        "y" : <?php echo $my->y + 1; ?>,
+        "z" : <?php echo $my->z; ?>,
+        "positionX" : "<?php echo $my->positionX; ?>",
+        "positionY" : "<?php echo $my->positionY; ?>",
+        "positionZ" : "<?php echo $my->positionZ; ?>",
 		"logins" : <?php echo $my->logins; ?>,
 		"gravity" : <?php echo number_format($my->gravity, 10); ?>,
 		"speed" : <?php echo $my->speed; ?>,
@@ -14,10 +17,13 @@
 		"hp" : <?php echo $my->hp; ?>,
 		"hpMax" : <?php echo $my->hp_max; ?>,
 		"niveau" : <?php echo $my->niveau; ?>,
-		"argent" : <?php echo $my->argent; ?>,
+        "argent" : <?php echo $my->argent; ?>,
+        "ammo" : <?php echo $my->ammo; ?>,
 		"xp" : <?php echo $my->xp; ?>,
 		"xpMax" : <?php echo $my->niveau_suivant(); ?>,
-		"region" : <?php echo $my->region_id; ?>
+		"region" : <?php echo $my->region_id; ?>,
+        "hand_left" : <?php echo $my->item_id_handLeft ? $my->item_id_handLeft : 0; ?>,
+        "hand_right" : <?php echo $my->item_id_handRight ? $my->item_id_handRight : 0; ?>
 	},
     "map" : {
                 "id" : "<?php echo $region->map->region->id; ?>",
@@ -33,7 +39,7 @@
                 "articles" :  [ <?php echo $region->map->articles; ?> ],
                 "elements" :  [ <?php echo str_replace('images/background/', '', $region->map->elements); ?> ],
                 "modules" :  [ <?php echo $region->map->modules; ?> ]
-        },
+    },
     "bots" : {
             "list" : [
             <?php if( $region->bots ) : ?>
@@ -44,6 +50,7 @@
                     "x" : <?php echo $region->bot->x; ?>,
                     "y" : <?php echo $region->bot->y; ?>,
                     "z" : <?php echo $region->bot->z; ?>,
+                    "type" : <?php echo $region->bot->type; ?>,
                     "fixe" : <?php echo $region->bot->fixe; ?>,
                     "leak" : <?php echo $region->bot->leak; ?>,
                     "img" : "<?php echo $region->bot->image; ?>",
@@ -53,5 +60,10 @@
                     <?php endforeach ?>
             <?php endif ?>
         ]
-    }
+    },
+    "items" : {
+    <?php foreach( $items as $keyItem => $item ) : ?>
+        "item_<?php echo $item->id; ?>" : <?php echo json_encode($item); ?><?php if( $keyItem < count($items) - 1) echo ","; ?>
+    <?php endforeach ?>
+}
 }

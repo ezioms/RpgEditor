@@ -421,7 +421,7 @@ function onDocumentMouseDown(event) {
 		typeAction = $("input[name='action']:checked").val();
 		if (typeAction != 'mod' && typeAction != 'edit' && typeAction != 'del')
 			onDocumentMouseUpAction();
-	}, 100);
+	}, 300);
 
 	onDocumentMouseUpAction();
 }

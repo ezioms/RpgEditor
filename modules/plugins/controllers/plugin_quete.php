@@ -93,7 +93,7 @@ class Plugin_Quete_Controller extends Action_Controller
         if (!$quete = $this->quete->select(array('id_quete' => $id_quete, 'status' => 1), 1))
             return FALSE;
 
-        $quete->info_stop = $quete->items = $quete->region = $article = FALSE;
+        $quete->info_stop = $quete->region = $article = FALSE;
 
         if (!isset($list_user_quete[$quete->id_quete]) && (!$quete->quete_id_parent || (isset($list_user_quete[$quete->quete_id_parent]) && $list_user_quete[$quete->quete_id_parent]))) {
             $quete->valid = 0;
