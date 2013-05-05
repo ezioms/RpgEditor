@@ -262,7 +262,6 @@ function init() {
 
 	container.addEventListener('mousemove', onDocumentMouseMove, false);
 	container.addEventListener('mouseup', onDocumentMouseUp, false);
-	container.addEventListener('mousedown', onDocumentMouseDown, false);
 
 	window.addEventListener('resize', onWindowResize, false);
 }
@@ -409,25 +408,6 @@ function onDocumentMouseMove(event) {
 }
 function onDocumentMouseUp(event) {
 	event.preventDefault();
-
-	clearInterval(intervalClick);
-}
-
-
-function onDocumentMouseDown(event) {
-	event.preventDefault();
-
-	intervalClick = setInterval(function () {
-		typeAction = $("input[name='action']:checked").val();
-		if (typeAction != 'mod' && typeAction != 'edit' && typeAction != 'del')
-			onDocumentMouseUpAction();
-	}, 300);
-
-	onDocumentMouseUpAction();
-}
-
-
-function onDocumentMouseUpAction() {
 
 	if (typeAction == 'no' || hoverTool || !ray.intersectObjects(scene.children).length)
 		return;

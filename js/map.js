@@ -12,6 +12,7 @@ var contentBody = document.getElementById('content_body');
 var contentAction = document.getElementById('content_action');
 var valueGraph = document.getElementById('valueMoyenneGraph');
 var contentGraph = document.getElementById('ContenuGraphique');
+var cible = document.getElementById('cible');
 var userHp = document.getElementById('user_hp');
 var userScore = document.getElementById('user_argent');
 var userAmmo = document.getElementById('user_ammo');
@@ -51,7 +52,7 @@ var load = function () {
 		return setTimeout(load, 1000 / 25);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userScore.style.display = userAmmo.style.display = 'block';
+	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');

@@ -213,7 +213,7 @@ class Plugin_Quete_Controller extends Action_Controller
 
             if ($quete->argent) {
                 $txt .= '<br />+ ' . $quete->argent . ' pt' . ($quete->argent > 1 ? 's' : '');
-                echo '<script>app.sound.effect(\'system/056-Right02.ogg\');</script>';
+                echo '<script>app.sound.effect(\''.$quete->audio_stop.'\');</script>';
             }
             History_Model::instance()->user_insert($this->user->id, $this->data->id, $id_quete, 'quete_valide');
 

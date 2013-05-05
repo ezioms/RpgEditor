@@ -398,6 +398,7 @@ fieldset {
     background: url('../images/template/cross.png');
     background-repeat: no-repeat;
     background-position: center;
+    display: none;
 }
 
 #debugWebGL {
