@@ -160,7 +160,10 @@ var render = function () {
 
 	// update bots in scene
 	for (var keyBot in app.bots)
-		app.bots[keyBot].update(app);
+		if( app.bots[keyBot].update(app) == 'remove') {
+			app.scene.remove(app.bots[keyBot].getPerson());
+			delete app.bots[keyBot];
+		}
 
 	// update module in scene
 	for (var keyModule in app.modules)

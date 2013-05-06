@@ -24,6 +24,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	var tire = -1;
 
+	this.cycleDie = 0;
+
 
 	/*
 	 * Get he's die
@@ -33,6 +35,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		if (this.hp == 0) {
 			this.hp--;
 			this.die();
+		}else if (this.hp <= 0) {
+			this.cycleDie++;
 		}
 
 		return this.hp < 0 ? true : false;
@@ -47,6 +51,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 			return;
 		} else
 			this.initialGesture();
+
 		this.lightGun.intensity = 0;
 
 		switch (type) {

@@ -387,7 +387,7 @@ THREE.Hero = function (app) {
 		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
 			person.update(( !moveForward && !moveBackward ? (shootgun ? 3 : 2) : (speedTmp >= 1 ? 1 : 0)));
 
-			app.sound.audioMove.volume = 0.1;
+			app.sound.audioMove.volume = 0.2;
 		}
 		else
 			app.sound.audioMove.volume = 0;

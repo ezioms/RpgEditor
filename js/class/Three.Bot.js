@@ -107,6 +107,8 @@ THREE.Bot = function (app, dataBot) {
 	this.update = function (app) {
 
 		if (person.getDie()) {
+			if (person.cycleDie == 500)
+				return 'remove';
 			if (person.name == 'bot')
 				app.map.deleteOverModule(this.zone);
 			return;
@@ -259,7 +261,7 @@ THREE.Bot = function (app, dataBot) {
 
 		// si c est un bot et a porté du hero on peut attaquer
 		if (dataBot.type == 2 || dataBot.type == 3) {
-			if (distance < sizeBloc + (sizeBloc/2)) {
+			if (distance < sizeBloc + (sizeBloc / 2)) {
 				if (app.clock.elapsedTime % 1 < 0.2)
 					if (random(0, 5) < 1) {
 						person.update(3);

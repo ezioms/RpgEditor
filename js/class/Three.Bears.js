@@ -20,6 +20,8 @@ THREE.Bears = function (picture, id) {
 
 	var frappe = -1;
 
+	this.cycleDie = 0;
+
 	/*
 	 * Get he's die
 	 */
@@ -28,6 +30,8 @@ THREE.Bears = function (picture, id) {
 		if (this.hp == 0) {
 			this.hp--;
 			this.die();
+		}else if (this.hp <= 0) {
+			this.cycleDie++;
 		}
 
 		return this.hp < 0 ? true : false;
@@ -43,9 +47,6 @@ THREE.Bears = function (picture, id) {
 			return;
 		} else
 			this.initialGesture();
-
-		if (this.hp <= 0)
-			return;
 
 		switch (type) {
 			case 1 :

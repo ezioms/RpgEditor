@@ -20,6 +20,8 @@ THREE.Dog = function (picture, id) {
 
 	var frappe = -1;
 
+	this.cycleDie = 0;
+
 	/*
 	 * Get he's die
 	 */
@@ -28,6 +30,8 @@ THREE.Dog = function (picture, id) {
 		if (this.hp == 0) {
 			this.hp--;
 			this.die();
+		}else if (this.hp <= 0) {
+			this.cycleDie++;
 		}
 
 		return this.hp < 0 ? true : false;
@@ -39,14 +43,11 @@ THREE.Dog = function (picture, id) {
 	 */
 	this.update = function (type) {
 
-		if( frappe >= 0 && frappe < 15) {
+		if (frappe >= 0 && frappe < 15) {
 			frappe++;
 			return;
 		} else
 			this.initialGesture();
-
-		if (this.hp <= 0)
-			return;
 
 		switch (type) {
 			case 1 :
@@ -211,9 +212,6 @@ THREE.Dog = function (picture, id) {
 
 	this.head.position.x = 12;
 	this.head.position.y = 12;
-
-
-
 
 
 	// Left / Right leg
