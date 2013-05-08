@@ -112,7 +112,7 @@ var initialize = function () {
 	var modules = app.map.getModules();
 	if (modules)
 		for (var keyCaseModule in modules) {
-			if (app.loader.items['item_' + modules[keyCaseModule].data.id_item] == undefined)
+			if (getIsHistoryModule('memoryItemModule', modules[keyCaseModule], true) || app.loader.items['item_' + modules[keyCaseModule].data.id_item] == undefined)
 				continue;
 			var module = new THREE.Item(app, app.loader.items['item_' + modules[keyCaseModule].data.id_item].image);
 			module.setPosition(modules[keyCaseModule].x, modules[keyCaseModule].y, modules[keyCaseModule].z);
@@ -160,7 +160,7 @@ var render = function () {
 
 	// update bots in scene
 	for (var keyBot in app.bots)
-		if( app.bots[keyBot].update(app) == 'remove') {
+		if (app.bots[keyBot].update(app) == 'remove') {
 			app.scene.remove(app.bots[keyBot].getPerson());
 			delete app.bots[keyBot];
 		}
@@ -296,6 +296,12 @@ var updateHeroVisual = function () {
 				if (module.data.title)
 					app.messages.push(module.data.title);
 			}
+			else if (module.data.module == 'sound') {
+				if (getIsHistoryModule('memorySoundModule', module))
+					return;
+
+				app.sound.effect(module.data.sound);
+			}
 			else if (module.data.module == 'article') {
 				$('#content_action').html(module.article);
 
@@ -315,6 +321,9 @@ var updateHeroVisual = function () {
 				});
 			}
 			else if (module.data.module == 'item') {
+				if (getIsHistoryModule('memoryItemModule', module))
+					return;
+
 				app.sound.effect('life.ogg', 0.4);
 
 				var itemOver = app.loader.items['item_' + module.data.id_item];
@@ -355,11 +364,33 @@ var updateHeroVisual = function () {
 	if (app.alert) {
 		var alertUser = $('#alertUser');
 		app.sound.effect('sorrow.mp3', 0.4);
-		alertUser.stop(true,true).show().fadeOut(app.alert);
+		alertUser.stop(true, true).show().fadeOut(app.alert);
 		app.alert = false;
 	}
 
 };
+
+
+/*
+ Fonction qui permet de savoir si tu es passer sur un event
+ */
+var getIsHistoryModule = function (name, module, read) {
+
+	var memoryModule = localStorage.getItem(name);
+	if (memoryModule)
+		memoryModule = JSON.parse(memoryModule);
+	else
+		memoryModule = {};
+
+	if (memoryModule[module.x + '-' + module.y + '-' + module.z] !== undefined)
+		return true;
+
+	if (read)
+		return false;
+	memoryModule[module.x + '-' + module.y + '-' + module.z] = true;
+	localStorage.setItem(name, JSON.stringify(memoryModule));
+	return false;
+}
 
 /*
  * Simular click cursor with pressKey ENTER

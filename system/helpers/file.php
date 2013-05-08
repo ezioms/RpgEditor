@@ -186,14 +186,14 @@ class file_Core {
 		/**
 		 * Methode privé : connaitre la liste des tilesets
 		 */
-		public static function listing_dir( $dir )
+		public static function listing_dir( $dir , $justFile = array() )
 		{
 				$listing = false;
 
 				if( is_dir( $dir ) && $dh = opendir( $dir ) )
 				{
 						while( ($file = readdir( $dh )) !== false )
-								if( $file != '.' && $file != '..' && $file != '.svn' && $file != '.DS_Store' )
+								if( $file != '.' && $file != '..' && $file != '.svn' && $file != '.DS_Store' && !in_array($file, $justFile) )
 										$listing[$file] = $file;
 
 						closedir( $dh );
