@@ -95,8 +95,10 @@ var initialize = function () {
 	app.scene.add(app.map.getUnivers());
 	// add light in scene
 	app.scene.add(app.map.getAmbience());
-	// add spot for shadow in scene
-	app.scene.add(app.map.getLight());
+	// add point light in scene
+	app.scene.add(app.map.getLight1());
+	// add point light in scene
+	app.scene.add(app.map.getLight2());
 
 	// generate bots and add in scene
 	var bots = app.map.getBots();
@@ -168,6 +170,9 @@ var render = function () {
 	// update module in scene
 	for (var keyModule in app.modules)
 		app.modules[keyModule].update(app);
+
+	// update map
+	app.map.update(app);
 
 	// update hero
 	app.hero.update(app);

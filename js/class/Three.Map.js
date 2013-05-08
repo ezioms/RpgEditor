@@ -10,20 +10,16 @@ THREE.Map = function (app) {
 
 	var ambient = new THREE.AmbientLight(0x333333);
 
-	var light = new THREE.DirectionalLight(0xffffff, 0);
-	//light.position.set(3000, 4000, 3000);
-	//light.target.position.set(0, 0, 0);
+	var light1 = new THREE.PointLight(0xffaa00, 0.8, 400);
 
-	//light.shadowCameraVisible = this.wireframe;
-	//light.shadowCameraNear = 0.01;
-	//light.castShadow = true;
-	//light.shadowDarkness = 0.5;
+	var light2 = new THREE.PointLight(0xffaa00, 0.8, 400);
 
 	var region = {};
 
 	var listImg = {};
 
 	var listCube = {};
+
 
 	//size
 	var infoSize = app.loader.map.size;
@@ -36,12 +32,10 @@ THREE.Map = function (app) {
 	var middleMaxY = maxY / 2;
 	var middleMaxZ = maxZ / 2;
 
-	/*
-	 * GET light spot
-	 */
-	this.getLight = function () {
-		return light;
-	};
+
+	var obstacles = {};
+	var modules = {};
+	var lights = {};
 
 
 	/*
@@ -49,6 +43,22 @@ THREE.Map = function (app) {
 	 */
 	this.getAmbience = function () {
 		return ambient;
+	};
+
+
+	/*
+	 * GET light point 1
+	 */
+	this.getLight1 = function () {
+		return light1;
+	};
+
+
+	/*
+	 * GET light point 2
+	 */
+	this.getLight2 = function () {
+		return light2;
 	};
 
 
@@ -74,6 +84,52 @@ THREE.Map = function (app) {
 	 */
 	this.getModules = function () {
 		return region.modules ? region.modules : false;
+	};
+
+
+	/*
+	 * UPDATE map
+	 */
+	this.update = function (app) {
+		var minDistance1 = {
+			distance: null,
+			value: null,
+			name: null
+		};
+
+		for (var keyLight in lights) {
+			var distance = app.hero.getCamera().position.distanceTo(lights[keyLight]);
+			if (minDistance1.distance && minDistance1.distance < distance)
+				continue;
+
+			minDistance1.distance = distance;
+			minDistance1.name = keyLight;
+			minDistance1.value = lights[keyLight];
+		}
+
+		var minDistance2 = {
+			distance: null,
+			value: null,
+			name: null
+		};
+
+		for (var keyLight in lights) {
+			var distance = app.hero.getCamera().position.distanceTo(lights[keyLight]);
+
+			if (distance == minDistance1.distance)
+				continue;
+
+			if (minDistance2.distance && minDistance2.distance < distance)
+				continue;
+
+			minDistance2.distance = distance;
+			minDistance2.name = keyLight;
+			minDistance2.value = lights[keyLight];
+		}
+
+		console.log(minDistance1, minDistance2);
+		light1.position.set(minDistance1.value.x, minDistance1.value.y, minDistance1.value.z);
+		light2.position.set(minDistance2.value.x, minDistance2.value.y, minDistance2.value.z);
 	};
 
 
@@ -198,8 +254,20 @@ THREE.Map = function (app) {
 	/*
 	 * CONSTRUCTOR
 	 */
-	var obstacles = {};
-	var modules = {};
+	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
+	material.wrapS = material.wrapT = THREE.RepeatWrapping;
+	material.repeat.set(infoSize.xMax, infoSize.zMax);
+	material.needsUpdate = true;
+
+	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, maxY, maxZ, infoSize.xMax, infoSize.yMax, infoSize.zMax, new THREE.MeshLambertMaterial({
+		map: material,
+		wireframe: this.wireframe,
+		ambient: 0xbbbbbb,
+		side: 2
+	})));
+	mesh.position.y = (maxY / 2) + (sizeBloc / 2);
+
+	THREE.GeometryUtils.merge(geometry, mesh);
 
 	for (var x = 0; x <= infoSize.xMax + 1; x++) {
 		obstacles[x] = {};
@@ -214,7 +282,10 @@ THREE.Map = function (app) {
 		obstacles[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
 
 	for (var keyModule in app.loader.map.modules)
-		modules[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = app.loader.map.modules[keyModule];
+		if (app.loader.map.modules[keyModule].data.module == 'light')
+			lights[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = new THREE.Vector3(-middleMaxX + app.loader.map.modules[keyModule].x * sizeBloc - middle, app.loader.map.modules[keyModule].y * sizeBloc, -middleMaxZ + app.loader.map.modules[keyModule].z * sizeBloc - middle)
+		else
+			modules[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = app.loader.map.modules[keyModule];
 
 	for (var keyEle in app.loader.map.elements) {
 		var row = app.loader.map.elements[keyEle];
@@ -225,24 +296,7 @@ THREE.Map = function (app) {
 		THREE.GeometryUtils.merge(geometry, cube);
 	}
 
-	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
-	material.wrapS = material.wrapT = THREE.RepeatWrapping;
-	material.repeat.set(infoSize.xMax, infoSize.zMax);
-	material.needsUpdate = true;
-
-	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, 10, maxZ, 0, 0, 0, new THREE.MeshLambertMaterial({
-		map: material,
-		wireframe: this.wireframe,
-		ambient: 0xbbbbbb
-	}), {px: false, nx: false, py: true, ny: false, pz: false, nz: false}));
-	mesh.position.y = sizeBloc / 2;
-
-	THREE.GeometryUtils.merge(geometry, mesh);
-
 	var element = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
-	//element.castShadow = true;
-	//element.receiveShadow = true;
-
 
 	univers.add(element);
 
@@ -251,7 +305,8 @@ THREE.Map = function (app) {
 	region = {
 		univers: univers,
 		obstacles: obstacles,
-		modules: modules
+		modules: modules,
+		lights: lights
 	};
 };
 
