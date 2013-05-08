@@ -49,7 +49,7 @@ app.group = [];
 var load = function () {
 	// load elements
 	if (!app.loader.getCompleted())
-		return setTimeout(load, 1000 / 25);
+		return setTimeout(load, 200);
 
 	// show elements HTML for hero HP / SCORE ...
 	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = 'block';

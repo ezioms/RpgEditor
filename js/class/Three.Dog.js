@@ -4,8 +4,6 @@ THREE.Dog = function (picture, id) {
 
 	this.wireframe = false;
 
-	this.text = false;
-
 	this.idBot = id;
 
 	this.hp = random(3, 6);
@@ -14,40 +12,28 @@ THREE.Dog = function (picture, id) {
 
 	this.bodyGroup = new THREE.Object3D();
 
-	var faceMesh = new THREE.MeshFaceMaterial();
-
-	var listImg = {};
-
-	var frappe = -1;
+	this.attacked = -1;
 
 	this.cycleDie = 0;
 
-	/*
-	 * Get he's die
-	 */
-	this.getDie = function () {
+	var listImg = {};
 
-		if (this.hp == 0) {
-			this.hp--;
-			this.die();
-		}else if (this.hp <= 0) {
-			this.cycleDie++;
-		}
-
-		return this.hp < 0 ? true : false;
-	}
-
+	var time = Date.now() / 1000;
 
 	/*
 	 * Update person et position
 	 */
 	this.update = function (type) {
 
-		if (frappe >= 0 && frappe < 15) {
-			frappe++;
+		time = Date.now() / 1000;
+
+		if (this.ray.visible)
+			this.ray.visible = false;
+
+		if (this.attacked >= 0 && this.attacked < 15) {
+			this.attacked++;
 			return;
-		} else
-			this.initialGesture();
+		}
 
 		switch (type) {
 			case 1 :
@@ -63,6 +49,20 @@ THREE.Dog = function (picture, id) {
 				this.walk();
 				break;
 		}
+
+	};
+
+	/*
+	 * Get he's die
+	 */
+	this.getDie = function () {
+
+		if (this.hp == 0)
+			this.die();
+		else if (this.hp <= 0)
+			this.cycleDie++;
+
+		return !!(this.hp < 0);
 	};
 
 
@@ -70,7 +70,6 @@ THREE.Dog = function (picture, id) {
 	 * Initialisation position person
 	 */
 	this.initialGesture = function () {
-		this.ray.visible = false;
 		this.rightarm.rotation.set(0, 0, 0);
 		this.leftarm.rotation.set(0, 0, 0);
 		this.rightleg.rotation.set(0, 0, 0);
@@ -82,22 +81,28 @@ THREE.Dog = function (picture, id) {
 	 * Position person STOP
 	 */
 	this.stop = function () {
+		this.initialGesture();
+
 		this.rightleg.rotation.x = this.leftarm.rotation.x = -0.1;
 		this.leftleg.rotation.x = this.rightarm.rotation.x = 0.1;
 	};
 
 
 	/*
-	 * Position person STOP
+	 * Position person MEURS
 	 */
 	this.die = function () {
-		app.sound.play('dog.mp3', this);
+		this.hp = -1;
+
+		app.sound.play('bears.mp3', this);
 		app.sound.play('fall.mp3', this);
+
 		this.initialGesture();
 
-		this.rightleg.rotation.z = this.rightarm.rotation.z = 1.3;
-		this.leftleg.rotation.z = this.leftarm.rotation.z = 1.3;
-		this.position.y -= 9;
+		this.rightleg.rotation.x = this.rightarm.rotation.x = -1.3;
+		this.leftleg.rotation.x = this.leftarm.rotation.x = 1.3;
+
+		this.position.y -= 6;
 	};
 
 
@@ -105,7 +110,10 @@ THREE.Dog = function (picture, id) {
 	 * Position person ATTAQUE
 	 */
 	this.attack = function () {
-		frappe = 0;
+		this.attacked = 0;
+
+		this.initialGesture();
+
 		this.rightarm.rotation.z = 1.3;
 	};
 
@@ -114,10 +122,9 @@ THREE.Dog = function (picture, id) {
 	 * Position person MARCHER
 	 */
 	this.walk = function () {
-		var time = Date.now() / 1000;
-		var speed = time * 4;
+		var sinSpeed = Math.sin(time * 4);
 
-		var sinSpeed = Math.sin(speed);
+		this.initialGesture();
 
 		this.head.rotation.y = this.headAccessory.y = Math.sin(time * 1.5) / 5;
 		this.head.rotation.z = this.headAccessory.z = Math.sin(time) / 5;
@@ -128,13 +135,13 @@ THREE.Dog = function (picture, id) {
 
 
 	/*
-	 * Position person RUN
+	 * Position person COURIR
 	 */
 	this.run = function () {
-		var time = Date.now() / 1000;
 		var z = 6.662 * time;
-		var x = 2.812 * time;
 		var cosZ = Math.cos(z);
+
+		this.initialGesture();
 
 		this.head.rotation.y = this.headAccessory.y = Math.sin(time * 1.5) / 5;
 		this.head.rotation.z = this.headAccessory.z = Math.sin(time) / 5;
@@ -179,110 +186,105 @@ THREE.Dog = function (picture, id) {
 		});
 	};
 
+	// material Face
+	var faceMesh = new THREE.MeshFaceMaterial();
 
 	/*
-	 * Contructor person
+	 * HEAD
 	 */
-	var i = 0;
-
-	//Head
-	this.materialHeadAccessory = [
+	//Head Accessory
+	this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10, 0, 0, 0, [
 		this.loadTexture(10, 2, 2, 2),
 		this.loadTexture(10, 0, 2, 2),
 		this.loadTexture(10, 0, 2, 2),
 		this.loadTexture(12, 0, 2, 2),
 		this.loadTexture(8, 2, 2, 2),
 		this.loadTexture(12, 2, 2, 2)
-	];
-	this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 10, 0, 0, 0, this.materialHeadAccessory), faceMesh);
-
-	this.headAccessory.position.x = 12;
-	this.headAccessory.position.y = 12;
+	]), faceMesh);
+	this.headAccessory.position.set(12, 12, 0);
 
 	//Head
-	this.materialHead = [
+	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8, 0, 0, 0, [
 		this.loadTexture(2, 2, 2, 2),
 		this.loadTexture(2, 0, 2, 2),
 		this.loadTexture(2, 0, 2, 2),
 		this.loadTexture(4, 0, 2, 2),
 		this.loadTexture(0, 2, 2, 2),
 		this.loadTexture(4, 2, 2, 2)
-	];
-	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 8, 0, 0, 0, this.materialHead), faceMesh);
-
-	this.head.position.x = 12;
-	this.head.position.y = 12;
+	]), faceMesh);
+	this.head.position.set(12, 12, 0);
 
 
-	// Left / Right leg
-	this.materialArm = [
+	/*
+	 * LEG
+	 * Left / Right leg
+	 */
+	var arm = new THREE.CubeGeometry(4, 16, 4, 0, 0, 0, [
 		this.loadTexture(0, 5, 1, 3),
 		this.loadTexture(2, 5, 1, 3),
 		this.loadTexture(1, 4, 1, 1),
 		this.loadTexture(2, 4, 1, 1),
 		this.loadTexture(3, 5, 1, 3),
 		this.loadTexture(1, 5, 1, 3)
-	];
-
-
-	var arm = new THREE.CubeGeometry(4, 16, 4, 0, 0, 0, this.materialArm)
-	for (i = 0; i < 8; i += 1)
+	]);
+	for (var i = 0; i < 8; i += 1)
 		arm.vertices[i].y -= 6;
-	this.leftarm = new THREE.Mesh(arm, faceMesh);
-	this.rightarm = new THREE.Mesh(arm, faceMesh);
-	this.leftarm.position.z = -4;
-	this.leftarm.position.x = 8;
-	this.rightarm.position.z = 4;
-	this.rightarm.position.x = 8;
-	this.leftarm.position.y = 6;
-	this.rightarm.position.y = 6;
 
+	// left
+	this.leftarm = new THREE.Mesh(arm, faceMesh);
+	this.leftarm.position.set(8, 6, -4);
 	this.bodyGroup.add(this.leftarm);
+
+	// right
+	this.rightarm = new THREE.Mesh(arm, faceMesh);
+	this.rightarm.position.set(8, 6, 4);
 	this.bodyGroup.add(this.rightarm);
 
 
-	// Body
-	this.materialBody = [
+	/*
+	 * BODY
+	 */
+	this.body = new THREE.Mesh(new THREE.CubeGeometry(22, 8, 8, 0, 0, 0, [
 		this.loadTexture(5, 5, 2, 3),
 		this.loadTexture(8, 5, 2, 3),
 		this.loadTexture(5, 4, 2, 1),
 		this.loadTexture(7, 4, 2, 1),
 		this.loadTexture(4, 5, 1, 3),
 		this.loadTexture(7, 5, 1, 3)
-	];
-
-	this.body = new THREE.Mesh(new THREE.CubeGeometry(22, 8, 8, 0, 0, 0, this.materialBody), faceMesh);
-	this.body.position.y = 8;
-
+	]), faceMesh);
+	this.body.position.setY(8);
 	this.bodyGroup.add(this.body);
 
 
-	// Left / Right leg
-	this.materialLeg = [
+	/*
+	 * LEG
+	 * Left / Right leg
+	 */
+	var leg = new THREE.CubeGeometry(4, 16, 4, 0, 0, 0, [
 		this.loadTexture(0, 5, 1, 3),
 		this.loadTexture(2, 5, 1, 3),
 		this.loadTexture(1, 4, 1, 1),
 		this.loadTexture(2, 4, 1, 1),
 		this.loadTexture(3, 5, 1, 3),
 		this.loadTexture(1, 5, 1, 3)
-	];
-
-
-	var leg = new THREE.CubeGeometry(4, 16, 4, 0, 0, 0, this.materialLeg)
-	for (i = 0; i < 8; i += 1)
+	]);
+	for (var i = 0; i < 8; i += 1)
 		leg.vertices[i].y -= 6;
-	this.leftleg = new THREE.Mesh(leg, faceMesh);
-	this.rightleg = new THREE.Mesh(leg, faceMesh);
-	this.leftleg.position.z = -4;
-	this.leftleg.position.x = -8;
-	this.rightleg.position.z = 4;
-	this.rightleg.position.x = -8;
-	this.leftleg.position.y = 6;
-	this.rightleg.position.y = 6;
 
+	// left
+	this.leftleg = new THREE.Mesh(leg, faceMesh);
+	this.leftleg.position.set(-8, 6, -4);
 	this.bodyGroup.add(this.leftleg);
+
+	// right
+	this.rightleg = new THREE.Mesh(leg, faceMesh);
+	this.leftleg.position.set(-8, 6, 4);
 	this.bodyGroup.add(this.rightleg);
 
+
+	/*
+	 * RAY
+	 */
 	this.ray = new THREE.Mesh(new THREE.CubeGeometry(26, 20, 14));
 	this.ray.visible = false;
 	this.ray.position.y = 4;
@@ -293,7 +295,7 @@ THREE.Dog = function (picture, id) {
 	this.add(this.headAccessory);
 	this.add(this.ray);
 
-	this.rotation.y = PIDivise2;
+	this.rotation.setY(PIDivise2);
 
 	this.scale.set(0.9, 0.9, 0.9);
 };

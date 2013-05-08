@@ -80,16 +80,6 @@ THREE.Sound = function () {
 		}
 	};
 
-
-	this.distance = function (v1, v2) {
-		var v = new THREE.Vector3(0, 0, 0);
-		v.x = v1.x - v2.x;
-		v.y = v1.y - v2.y;
-		v.z = v1.z - v2.z;
-		return Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-	};
-
-
 	this.update = function (app) {
 		this.position = app.hero.getPerson().position.clone();
 	};

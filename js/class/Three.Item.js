@@ -42,8 +42,18 @@ THREE.Item = function (app, img) {
 	 * UPDATE
 	 */
 	this.update = function (app) {
-		if(!this.visible)
-		return;
+		var visible = this.position.distanceTo(app.hero.getCamera().position) < 1000 ? true : false;
+
+		if (this.visible != visible) {
+			this.geometry.visible = visible;
+			this.geometry.traverse(function (child) {
+				child.visible = visible;
+			});
+			this.visible = visible;
+		}
+
+		if (!this.visible)
+			return;
 
 		this.geometry.rotation.y += this.speedRotation;
 	};

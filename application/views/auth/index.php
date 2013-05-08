@@ -1,4 +1,5 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
+<div id="barTop"></div>
 <h1>Enigma Cube</h1>
 <div id="contentLogin">
 
@@ -17,20 +18,14 @@
         <input name="send" id="send" type="button" data-action="<?php echo url::site('send'); ?>"/>
     </form>
 
-    <div id="instruction"><b>Aucune inscription !</b> Il vous suffit de mettre votre E-mail et un mot de passe.</div>
-
-    <div id="score">
-        <img src="<?php echo url::base(); ?>images/template/score.png" width="291" height="37"/>
+    <div id="instruction"><b>Aucune inscription !</b> Il vous suffit de mettre votre E-mail et un mot de passe.
+        <div id="score">Voir les scores</div>
     </div>
 
 </div>
 
 
 <div id="contentScores">
-    <div id="logoScore">
-        <img src="<?php echo url::base(); ?>images/template/logoScore.png" width="442" height="119"/>
-    </div>
-
     <table>
         <tbody>
         <?php foreach ($users as $user) : ?>
@@ -42,9 +37,13 @@
         </tbody>
     </table>
     <div id="return">
-        <img src="<?php echo url::base(); ?>images/template/return.png" width="80" height="84"/>
+        <img src="<?php echo url::base(); ?>images/template/return.png" width="40" height="42"/>
     </div>
 
 </div>
+<div id="barBottom"></div>
 
-<div id="container"></div>
+
+<audio autoplay="autoplay" id="audio">
+    <source src="<?php echo url::base(); ?>audios/ambiance/home.mp3" type="audio/mpeg">
+</audio>

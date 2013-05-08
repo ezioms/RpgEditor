@@ -10,7 +10,6 @@ THREE.Bot = function (app, dataBot) {
 	this.fixe = dataBot.fixe;
 	this.leak = dataBot.leak;
 	this.radar = 200;
-	this.farViewBot = 1000;
 	this.speed = 0.5;
 	this.speedMin = 0.5;
 	this.speedMax = 2;
@@ -123,7 +122,7 @@ THREE.Bot = function (app, dataBot) {
 		var distance = this.position.distanceTo(hero);
 
 		// Afficher le bot ou non selon sa distance avec le hero
-		if (distance > this.farViewBot) {
+		if (distance > 1000) {
 			if (person.visible) {
 				person.visible = false;
 				person.traverse(function (child) {

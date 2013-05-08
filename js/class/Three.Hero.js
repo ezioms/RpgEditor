@@ -300,7 +300,7 @@ THREE.Hero = function (app) {
 		if (clone.position.y < sizeBloc) {
 			clone.position.y = sizeBloc;
 			this.currentdirection.jump = 0;
-			if(jump)
+			if (jump)
 				app.sound.effect('jump2.ogg', 0.1);
 			jump = false;
 		}
@@ -313,7 +313,7 @@ THREE.Hero = function (app) {
 
 		if (app.map.hasObstacle(dirYx, dirYyTop, dirYz) || app.map.hasObstacle(dirYx, dirYyBottom, dirYz)) {
 			clone.position.y = yawObject.position.y;
-			if(jump)
+			if (jump)
 				app.sound.effect('jump2.ogg', 0.1);
 			jump = false;
 			this.currentdirection.jump = 0;
@@ -417,9 +417,7 @@ THREE.Hero = function (app) {
 
 
 		if (this.hp <= 0) {
-			this.setPosition(1, 1, 1)
-			this.hp = 100;
-			app.messages.push('GAME OVER');
+			this.gameover();
 
 		}
 		else if (this.hp > 100)
@@ -449,6 +447,22 @@ THREE.Hero = function (app) {
 
 			}
 		}
+	};
+
+
+	/*
+	 * GAMEOVER
+	 */
+	this.gameover = function () {
+		yawObject.rotation.set(0, -2.5, 0);
+
+		this.setPosition(1, 1, 1);
+		this.hp = 100;
+		this.ammo = 32;
+		this.currentdirection.x = 0;
+		this.currentdirection.y = 0;
+
+		app.messages.push('GAME OVER');
 	};
 
 
