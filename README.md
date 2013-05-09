@@ -35,6 +35,33 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 ### Change log ###
 
 
+10 mai 2013 - **r10**
+
+* Refonte de la partie audio, correction du bug lors de la premiere lecture et purge des fichiers inutiles
+* Ajout de la parole sur les PNJ
+* Amélioration sonore
+* Retrait du clique continu dans l'admin de carte Issue #21
+* Correction du déplacement d'un PNJ Issue #18
+* Correction wireframe Ray en cas d'éloignement...
+* Amélioration AI des PNJ pour les attaques
+* Correction collision PNJ
+* Correction performance PNJ non visible
+* Mise à jour de la base de donnée voir dossier install/SQL
+* Supprimer un PNJ mort de la scène au bout de X cycle
+* Optimisation squelette PNJ
+* Changement de homepage login
+* Audio homepage
+* Correction image template
+* Correction bug sur les items.
+* Module de son avec sauvegarde lors du passage
+* Gestion des lumières
+* Ajout de la dégradation de map et de sa fréquence
+* Effet de jour/nuit Issue #23
+* Ajout de la possibilité de personnaliser le JS via l'administration
+* Correction administration
+* Correction langues
+
+
 05 mai 2013 - **r9**
 
 * Correction avec les bloc à position Y
