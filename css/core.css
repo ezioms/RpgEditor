@@ -407,7 +407,8 @@ fieldset {
     bottom: 5px;
     z-index: 90;
     color: #fff;
-    text-align: right
+    text-align: right;
+    z-index:5;
 }
 
 #noCursor {
