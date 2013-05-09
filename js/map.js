@@ -127,7 +127,6 @@ var initialize = function () {
 	app.renderer = new THREE.WebGLRenderer({
 		clearColor: app.map.getBackgroundColor(),
 		antialias: true,
-		clearAlpha: true,
 		preserveDrawingBuffer: true
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -168,8 +167,8 @@ var render = function () {
 		}
 
 	// update module in scene
-	//for (var keyModule in app.modules)
-	//	app.modules[keyModule].update(app);
+	for (var keyModule in app.modules)
+		app.modules[keyModule].update(app);
 
 	// update map
 	app.map.update(app);
