@@ -10,6 +10,9 @@ THREE.Map = function (app) {
 
 	var listCube = {};
 
+	var degradation = app.loader.map.degradation;
+	var frequence = app.loader.map.frequence;
+
 
 	//size
 	var infoSize = app.loader.map.size;
@@ -199,10 +202,10 @@ THREE.Map = function (app) {
 	this.addCube = function (row, obstacles) {
 		var title = [];
 		var faces = {
-			px:  obstacles[row.x + 1][row.y][row.z] ? false : true,
-			nx:  obstacles[row.x - 1][row.y][row.z] ? false : true,
-			py:  obstacles[row.x][row.y + 1][row.z] ? false : true,
-			ny:  obstacles[row.x][row.y - 1][row.z] ? false : true,
+			px: obstacles[row.x + 1][row.y][row.z] ? false : true,
+			nx: obstacles[row.x - 1][row.y][row.z] ? false : true,
+			py: obstacles[row.x][row.y + 1][row.z] ? false : true,
+			ny: obstacles[row.x][row.y - 1][row.z] ? false : true,
 			pz: obstacles[row.x][row.y][row.z + 1] ? false : true,
 			nz: obstacles[row.x][row.y][row.z - 1] ? false : true
 		};
@@ -224,7 +227,7 @@ THREE.Map = function (app) {
 		if (listCube[title] !== undefined)
 			return listCube[title];
 
-		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials, faces));
+		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials/*, faces*/));
 	};
 
 
@@ -299,6 +302,16 @@ THREE.Map = function (app) {
 		cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
 
 		THREE.GeometryUtils.merge(geometry, cube);
+	}
+
+
+	// deformation des vertices
+	for (var i = 0, l = geometry.vertices.length; i < l; i++) {
+		if (random(0, 100) > frequence)
+			continue;
+		geometry.vertices[ i ].x += Math.random() * degradation;
+		geometry.vertices[ i ].y += Math.random() * (degradation * 2);
+		geometry.vertices[ i ].z += Math.random() * degradation;
 	}
 
 	var element = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());

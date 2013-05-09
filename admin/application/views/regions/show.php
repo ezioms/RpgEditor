@@ -42,6 +42,24 @@
             </p>
 
             <p class="form-line">
+                <label for="degradation" class="form-label"><?php echo Kohana::lang( 'region.degradation' ); ?> :</label>
+                <select name="degradation" id="degradation" class="inputbox" >
+                    <?php for( $n = 0; $n <= 5; $n++ ) : ?>
+                        <option value="<?php echo $n; ?>" <?php echo ( $n == $row->degradation ) ? 'selected="selected"' : ''; ?>><?php echo sprintf( '%02d', $n ); ?></option>
+                    <?php endfor ?>
+                </select>
+            </p>
+
+            <p class="form-line">
+                <label for="frequence" class="form-label"><?php echo Kohana::lang( 'region.frequence' ); ?> :</label>
+                <select name="frequence" id="frequence" class="inputbox" >
+                    <?php for( $n = 0; $n <=100; $n++ ) : ?>
+                        <option value="<?php echo $n; ?>" <?php echo ( $n == $row->frequence ) ? 'selected="selected"' : ''; ?>><?php echo sprintf( '%02d', $n ); ?></option>
+                    <?php endfor ?>
+                </select>
+            </p>
+
+            <p class="form-line">
                 <label for="background_color" class="form-label"><?php echo Kohana::lang( 'region.color' ); ?> :</label>
                 <input name="background_color" id="background_color" value="<?php echo str_replace('0x', '#',$row->background_color); ?>" class="inputbox input-text" type="color" maxlength="50" />
             </p>
@@ -76,28 +94,6 @@
 								<label><?php echo Kohana::lang( 'region.id' ); ?> :</label>
 								<?php echo $row->id; ?></div>
 				</div>
-		</div>
-</article>
-<article class="module width_3_quarter">
-		<header><h3 class="tabs_involved"><?php echo Kohana::lang( 'region.panel_bot' ); ?></h3>
-		</header>
-		<div class="module_content">
-				<p class="form-line">
-						<label for="bot_niveau" class="form-label"><?php echo Kohana::lang( 'region.bot_niveau' ); ?> :</label>
-						<select name="bot_niveau" id="bot_niveau" class="inputbox" >
-								<?php for( $n = 0; $n <= 100; $n++ ) : ?>
-										<option value="<?php echo $n; ?>" <?php echo ( $n == $row->bot_niveau ) ? 'selected="selected"' : ''; ?>><?php echo sprintf( '%02d', $n ); ?></option>
-								<?php endfor ?>
-						</select>
-				</p>
-				<p class="form-line">
-						<label for="bot_hp_min" class="form-label"><?php echo Kohana::lang( 'region.bot_x_min', Kohana::lang( 'user.hp' ) ); ?> :</label>
-						<input name="bot_hp_min" id="bot_hp_min" value="<?php echo $row->bot_hp_min; ?>" class="inputbox input-text" type="text" maxlength="11" />
-				</p>
-				<p class="form-line">
-						<label for="bot_hp_max" class="form-label"><?php echo Kohana::lang( 'region.bot_x_max', Kohana::lang( 'user.hp' ) ); ?> :</label>
-						<input name="bot_hp_max" id="bot_hp_max" value="<?php echo $row->bot_hp_max; ?>" class="inputbox input-text" type="text" maxlength="11" />
-				</p>
 		</div>
 </article>
 <script>

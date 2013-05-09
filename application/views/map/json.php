@@ -31,6 +31,8 @@
                 "colorBackground" : "<?php echo $region->map->region->background_color; ?>",
                 "univers" :  "<?php echo str_replace('images/background/', '', $region->map->region->background_univers); ?>",
                 "music" :  "<?php echo $region->map->region->music; ?>",
+                "degradation" :  "<?php echo $region->map->region->degradation; ?>",
+                "frequence" :  "<?php echo $region->map->region->frequence; ?>",
                 "size" : {
                         "elements" : 50,
                         "xMin" : 0,"zMin" : 0,"yMin" : 0,
