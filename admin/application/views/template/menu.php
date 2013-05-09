@@ -31,9 +31,6 @@ if( in_array( 'item', $acces )
 				<?php if( in_array( 'item', $acces ) || in_array( 'admin', $acces ) ) : ?>
 						<li class="icn_object"><?php echo html::anchor( 'items', Kohana::lang( 'menu.item_game' ) ); ?></li>
 				<?php endif ?>
-				<?php if( in_array( 'sort', $acces ) || in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_sort"><?php echo html::anchor( 'sorts', Kohana::lang( 'menu.sort_fight' ) ); ?></li>
-				<?php endif ?>
 		</ul>
 		<div class="clear"></div>
 		<hr/>
@@ -54,9 +51,6 @@ if( in_array( 'item', $acces )
 				<?php if( in_array( 'item', $acces ) || in_array( 'admin', $acces ) ) : ?>
 						<li class="icn_object_add"><?php echo html::anchor( 'items/insert', Kohana::lang( 'menu.add_item_game' ) ); ?></li>
 				<?php endif ?>
-				<?php if( in_array( 'sort', $acces ) || in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_sort_add"><?php echo html::anchor( 'sorts/insert', Kohana::lang( 'menu.add_sort_fight' ) ); ?></li>
-				<?php endif ?>
 		</ul>
 		<div class="clear"></div>
 		<hr/>
@@ -64,9 +58,6 @@ if( in_array( 'item', $acces )
 		<ul class="toggle">
 				<?php if( in_array( 'ftp', $acces ) || in_array( 'admin', $acces ) ) : ?>
 						<li class="icn_folder"><?php echo html::anchor( 'ftp', Kohana::lang( 'menu.ftp' ) ); ?></li>
-				<?php endif ?>
-				<?php if( in_array( 'admin', $acces ) ) : ?>
-						<li class="icn_install"><?php echo html::anchor( 'install', Kohana::lang( 'menu.install' ) ); ?></li>
 				<?php endif ?>
 				<?php if( in_array( 'statistique', $acces ) || in_array( 'admin', $acces ) ) : ?>
 						<li class="icn_statistics"><?php echo html::anchor( 'statistiques', Kohana::lang( 'menu.stat' ) ); ?></li>

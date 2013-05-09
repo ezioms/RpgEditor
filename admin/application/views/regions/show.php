@@ -1,5 +1,5 @@
 <?php defined( 'SYSPATH' ) OR die( 'No direct access allowed.' ); ?>
-<article class="module width_3_quarter">
+<article class="module width_full relative">
 		<header><h3 class="tabs_involved"><?php echo $row->name; ?> - <a href="<?php echo url::base( TRUE ); ?>mapping/panel/<?php echo $row->id; ?>" ><?php echo Kohana::lang( 'region.edit_map' ); ?></a></h3>
 		</header>
 		<div class="module_content">
@@ -85,19 +85,10 @@
 						</select>
 				</p>
 
-            <p>
-                <?php Fck_Core::editeur('fonction', isset($row->fonction) ? $row->fonction : ''); ?>
+            <p class="form-line">
+                <label for="fonction" class="form-label"><?php echo Kohana::lang( 'region.function' ); ?> : </label>
+                <textarea name="fonction" id="fonction" class="inputbox input-textarea" style="height:200px;"><?php echo $row->fonction; ?></textarea>
             </p>
-		</div>
-</article>	
-<article class="module width_quarter">
-		<header><h3><?php echo Kohana::lang( 'form.info_sup' ); ?></h3></header>
-		<div class="module_content">
-				<div class="message">
-						<div class="label">
-								<label><?php echo Kohana::lang( 'region.id' ); ?> :</label>
-								<?php echo $row->id; ?></div>
-				</div>
 		</div>
 </article>
 <script>

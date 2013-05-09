@@ -63,7 +63,7 @@ class Regions_Controller extends Template_Controller {
 				$this->template->contenu->formulaire = new View( 'regions/show' );
 				$this->template->contenu->formulaire->row = $region;
 				$this->template->contenu->formulaire->listing = $this->region->listing_parent();
-				$this->template->contenu->formulaire->music = file::listing_dir( DOCROOT.'../audio/ambience' );
+				$this->template->contenu->formulaire->music = file::listing_dir( DOCROOT.'../audios' );
 		}
 
 		/**

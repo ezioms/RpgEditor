@@ -14,12 +14,11 @@
 								<th width="50">X</th>
 								<th width="50">Y</th>
 								<th width="50">Z</th>
-								<th width="50"></th>
 						</tr>
 				</thead>
 				<tbody>
 						<tr>
-								<td colspan="6" class="dataTables_empty"><?php echo Kohana::lang( 'form.loading' ); ?></td>
+								<td colspan="7" class="dataTables_empty"><?php echo Kohana::lang( 'form.loading' ); ?></td>
 						</tr>
 				</tbody>
 		</table>

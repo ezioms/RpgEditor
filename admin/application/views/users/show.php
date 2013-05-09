@@ -123,17 +123,9 @@
 						<div class="label">
 								<label><?php echo Kohana::lang( 'user.nb_connect' ); ?> :</label>
 								<?php echo number_format( $row->logins ); ?></div>
-						<div class="label">
-								<label><?php echo Kohana::lang( 'user.avatar' ); ?> :</label>
-								<div id="vignetteAvatar" class="vignetteAvatar"></div>
-						</div>
 				</div>
 				<div class="spacer"></div>
 				<div style="text-align:center;">
-						<div class="label">
-								<a href="javascript:;" id="user_list_items"><?php echo Kohana::lang( 'user.link_object' ); ?></a></div>
-						<div class="label">
-								<a href="javascript:;" id="user_list_sorts"><?php echo Kohana::lang( 'user.link_sort' ); ?></a></div>
 						<div class="label">
 								<a href="javascript:;" id="user_list_quetes"><?php echo Kohana::lang( 'user.link_quete' ); ?></a></div>
 				</div>
