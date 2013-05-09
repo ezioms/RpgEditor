@@ -4,16 +4,6 @@ THREE.Map = function (app) {
 
 	this.wireframe = false;
 
-	var univers = new THREE.Object3D();
-
-	var geometry = new THREE.Geometry();
-
-	var ambient = new THREE.AmbientLight(0x333333);
-
-	var light1 = new THREE.PointLight(0xffaa00, 0.8, 400);
-
-	var light2 = new THREE.PointLight(0xffaa00, 0.8, 400);
-
 	var region = {};
 
 	var listImg = {};
@@ -31,6 +21,17 @@ THREE.Map = function (app) {
 	var middleMaxX = maxX / 2;
 	var middleMaxY = maxY / 2;
 	var middleMaxZ = maxZ / 2;
+
+
+	var univers = new THREE.Object3D();
+
+	var geometry = new THREE.Geometry();
+
+	var ambient = new THREE.AmbientLight(0x333333);
+
+	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
+
+	var light2 = new THREE.PointLight(0xffaa00, 1, 600);
 
 
 	var obstacles = {};
@@ -91,6 +92,9 @@ THREE.Map = function (app) {
 	 * UPDATE map
 	 */
 	this.update = function (app) {
+		if (app.clock.getDelta() * 1000 % 5 !== 0)
+			return;
+
 		var minDistance1 = {
 			distance: null,
 			value: null,
@@ -99,7 +103,7 @@ THREE.Map = function (app) {
 
 		for (var keyLight in lights) {
 			var distance = app.hero.getCamera().position.distanceTo(lights[keyLight]);
-			if (minDistance1.distance && minDistance1.distance < distance)
+			if (distance > 1500 || (minDistance1.distance && minDistance1.distance < distance))
 				continue;
 
 			minDistance1.distance = distance;
@@ -116,10 +120,7 @@ THREE.Map = function (app) {
 		for (var keyLight in lights) {
 			var distance = app.hero.getCamera().position.distanceTo(lights[keyLight]);
 
-			if (distance == minDistance1.distance)
-				continue;
-
-			if (minDistance2.distance && minDistance2.distance < distance)
+			if (distance > 1500 || distance == minDistance1.distance || (minDistance2.distance && minDistance2.distance < distance))
 				continue;
 
 			minDistance2.distance = distance;
@@ -127,9 +128,13 @@ THREE.Map = function (app) {
 			minDistance2.value = lights[keyLight];
 		}
 
-		console.log(minDistance1, minDistance2);
-		light1.position.set(minDistance1.value.x, minDistance1.value.y, minDistance1.value.z);
-		light2.position.set(minDistance2.value.x, minDistance2.value.y, minDistance2.value.z);
+		light1.intensity = random(70, 100) / 100;
+		if (minDistance1.value)
+			light1.position.set(minDistance1.value.x, minDistance1.value.y + sizeBloc + random(0, 10), minDistance1.value.z);
+
+		light2.intensity = random(70, 100) / 100;
+		if (minDistance2.value)
+			light2.position.set(minDistance2.value.x, minDistance2.value.y + sizeBloc + random(0, 10), minDistance2.value.z);
 	};
 
 

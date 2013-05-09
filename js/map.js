@@ -168,8 +168,8 @@ var render = function () {
 		}
 
 	// update module in scene
-	for (var keyModule in app.modules)
-		app.modules[keyModule].update(app);
+	//for (var keyModule in app.modules)
+	//	app.modules[keyModule].update(app);
 
 	// update map
 	app.map.update(app);

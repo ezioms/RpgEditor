@@ -183,7 +183,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		if (!id || app.loader.items['item_' + id] == undefined || app.loader.items['item_' + id].image == undefined)
 			return;
 
-		this.handLeft.add(this.loadItem(-30, app.loader.items['item_' + id].image));
+		this.handLeft.add(this.loadItem(-40, app.loader.items['item_' + id].image, true));
 		this.leftarm.add(this.handLeft);
 	};
 
@@ -207,7 +207,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	/*
 	 * Load item for hands
 	 */
-	this.loadItem = function (rotation, image) {
+	this.loadItem = function (rotation, image, left) {
 		if (typeof image == 'string') {
 			var path = dir_script + 'images/items/' + image
 			image = new Image();
@@ -219,7 +219,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		item.scale.y = 0.6;
 		item.scale.z = 0.6;
 		item.position.y = -10;
-		item.position.z = -2;
+			item.position.z = left ? 2 : -2;
 		item.position.x = 2;
 		item.rotation.z = rotation * Math.PI / 180 - 0.5;
 		return item;
