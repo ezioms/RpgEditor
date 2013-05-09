@@ -95,8 +95,26 @@ THREE.Map = function (app) {
 	 * UPDATE map
 	 */
 	this.update = function (app) {
-		if (app.clock.getDelta() * 1000 % 5 !== 0)
-			return;
+		var delta = app.clock.getElapsedTime();
+		var timeDelta = delta % 600;
+
+		if (timeDelta < 100)
+			app.map.getAmbience().color.setHex(0x444444);
+		else if (timeDelta < 200)
+			app.map.getAmbience().color.setHex(0x555555);
+		else if (timeDelta < 300)
+			app.map.getAmbience().color.setHex(0x666666);
+		else if (timeDelta < 400)
+			app.map.getAmbience().color.setHex(0x555555);
+		else if (timeDelta < 500)
+			app.map.getAmbience().color.setHex(0x444444);
+		else
+			app.map.getAmbience().color.setHex(0x333333);
+
+		if (timeDelta > 200 && timeDelta < 400)
+			light1.visible = light2.visible = false;
+		else
+			light1.visible = light2.visible = true;
 
 		var minDistance1 = {
 			distance: null,
