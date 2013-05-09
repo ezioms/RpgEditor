@@ -404,11 +404,10 @@ THREE.Hero = function (app) {
 
 		var maxTorch = speedTmp >= 1 ? 50 : 10;
 
-		if (app.clock.getDelta() * 1000 % 2 !== 0) {
+		if (app.clock.getDelta() * 1000 % 2 !== 0)
 			light.intensity = random(80, 100) / 100;
 
-			light.position.set(yawObject.position.x + random(0, maxTorch), yawObject.position.y + 16, yawObject.position.z + random(0, maxTorch));
-		}
+		light.position.set(yawObject.position.x + random(0, maxTorch), yawObject.position.y + 16, yawObject.position.z + random(0, maxTorch));
 
 
 		if (this.hp <= 0)

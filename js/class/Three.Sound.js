@@ -55,7 +55,7 @@ THREE.Sound = function () {
 		var audioElement = app.loader.listAudio[data];
 
 		try {
-			audioElement.volume = 0.1;
+			audioElement.volume = 0.2;
 			audioElement.loop = true;
 			audioElement.autoplay = true;
 			audioElement.play();

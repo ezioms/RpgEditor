@@ -94,7 +94,7 @@ THREE.Dog = function (picture, id) {
 	this.die = function () {
 		this.hp = -1;
 
-		app.sound.play('bears.mp3', this);
+		app.sound.play('dog.mp3', this);
 		app.sound.play('fall.mp3', this);
 
 		this.initialGesture();

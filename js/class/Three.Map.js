@@ -27,7 +27,7 @@ THREE.Map = function (app) {
 
 	var geometry = new THREE.Geometry();
 
-	var ambient = new THREE.AmbientLight(0x333333);
+	var ambient = new THREE.AmbientLight(0x444444);
 
 	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
 
