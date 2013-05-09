@@ -12,6 +12,7 @@ THREE.Map = function (app) {
 
 	var degradation = app.loader.map.degradation;
 	var frequence = app.loader.map.frequence;
+	var fonction = app.loader.map.fonction;
 
 
 	//size
@@ -111,11 +112,6 @@ THREE.Map = function (app) {
 		else
 			app.map.getAmbience().color.setHex(0x333333);
 
-		if (timeDelta > 200 && timeDelta < 400)
-			light1.visible = light2.visible = false;
-		else
-			light1.visible = light2.visible = true;
-
 		var minDistance1 = {
 			distance: null,
 			value: null,
@@ -150,12 +146,20 @@ THREE.Map = function (app) {
 		}
 
 		light1.intensity = random(70, 100) / 100;
-		if (minDistance1.value)
+		if (minDistance1.value ) {
 			light1.position.set(minDistance1.value.x, minDistance1.value.y + sizeBloc + random(0, 10), minDistance1.value.z);
+			light1.visible = true;
+		}
+		else
+			light1.visible = false;
 
 		light2.intensity = random(70, 100) / 100;
-		if (minDistance2.value)
+		if (minDistance2.value ) {
 			light2.position.set(minDistance2.value.x, minDistance2.value.y + sizeBloc + random(0, 10), minDistance2.value.z);
+			light2.visible = true;
+		}
+		else
+			light2.visible = false;
 	};
 
 
@@ -191,6 +195,14 @@ THREE.Map = function (app) {
 			return true;
 
 		return false;
+	};
+
+
+	/*
+	 * GET light ambience
+	 */
+	this.getOtherElements = function () {
+		return eval(fonction);
 	};
 
 

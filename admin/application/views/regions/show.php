@@ -84,6 +84,10 @@
 												<?php endif ?>
 						</select>
 				</p>
+
+            <p>
+                <?php Fck_Core::editeur('fonction', isset($row->fonction) ? $row->fonction : ''); ?>
+            </p>
 		</div>
 </article>	
 <article class="module width_quarter">

@@ -1,4 +1,4 @@
-THREE.Loader = function () {
+THREE.PreLoader = function () {
 
 	this.datas = false;
 

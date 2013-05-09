@@ -28,7 +28,8 @@ app = {};
 
 app.scene = new THREE.Scene;
 app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 8000);
-app.loader = new THREE.Loader;
+app.loader = new THREE.PreLoader;
+app.JSONLoader = new THREE.JSONLoader();
 app.clock = new THREE.Clock;
 app.sound = new THREE.Sound;
 app.overlay = new THREE.Overlay;
@@ -100,6 +101,9 @@ var initialize = function () {
 	// add point light in scene
 	app.scene.add(app.map.getLight2());
 
+	// add element on backend
+	app.map.getOtherElements();
+
 	// generate bots and add in scene
 	var bots = app.map.getBots();
 	if (bots)
@@ -154,6 +158,9 @@ var initialize = function () {
  * Rendu du canvas
  */
 var render = function () {
+	// update map
+	app.map.update(app);
+
 	if (!control) {
 		noCursor.style.display = 'block';
 		return app.renderer.render(app.scene, app.camera);
@@ -170,9 +177,6 @@ var render = function () {
 	for (var keyModule in app.modules)
 		app.modules[keyModule].update(app);
 
-	// update map
-	app.map.update(app);
-
 	// update hero
 	app.hero.update(app);
 
@@ -184,8 +188,8 @@ var render = function () {
 
 	// update stat environment
 	// if (debug) {
-	 var info = app.renderer.info;
-	 webGL.innerHTML = '<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points;
+	var info = app.renderer.info;
+	webGL.innerHTML = '<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points;
 	// }
 
 	app.renderer.clear();

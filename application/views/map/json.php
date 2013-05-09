@@ -33,6 +33,7 @@
                 "music" :  "<?php echo $region->map->region->music; ?>",
                 "degradation" :  "<?php echo $region->map->region->degradation; ?>",
                 "frequence" :  "<?php echo $region->map->region->frequence; ?>",
+                "fonction" :  <?php echo json_encode($region->map->region->fonction); ?>,
                 "size" : {
                         "elements" : 50,
                         "xMin" : 0,"zMin" : 0,"yMin" : 0,
