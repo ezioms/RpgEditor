@@ -23,6 +23,7 @@
 </section>
 <section id="content_body"></section>
 <section id="alertUser"><img src="<?php echo url::base(); ?>images/template/bg-alert.png"/></section>
+<section id="water"></section>
 <section id="cible"></section>
 <section id="content_action"></section>
 

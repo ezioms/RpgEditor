@@ -13,6 +13,7 @@ var contentAction = document.getElementById('content_action');
 var valueGraph = document.getElementById('valueMoyenneGraph');
 var contentGraph = document.getElementById('ContenuGraphique');
 var cible = document.getElementById('cible');
+var water = document.getElementById('water');
 var userHp = document.getElementById('user_hp');
 var userScore = document.getElementById('user_argent');
 var userAmmo = document.getElementById('user_ammo');

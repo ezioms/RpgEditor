@@ -397,6 +397,14 @@ THREE.Hero = function (app) {
 		var newZoneZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
 
+		if (app.map.hasWater(newZoneX, newZoneY, newZoneZ)) {
+			water.style.display = 'block';
+			light.visible = false;
+		} else {
+			water.style.display = 'none';
+		}
+
+
 		yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
 		this.zone.set(newZoneX, newZoneY, newZoneZ);
 		person.position.set(clone.position.x, clone.position.y - 16, clone.position.z);

@@ -31,6 +31,8 @@ THREE.Map = function (app) {
 
 	var geometry = new THREE.Geometry();
 
+	var geometryWater = new THREE.Geometry();
+
 	var ambient = new THREE.AmbientLight(0x444444);
 
 	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
@@ -40,6 +42,7 @@ THREE.Map = function (app) {
 
 	var obstacles = {};
 	var modules = {};
+	var water = {};
 	var lights = {};
 
 
@@ -146,7 +149,7 @@ THREE.Map = function (app) {
 		}
 
 		light1.intensity = random(70, 100) / 100;
-		if (minDistance1.value ) {
+		if (minDistance1.value) {
 			light1.position.set(minDistance1.value.x, minDistance1.value.y + sizeBloc + random(0, 10), minDistance1.value.z);
 			light1.visible = true;
 		}
@@ -154,7 +157,7 @@ THREE.Map = function (app) {
 			light1.visible = false;
 
 		light2.intensity = random(70, 100) / 100;
-		if (minDistance2.value ) {
+		if (minDistance2.value) {
 			light2.position.set(minDistance2.value.x, minDistance2.value.y + sizeBloc + random(0, 10), minDistance2.value.z);
 			light2.visible = true;
 		}
@@ -168,6 +171,14 @@ THREE.Map = function (app) {
 	 */
 	this.getUnivers = function () {
 		return region.univers ? region.univers : false;
+	};
+
+
+	/*
+	 * GET water
+	 */
+	this.getWater = function () {
+		return region.water ? region.water : false;
 	};
 
 
@@ -191,7 +202,19 @@ THREE.Map = function (app) {
 	 * GET obstacles
 	 */
 	this.hasObstacle = function (x, y, z) {
-		if (region.obstacles[x] != undefined && region.obstacles[x][y] != undefined && region.obstacles[x][y][z] != undefined && region.obstacles[x][y][z])
+		if (region.obstacles[x] != undefined && region.obstacles[x][y] != undefined && region.obstacles[x][y][z] != undefined && region.obstacles[x][y][z] === true)
+			return true;
+
+		return false;
+	};
+
+
+	/*
+	 * GET water
+	 */
+	this.hasWater = function (x, y, z) {
+		y += 1;
+		if (region.water[x] != undefined && region.water[x][y] != undefined && region.water[x][y][z] != undefined && region.water[x][y][z] === true)
 			return true;
 
 		return false;
@@ -229,7 +252,7 @@ THREE.Map = function (app) {
 	/*
 	 * Create element
 	 */
-	this.addCube = function (row, obstacles) {
+	this.addCube = function (row, obstacles, water) {
 		var title = [];
 		var faces = {
 			px: obstacles[row.x + 1][row.y][row.z] ? false : true,
@@ -246,18 +269,24 @@ THREE.Map = function (app) {
 					title.push(row.materials[keyImg].src);
 					row.materials[keyImg] = this.loadTexture(row.materials[keyImg]);
 				}
+
+			if (water)
+				row.materials[0].opacity = 0.8;
 		}
 		else if (row.materials) {
 			title.push(row.materials.src);
 			row.materials = this.loadTexture(row.materials);
+			if (water)
+				row.materials.opacity = 0.8;
 		}
+
 
 		title = title.join('-') + '-' + faces.px + '-' + faces.nx + '-' + faces.py + '-' + faces.ny + '-' + faces.pz + '-' + faces.nz;
 
 		if (listCube[title] !== undefined)
 			return listCube[title];
 
-		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials/*, faces*/));
+		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials, water ? faces : null));
 	};
 
 
@@ -309,15 +338,22 @@ THREE.Map = function (app) {
 
 	for (var x = 0; x <= infoSize.xMax + 1; x++) {
 		obstacles[x] = {};
+		water[x] = {};
 		for (var y = 0; y <= infoSize.yMax + 1; y++) {
 			obstacles[x][y] = {};
-			for (var z = 0; z <= infoSize.zMax + 1; z++)
+			water[x][y] = {};
+			for (var z = 0; z <= infoSize.zMax + 1; z++) {
 				obstacles[x][y][z] = y == 0 ? true : false;
+				water[x][y][z] = false;
+			}
 		}
 	}
 
 	for (var keyEl in app.loader.map.elements)
-		obstacles[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
+		if (app.loader.map.elements[keyEl].materials[0].src.replace(url_script + 'images/background/', '') != 'water.png')
+			obstacles[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
+		else
+			water[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
 
 	for (var keyModule in app.loader.map.modules)
 		if (app.loader.map.modules[keyModule].data.module == 'light')
@@ -327,11 +363,17 @@ THREE.Map = function (app) {
 
 	for (var keyEle in app.loader.map.elements) {
 		var row = app.loader.map.elements[keyEle];
-		var cube = this.addCube(row, obstacles);
+		var cube;
 
-		cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
-
-		THREE.GeometryUtils.merge(geometry, cube);
+		if (row.materials[0].src.replace(url_script + 'images/background/', '') == 'water.png') {
+			cube = this.addCube(row, water, true);
+			cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
+			THREE.GeometryUtils.merge(geometryWater, cube);
+		} else {
+			cube = this.addCube(row, obstacles);
+			cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
+			THREE.GeometryUtils.merge(geometry, cube);
+		}
 	}
 
 
@@ -345,8 +387,10 @@ THREE.Map = function (app) {
 	}
 
 	var element = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
+	var elementWater = new THREE.Mesh(geometryWater, new THREE.MeshFaceMaterial());
 
 	univers.add(element);
+	univers.add(elementWater);
 
 	univers.name = 'map';
 
@@ -354,7 +398,8 @@ THREE.Map = function (app) {
 		univers: univers,
 		obstacles: obstacles,
 		modules: modules,
-		lights: lights
+		lights: lights,
+		water: water
 	};
 };
 
