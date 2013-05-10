@@ -30,10 +30,12 @@ THREE.Hero = function (app) {
 
 	var heightJump = 9;
 	var jump = false;
-	var run = false;
+	var lastJump = 0;
 
 	var timeFall = 0;
 	var speedTmp = 0;
+
+	var inWater = false;
 
 	//size
 	var infoSize = app.loader.map.size;
@@ -146,7 +148,7 @@ THREE.Hero = function (app) {
 	 */
 	this.onMouseDown = function (event) {
 		// var global voir map.js
-		if (!control)
+		if (!control || inWater)
 			return;
 
 		shootgun = 1;
@@ -204,22 +206,25 @@ THREE.Hero = function (app) {
 					moveRight = true;
 				break;
 			case 32:
-				if (jump)
+				if (jump && !inWater)
 					return;
 
-				jump = true;
-				this.currentdirection.jump = heightJump;
+				var date = Date.now();
+				if (lastJump > date - (inWater ? 300 : 500))
+					return;
 
-				app.sound.effect('jump.ogg', 0.1);
+				lastJump = date;
+
+				jump = true;
+				this.currentdirection.jump = inWater ? 0.5 : heightJump;
+
+				app.sound.effect((inWater ? 'jumpWater.ogg' : 'jump.ogg'), 0.1);
 				break;
 			case 76 :
 				if (light.visible)
 					light.visible = false;
-				else
+				else if (!inWater)
 					light.visible = true;
-				break;
-			case 16 :
-				run = true;
 				break;
 		}
 	};
@@ -255,9 +260,6 @@ THREE.Hero = function (app) {
 			case 100 :
 			case 68 : // Flèche droite, d, D
 				moveRight = false;
-				break;
-			case 16 :
-				run = false;
 				break;
 		}
 
@@ -295,7 +297,7 @@ THREE.Hero = function (app) {
 			speedTmp = 0;
 
 
-		clone.position.y += this.currentdirection.jump -= this.gravity;
+		clone.position.y += this.currentdirection.jump -= ( inWater ? 0.01 : this.gravity);
 
 		if (clone.position.y < sizeBloc) {
 			clone.position.y = sizeBloc;
@@ -380,9 +382,9 @@ THREE.Hero = function (app) {
 			timeFall = 0;
 
 		if ((moveForward || moveBackward || moveLeft || moveRight) && !jump)
-			app.sound.move(true);
+			app.sound.move(true, inWater);
 		else
-			app.sound.move(false);
+			app.sound.move(false, inWater);
 
 		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
 			person.update(( !moveForward && !moveBackward ? (shootgun ? 3 : 2) : (speedTmp >= 1 ? 1 : 0)));
@@ -397,10 +399,16 @@ THREE.Hero = function (app) {
 		var newZoneZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
 
-		if (app.map.hasWater(newZoneX, newZoneY, newZoneZ)) {
+		if (app.map.hasWater(newZoneX, Math.floor((clone.position.y + 25 ) / sizeBloc) - 1, newZoneZ)) {
 			water.style.display = 'block';
 			light.visible = false;
+			inWater = true;
 		} else {
+			if (inWater && jump && this.currentdirection.jump > 0) {
+				this.currentdirection.jump = heightJump;
+				jump = false;
+			}
+			inWater = false;
 			water.style.display = 'none';
 		}
 

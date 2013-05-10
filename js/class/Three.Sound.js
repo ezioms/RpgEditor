@@ -65,8 +65,8 @@ THREE.Sound = function () {
 	};
 
 
-	this.move = function (play) {
-		this.audioMove = app.loader.listAudio['move.ogg'];
+	this.move = function (play, inWater) {
+		this.audioMove = app.loader.listAudio[( inWater ? 'nager.ogg' : 'move.ogg')];
 		try {
 			if (!play) {
 				this.audioMove.currentTime = 0;
