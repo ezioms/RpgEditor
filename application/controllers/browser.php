@@ -21,6 +21,7 @@ class Browser_Controller extends Template_Controller
      */
     public function index()
     {
+        $this->css = 'css/browser';
         $this->template->content = new View('browser/index');
     }
 

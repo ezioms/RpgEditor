@@ -67,8 +67,6 @@ THREE.Hero = function (app) {
 	yawObject.add(pitchObject);
 	yawObject.rotation.y = this.currentdirection.x;
 
-	yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
-
 	var person = new THREE.Person('hero', this.img, this.hand_left, this.hand_right);
 	person.name = 'hero';
 	person.rotation.y = PIDivise2;
@@ -116,7 +114,7 @@ THREE.Hero = function (app) {
 	 */
 	this.setPosition = function (x, y, z) {
 		this.zone.set(x, y, z);
-		yawObject.position.set(-middleMaxX + (x * sizeBloc + middle), y * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc + middle));
+		yawObject.position.set(-middleMaxX + (x * sizeBloc + middle), (y - 1) * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc + middle));
 	};
 
 
@@ -370,9 +368,9 @@ THREE.Hero = function (app) {
 				}
 
 
-		if (yawObject.position.y != clone.position.y && yawObject.position.y > clone.position.y)
+		if (yawObject.position.y != clone.position.y && yawObject.position.y > clone.position.y && !inWater)
 			timeFall += yawObject.position.y - clone.position.y;
-		else if (timeFall > 150) {
+		else if (timeFall > 150 && !inWater) {
 			app.alert = timeFall * 10;
 			app.messages.push('Chute de ' + (Math.round(timeFall) / 20) + 'm');
 			app.hero.hp -= Math.round(Math.round(timeFall) / 10);
@@ -515,4 +513,9 @@ THREE.Hero = function (app) {
 	document.addEventListener('mousemove', bind(this, this.onMouseMove), false);
 	window.addEventListener('keydown', bind(this, this.onKeyDown), false);
 	window.addEventListener('keyup', bind(this, this.onKeyUp), false);
+
+	if (app.loader.my.positionX != 0 && app.loader.my.positionY != 0 && app.loader.my.positionZ != 0)
+		yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
+	else
+		this.setPosition(app.loader.my.x, app.loader.my.y, app.loader.my.z);
 };

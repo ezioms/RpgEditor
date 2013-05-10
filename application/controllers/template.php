@@ -109,13 +109,16 @@ abstract class Template_Controller extends Authentic_Controller
      */
     private function meta_link()
     {
-        $script = array(
-            'js/lib/jquery',
-            'js/lib/three',
-            'js/lib/detector',
-            'js/lib/stats',
-            'js/lib/tools',
-            'index.php/js_phpjs');
+        if (!$this->user)
+            $script = array();
+        else
+            $script = array(
+                'js/lib/jquery',
+                'js/lib/three',
+                'js/lib/detector',
+                'js/lib/stats',
+                'js/lib/tools',
+                'index.php/js_phpjs');
 
         if ($this->script && is_array($this->script))
             $script = array_merge($script, $this->script);

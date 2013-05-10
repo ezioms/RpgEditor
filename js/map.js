@@ -14,6 +14,7 @@ var valueGraph = document.getElementById('valueMoyenneGraph');
 var contentGraph = document.getElementById('ContenuGraphique');
 var cible = document.getElementById('cible');
 var water = document.getElementById('water');
+var logout = document.getElementById('logout');
 var userHp = document.getElementById('user_hp');
 var userScore = document.getElementById('user_argent');
 var userAmmo = document.getElementById('user_ammo');
@@ -54,7 +55,7 @@ var load = function () {
 		return setTimeout(load, 200);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = 'block';
+	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
@@ -188,10 +189,10 @@ var render = function () {
 	updateHeroVisual();
 
 	// update stat environment
-	// if (debug) {
+	if (debug) {
 	var info = app.renderer.info;
 	webGL.innerHTML = '<b>Memory Geometrie</b> : ' + info.memory.geometries + ' - <b>Memory programs</b> : ' + info.memory.programs + ' - <b>Memory textures</b> : ' + info.memory.textures + ' - <b>Render calls</b> : ' + info.render.calls + ' - <b>Render vertices</b> : ' + info.render.vertices + ' - <b>Render faces</b> : ' + info.render.faces + ' - <b>Render points</b> : ' + info.render.points;
-	// }
+	 }
 
 	app.renderer.clear();
 	app.renderer.render(app.scene, app.camera);

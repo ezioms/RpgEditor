@@ -1,5 +1,7 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <div id="barTop"></div>
+<section id="logout"><a href="<?php echo url::site('logout'); ?>">Se déconnecter</a></section>
+
 <section id="content_loading"></section>
 <section id="notifications"></section>
 

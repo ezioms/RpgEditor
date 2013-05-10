@@ -21,8 +21,6 @@ class Logger_Controller extends Template_Controller
     public function index()
     {
         $this->css = 'css/login';
-        $this->script = array('js/class/helvetiker_regular.typeface', 'js/login');
-
         $cache = Cache::instance();
 
         if (!$this->template->content = $cache->get('view_auth')) {

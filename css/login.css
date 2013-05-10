@@ -1,11 +1,21 @@
 body, html {
     overflow: hidden;
     font-family: Arial;
+    margin: 0;
+    padding: 0;
+    background-color: #111111;
 }
 
 body {
     background: url('../images/template/homepage.png') no-repeat center center fixed;
     background-size: cover; /* Voir aussi "contain" */
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 #logo {

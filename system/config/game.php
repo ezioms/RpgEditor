@@ -20,7 +20,7 @@ $config['initialPosition'] = array('x' => 1, 'y' => 1, 'z' => 1, 'region' => 1);
 
 $config['initialHandRight'] = 12; //Arme par defaut
 
-$config['initialSpeed'] = 4; //Vitesse que le joueur possède lors de son initialisation
+$config['initialSpeed'] = 2; //Vitesse que le joueur possède lors de son initialisation
 
 $config['initialGravity'] = 0.7; //Gravité que le joueur possède lors de son initialisation
 
