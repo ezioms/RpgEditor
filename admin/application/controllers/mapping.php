@@ -51,6 +51,7 @@ class Mapping_Controller extends Template_Controller
         $this->css = array('facebox', 'mapping');
 
         $this->template->contenu = new View('mapping/index');
+        $this->template->contenu->data = $region;
         $this->template->contenu->region = json_encode($region);
         $this->template->contenu->elements = $elements ? implode(',' . "\n", $elements) : FALSE;
     }

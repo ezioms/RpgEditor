@@ -1,7 +1,10 @@
 if (!Detector.webgl) Detector.addGetWebGLMessage();
 
-var container, stats, intervalClick;
-var camera, scene, renderer;
+var container, stats;
+var app = {};
+
+app.JSONLoader = new THREE.JSONLoader();
+
 var projector, plane, cube;
 var mouse2D, ray,
 	theta = 45, controls, cubes;
@@ -91,7 +94,7 @@ $(function () {
 		if (typeAction == 'mod')
 			return;
 
-		scene.remove(rollOverMesh);
+		app.scene.remove(rollOverMesh);
 
 		rollOverMesh = addCube(dataTextureCube);
 		rollOverMesh.position = position;
@@ -99,12 +102,12 @@ $(function () {
 		if (typeAction == 'del' || typeAction == 'no')
 			rollOverMesh.visible = false;
 
-		scene.add(rollOverMesh);
+		app.scene.add(rollOverMesh);
 	});
 
 
 	$("input[name='action']").live('click', function () {
-		scene.remove(rollOverMesh);
+		app.scene.remove(rollOverMesh);
 
 		typeAction = $("input[name='action']:checked").val();
 		if (typeAction == 'no')
@@ -120,7 +123,7 @@ $(function () {
 			}));
 		}
 
-		scene.add(rollOverMesh);
+		app.scene.add(rollOverMesh);
 	});
 });
 
@@ -133,9 +136,9 @@ function init() {
 
 	container = document.getElementById('containerMapping');
 
-	camera = new THREE.CombinedCamera(window.innerWidth, window.innerHeight, 60, 1, 8000);
+	app.camera = new THREE.CombinedCamera(window.innerWidth, window.innerHeight, 60, 1, 8000);
 
-	controls = new THREE.FirstPersonControls(camera, container);
+	controls = new THREE.FirstPersonControls(app.camera, container);
 
 	controls.object.position.y = 100;
 	controls.object.position.x = -(dataRegion.x * 50 / 2);
@@ -145,8 +148,8 @@ function init() {
 	controls.lookVertical = true;
 	controls.lookVertical = true;
 
-	scene = new THREE.Scene();
-	//scene.fog = new THREE.FogExp2(dataRegion.background_color, 0.0001);
+	app.scene = new THREE.Scene();
+	//app.scene.fog = new THREE.FogExp2(dataRegion.background_color, 0.0001);
 
 
 	// roll-over helpers
@@ -155,7 +158,7 @@ function init() {
 	rollOverMesh.position.x += 50 / 2;
 	rollOverMesh.position.z += 50 / 2;
 	rollOverMesh.visible = false;
-	scene.add(rollOverMesh);
+	app.scene.add(rollOverMesh);
 
 	// picking
 
@@ -176,7 +179,7 @@ function init() {
 	plane.position.y = -1;
 	plane.name = 'planeBackground';
 
-	scene.add(plane);
+	app.scene.add(plane);
 
 	grille = new THREE.Mesh(new THREE.PlaneGeometry(dataRegion.x * 50, dataRegion.z * 50, dataRegion.x, dataRegion.z), new THREE.MeshBasicMaterial({
 		color: 0xffffff,
@@ -184,7 +187,7 @@ function init() {
 	}));
 	grille.rotation.x = -Math.PI / 2;
 	grille.name = 'planeGrille';
-	scene.add(grille);
+	app.scene.add(grille);
 
 
 	var material = THREE.ImageUtils.loadTexture(dir_script + '../' + dataRegion.background_univers);
@@ -208,25 +211,25 @@ function init() {
 	var nz = new THREE.Mesh(faceZ, materialMesh);
 	nz.position.z -= middleMaxZ;
 	nz.position.y = middleMaxY;
-	scene.add(nz);
+	app.scene.add(nz);
 
 	var pz = new THREE.Mesh(faceZ, materialMesh);
 	pz.position.z = middleMaxZ;
 	pz.position.y = middleMaxY;
 	pz.rotation.y = -180 * PI;
-	scene.add(pz);
+	app.scene.add(pz);
 
 	var nx = new THREE.Mesh(faceX, materialMesh);
 	nx.position.x -= middleMaxX;
 	nx.position.y = middleMaxY;
 	nx.rotation.y = 90 * PI;
-	scene.add(nx);
+	app.scene.add(nx);
 
 	var px = new THREE.Mesh(faceX, materialMesh);
 	px.position.x = middleMaxX;
 	px.position.y = middleMaxY;
 	px.rotation.y = -90 * PI;
-	scene.add(px);
+	app.scene.add(px);
 
 	for (keyEl in dataElements)
 		obstacles.push(dataElements[keyEl]);
@@ -237,22 +240,22 @@ function init() {
 
 	// Lights
 	var ambientLight = new THREE.AmbientLight(0xffffff);
-	scene.add(ambientLight);
+	app.scene.add(ambientLight);
 
 	var directionalLight = new THREE.DirectionalLight(0xffffff);
 	directionalLight.position.set(1, 0.75, 0.5).normalize();
-	scene.add(directionalLight);
+	app.scene.add(directionalLight);
 
-	renderer = new THREE.WebGLRenderer({
+	app.renderer = new THREE.WebGLRenderer({
 		clearColor: dataRegion.background_color,
 		antialias: true,
 		clearAlpha: true,
 		preserveDrawingBuffer: true
 	});
 
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	app.renderer.setSize(window.innerWidth, window.innerHeight);
 
-	container.appendChild(renderer.domElement);
+	container.appendChild(app.renderer.domElement);
 
 	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
@@ -273,10 +276,10 @@ function init() {
 function getCubes() {
 	container.style.display = 'none';
 
-	if (renderer)
-		for (var key in scene.children)
-			if (scene.children[key].name == 'cube')
-				scene.remove(scene.children[key]);
+	if (app.renderer)
+		for (var key in app.scene.children)
+			if (app.scene.children[key].name == 'cube')
+				app.scene.remove(app.scene.children[key]);
 
 	var geometry = new THREE.Geometry();
 
@@ -303,7 +306,7 @@ function getCubes() {
 
 	cubes = new THREE.Mesh(geometry, MeshFaceMaterial);
 	cubes.name = 'cube';
-	scene.add(cubes);
+	app.scene.add(cubes);
 	container.style.display = 'block';
 }
 
@@ -336,10 +339,10 @@ function addCube(dataSend) {
  * Resize de la fenetre
  */
 function onWindowResize() {
-	camera.setSize(window.innerWidth, window.innerHeight);
-	camera.updateProjectionMatrix();
+	app.camera.setSize(window.innerWidth, window.innerHeight);
+	app.camera.updateProjectionMatrix();
 
-	renderer.setSize(window.innerWidth, window.innerHeight);
+	app.renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 
@@ -395,9 +398,9 @@ function onDocumentMouseMove(event) {
 	mouse2D.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse2D.y = -( event.clientY / window.innerHeight ) * 2 + 1;
 
-	ray = projector.pickingRay(mouse2D.clone(), camera);
+	ray = projector.pickingRay(mouse2D.clone(), app.camera);
 
-	var intersects = ray.intersectObjects(scene.children);
+	var intersects = ray.intersectObjects(app.scene.children);
 	if (intersects.length > 0) {
 		intersector = getRealIntersector(intersects);
 		if (intersector) {
@@ -409,7 +412,7 @@ function onDocumentMouseMove(event) {
 function onDocumentMouseUp(event) {
 	event.preventDefault();
 
-	if (typeAction == 'no' || hoverTool || !ray.intersectObjects(scene.children).length)
+	if (typeAction == 'no' || hoverTool || !ray.intersectObjects(app.scene.children).length)
 		return;
 
 	var coordonnee = {
@@ -468,7 +471,7 @@ function onDocumentMouseUp(event) {
 		obstacles.push(setCoordonnee);
 	}
 
-	if (scene.children.length < 200) {
+	if (app.scene.children.length < 200) {
 		var dataSend = {
 			background_px: dir_script + '../' + coordonnee.materials[0],
 			background_nx: dir_script + '../' + coordonnee.materials[1],
@@ -484,10 +487,10 @@ function onDocumentMouseUp(event) {
 		voxel.position.y = coordonnee.y * 50 - 25;
 		voxel.position.z = (coordonnee.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
 
-		scene.add(voxel);
+		app.scene.add(voxel);
 	}
 	else {
-		scene.children.length = 0;
+		app.scene.children.length = 0;
 		getCubes();
 	}
 }
@@ -508,11 +511,11 @@ function animate() {
  * Render
  */
 function render() {
-	var info = renderer.info;
+	var info = app.renderer.info;
 	//console.log('Memory Geometrie : '+info.memory.geometries+' - Memory programs : '+info.memory.programs+' - Memory textures : '+info.memory.textures+' - Render calls : '+info.render.calls+' - Render vertices : '+info.render.vertices+' - Render faces : '+info.render.faces+' - Render points : '+info.render.points);
 	//console.log(info.render.vertices,info.render.faces);
 	controls.update(clock.getDelta(), dataRegion);
-	renderer.render(scene, camera);
+	app.renderer.render(app.scene, app.camera);
 }
 
 
@@ -558,7 +561,7 @@ function loadTexture(path) {
 
 function savePNG() {
 
-	window.open(renderer.domElement.toDataURL('image/png'), 'Capture');
+	window.open(app.renderer.domElement.toDataURL('image/png'), 'Capture');
 
 }
 

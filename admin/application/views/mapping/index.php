@@ -38,5 +38,7 @@
 		dataRegion.z = parseInt(dataRegion.z);
 
 		var dataElements = [<?php echo $elements; ?>];
+
+        <?php echo str_replace('\'obj/', '\'../../../obj/', $data->fonction); ?>
 </script>
 
