@@ -67,7 +67,6 @@ THREE.Item = function (app, img) {
 	if (memoryItemObj[img] == undefined)
 		app.JSONLoader.load('obj/'+img+'/json.js', function (vertices) {
 			var mesh = new THREE.Mesh(vertices, new THREE.MeshFaceMaterial());
-			console.log(mesh);
 			memoryItemObj[img] = mesh;
 			geometry.add(mesh);
 		});

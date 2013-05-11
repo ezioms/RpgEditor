@@ -226,8 +226,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		item.scale.x = 0.6;
 		item.scale.y = 0.6;
 		item.scale.z = 0.6;
-		item.position.y = -10;
-			item.position.z = left ? 2 : -2;
+		item.position.y = -14;
+			item.position.z = left ? -1 : 1;
 		item.position.x = 2;
 		item.rotation.z = rotation * Math.PI / 180 - 0.5;
 		return item;

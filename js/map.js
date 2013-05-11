@@ -170,7 +170,7 @@ var render = function () {
 	// update bots in scene
 	for (var keyBot in app.bots)
 		if (app.bots[keyBot].update(app) == 'remove') {
-			app.scene.remove(app.bots[keyBot].getPerson());
+			removeReferences(app.bots[keyBot].getPerson());
 			delete app.bots[keyBot];
 		}
 
@@ -342,7 +342,7 @@ var updateHeroVisual = function () {
 				if (itemOver.ammo != 0)
 					app.hero.ammo += parseInt(itemOver.ammo);
 
-				app.scene.remove(app.modules[module.x + '-' + module.y + '-' + module.z]);
+				removeReferences(app.modules[module.x + '-' + module.y + '-' + module.z]);
 				delete app.modules[module.x + '-' + module.y + '-' + module.z];
 
 				if (module.data.title)
@@ -422,6 +422,25 @@ var simulEnter = function () {
 		});
 	}
 };
+
+var removeReferences = function (removeme) {
+	try {
+		app.renderer.deallocateObject(removeme);
+		removeme.deallocate();
+	} catch (e) {
+		console.log('Error memory');
+	}
+	try {
+		removeme.traverse(function (ob) {
+			app.renderer.deallocateObject(ob);
+			ob.deallocate();
+		});
+	} catch (e) {
+		console.log('Error memory children');
+	}
+	app.scene.remove(removeme);
+
+}
 
 
 /*
