@@ -59,7 +59,6 @@ var load = function () {
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
-	info(app.loader.nbrItems + ' item(s)');
 	info(app.loader.nbrSounds + ' son(s)');
 
 	//stat for le debug

@@ -222,12 +222,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Load item for hands
 	 */
 	this.loadItem = function (rotation, image, left) {
-		if (typeof image == 'string') {
-			var path = dir_script + 'images/items/' + image
-			image = new Image();
-			image.src = path;
-		}
-
 		var item = new THREE.Item(app, image);
 		item.scale.x = 0.6;
 		item.scale.y = 0.6;

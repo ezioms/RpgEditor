@@ -483,7 +483,7 @@ THREE.Hero = function (app) {
 	this.gameover = function () {
 		yawObject.rotation.set(0, -2.5, 0);
 
-		this.setPosition(1, 1, 1);
+		this.setPosition(1, 2, 1);
 		this.hp = 100;
 		this.ammo = 32;
 		this.currentdirection.x = 0;
