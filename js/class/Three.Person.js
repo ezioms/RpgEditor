@@ -182,8 +182,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 */
 	this.water = function () {
 		this.bodyGroup.rotation.z = -1;
-		this.bodyGroup.position.y = 6;
-		this.bodyGroup.position.x = -12;
+		this.bodyGroup.position.y = 10;
+		this.bodyGroup.position.x = -13;
 	};
 
 
