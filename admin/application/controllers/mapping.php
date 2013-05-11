@@ -31,7 +31,8 @@ class Mapping_Controller extends Template_Controller
 
         if (($rows = Map_Model::instance()->select(array('region_id' => $id))) !== FALSE) {
             foreach ($rows as $row)
-                $listOptimise[$row->x][$row->y][$row->z] = true;
+                if($row->background_px != 'images/background/water.png')
+                    $listOptimise[$row->x][$row->y][$row->z] = true;
 
             foreach ($rows as $row)
                 if (!isset($listOptimise[$row->x + 1][$row->y][$row->z])

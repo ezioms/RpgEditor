@@ -186,8 +186,8 @@ THREE.FirstPersonControls = function (object, domElement) {
 	this.update = function (delta, dataRegion) {
 		var actualMoveSpeed = 0;
 
-		if (this.object.position.y < 100)
-			this.object.position.y = 100;
+		if (this.object.position.y < 50)
+			this.object.position.y = 50;
 		else if (this.object.position.y > dataRegion.y * 50)
 			this.object.position.y = dataRegion.y * 50;
 

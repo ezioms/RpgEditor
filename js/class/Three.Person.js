@@ -80,6 +80,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.leftarm.rotation.set(0, 0, 0.3);
 		this.rightleg.rotation.set(0, 0, 0);
 		this.leftleg.rotation.set(0, 0, 0);
+		this.bodyGroup.rotation.set(0, 0, 0);
+		this.bodyGroup.position.set(0, 0, 0);
 	};
 
 
@@ -170,6 +172,18 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 		this.rightleg.rotation.z = 1.4 * cosZ;
 		this.leftleg.rotation.z = 1.4 * Math.cos(z + PI);
+	};
+
+
+
+
+	/*
+	 * Position person Water
+	 */
+	this.water = function () {
+		this.bodyGroup.rotation.z = -1;
+		this.bodyGroup.position.y = 6;
+		this.bodyGroup.position.x = -12;
 	};
 
 

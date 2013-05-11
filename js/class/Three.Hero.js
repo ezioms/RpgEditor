@@ -208,13 +208,13 @@ THREE.Hero = function (app) {
 					return;
 
 				var date = Date.now();
-				if (lastJump > date - (inWater ? 300 : 500))
+				if (lastJump > date - (inWater ? 500 : 700))
 					return;
 
 				lastJump = date;
 
 				jump = true;
-				this.currentdirection.jump = inWater ? 0.5 : heightJump;
+				this.currentdirection.jump = inWater ? 1 : heightJump;
 
 				app.sound.effect((inWater ? 'jumpWater.ogg' : 'jump.ogg'), 0.1);
 				break;
@@ -400,7 +400,11 @@ THREE.Hero = function (app) {
 		if (app.map.hasWater(newZoneX, Math.floor((clone.position.y + 25 ) / sizeBloc) - 1, newZoneZ)) {
 			water.style.display = 'block';
 			light.visible = false;
+			if (!inWater)
+				this.currentdirection.jump = 0;
 			inWater = true;
+
+			person.water();
 		} else {
 			if (inWater && jump && this.currentdirection.jump > 0) {
 				this.currentdirection.jump = heightJump;

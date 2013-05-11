@@ -364,8 +364,12 @@ THREE.Map = function (app) {
 	for (var keyEle in app.loader.map.elements) {
 		var row = app.loader.map.elements[keyEle];
 		var cube;
+		var filter = row.materials[0].src.replace(url_script + 'images/background/', '');
 
-		if (row.materials[0].src.replace(url_script + 'images/background/', '') == 'water.png') {
+		if (filter == 'spacer.png')
+			continue;
+
+		if (filter == 'water.png') {
 			cube = this.addCube(row, water, true);
 			cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
 			THREE.GeometryUtils.merge(geometryWater, cube);

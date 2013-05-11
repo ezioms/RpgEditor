@@ -140,7 +140,7 @@ function init() {
 
 	controls = new THREE.FirstPersonControls(app.camera, container);
 
-	controls.object.position.y = 100;
+	controls.object.position.y = 50;
 	controls.object.position.x = -(dataRegion.x * 50 / 2);
 	controls.object.position.z = -(dataRegion.z * 50 / 2);
 	controls.movementSpeed = 800;

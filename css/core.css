@@ -205,7 +205,7 @@ fieldset {
     z-index: 0;
     background: url('../images/background/water.png') no-repeat center center fixed;
     background-size: cover; /* Voir aussi "contain" */
-    opacity: 0.5;
+    opacity: 0.2;
     display: none;
 }
 
