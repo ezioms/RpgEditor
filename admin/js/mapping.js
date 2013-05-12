@@ -18,9 +18,8 @@ var rollOverMesh, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector
 var i, intersector;
 var idClickMaterial;
 var dataTextureCube = {};
-var MeshFaceMaterial = new THREE.MeshFaceMaterial({
-	transparent: true
-});
+var MeshFaceMaterial = new THREE.MeshFaceMaterial();
+var materialSelectObject = material = new THREE.MeshBasicMaterial({ ambient: 0x444444, color: 0x990000, opacity: 1, transparent: true, wireframe: false });
 var grille;
 
 var clickMouse = false;
@@ -434,6 +433,8 @@ function onDocumentMouseDown(event) {
 	event.preventDefault();
 
 	$('#my-gui-container').empty();
+	if (memoryObjectSelect)
+		memoryObjectSelect.material = MeshFaceMaterial;
 	memoryObjectSelect = null;
 	clickMouse = true;
 
@@ -454,7 +455,7 @@ function onDocumentMouseDown(event) {
 				 */
 				gui = new dat.GUI({ autoPlace: false });
 				gui.params = {
-					wireframe: false,
+					material: 'texture',
 					positionY: memoryObjectSelect.position.y,
 					positionX: memoryObjectSelect.position.x,
 					positionZ: memoryObjectSelect.position.z,
@@ -514,9 +515,17 @@ function onDocumentMouseDown(event) {
 				gui.saveObject = gui.add(gui.params, 'identifiant').onChange(function (value) {
 					memoryObjectSelect.alias = value;
 				});
-				gui.wireframe = gui.add(gui.params, 'wireframe').onChange(function (value) {
-					for (var keyChildren in memoryObjectSelect.geometry.materials)
-						memoryObjectSelect.geometry.materials[keyChildren].wireframe = value;
+				gui.material = gui.add(gui.params, 'material', ['texture', 'wireframe', 'transparent']).onChange(function (value) {
+					if (value == 'texture') {
+						memoryObjectSelect.material = MeshFaceMaterial;
+					} else if (value == 'wireframe') {
+						memoryObjectSelect.material = materialSelectObject;
+						memoryObjectSelect.material.wireframe = true;
+					} else if (value == 'transparent') {
+						memoryObjectSelect.material = materialSelectObject;
+						memoryObjectSelect.material.wireframe = false;
+						memoryObjectSelect.material.opacity = 0.2;
+					}
 				});
 				gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
 					memoryObjectSelect.position.setX(value);
