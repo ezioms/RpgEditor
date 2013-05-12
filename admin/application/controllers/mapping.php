@@ -55,6 +55,7 @@ class Mapping_Controller extends Template_Controller
         $this->template->contenu->data = $region;
         $this->template->contenu->region = json_encode($region);
         $this->template->contenu->elements = $elements ? implode(',' . "\n", $elements) : FALSE;
+        $this->template->contenu->models = file::listing_dir(DOCROOT . '../obj/');
     }
 
     /**

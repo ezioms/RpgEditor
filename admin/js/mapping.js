@@ -46,9 +46,9 @@ $(function () {
 		$(this).remove();
 
 		$('#sidebar').animate({left: -210});
-		$('#selectAction').animate({right: -260});
 		$('#controlCube').animate({right: -260});
-		$('#my-gui-container').animate({right: -257});
+		$('#controlCube').animate({right: -260});
+		$('#selectAction').animate({top: -60});
 		$('#containerMapping > div').animate({right: -260});
 	});
 
@@ -63,10 +63,10 @@ $(function () {
 			controls.freeze = $('#sidebar').css('left') == '0px' ? false : true;
 
 			$('#sidebar').animate({left: !controls.freeze ? -210 : 0});
-			$('#selectAction').animate({right: !controls.freeze ? -260 : 10});
 			$('#controlCube').animate({right: !controls.freeze ? -260 : 10});
-			$('#my-gui-container').animate({right: !controls.freeze ? -257 : 13});
+			$('#my-gui-container').animate({right: !controls.freeze ? -257 : 0});
 			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
+			$('#selectAction').animate({top:  !controls.freeze ? -60 : 22});
 		} else if (e.keyCode == 80) {
 			savePNG();
 		} else if (e.keyCode == 71) {
@@ -92,7 +92,7 @@ $(function () {
 
 		idClickMaterial = null;
 
-		typeAction = $("input[name='action']:checked").val();
+		typeAction = $('#actionCurrent').val();
 
 		var position = rollOverMesh.position;
 
@@ -113,10 +113,17 @@ $(function () {
 	});
 
 
-	$("input[name='action']").live('click', function () {
+	$("#selectAction input").live('click', function () {
 		app.scene.remove(rollOverMesh);
 
-		typeAction = $("input[name='action']:checked").val();
+		typeAction = $(this).data('action');
+
+		if (typeAction == 'add')
+			$('#controlCube').show();
+		else
+			$('#controlCube').hide();
+
+		$('#actionCurrent').val(typeAction);
 		if (typeAction == 'no')
 			return;
 		else if (typeAction == 'add') {
@@ -131,6 +138,26 @@ $(function () {
 		}
 
 		app.scene.add(rollOverMesh);
+	});
+
+
+	$('#addModel').click(function () {
+		var modelSelect = $('#selectModel').val();
+
+		var vector = new THREE.Vector3(0, 0, 0.5);
+		projector.unprojectVector(vector, app.camera);
+
+		var ray = new THREE.Ray(app.camera.position, vector.subSelf(app.camera.position).normalize());
+
+		app.JSONLoader.load('../../../obj/' + modelSelect + '/json.js', function (geometry) {
+			var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
+			mesh.position = ray.origin.clone().addSelf(ray.direction);
+			mesh.name = modelSelect;
+			mesh.alias = modelSelect + ' - inconnue';
+			mesh.type = 'object';
+			app.scene.add(mesh);
+			sauvegardeObject();
+		});
 	});
 });
 
@@ -266,7 +293,7 @@ function init() {
 
 	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.top = '34px';
+	stats.domElement.style.bottom = '40px';
 	stats.domElement.style.right = '20px';
 	container.appendChild(stats.domElement);
 
@@ -284,10 +311,11 @@ function init() {
 function getCubes() {
 	container.style.display = 'none';
 
-	if (app.renderer)
-		for (var key in app.scene.children)
-			if (app.scene.children[key].name == 'cube')
-				app.scene.remove(app.scene.children[key]);
+	if (cubes) {
+		app.renderer.deallocateObject(cubes);
+		cubes.deallocate();
+		app.scene.remove(cubes);
+	}
 
 	var geometry = new THREE.Geometry();
 
@@ -472,50 +500,20 @@ function onDocumentMouseDown(event) {
 							scaleX: memoryObjectSelect.scale.x,
 							scaleZ: memoryObjectSelect.scale.z,
 							identifiant: memoryObjectSelect.alias != undefined ? memoryObjectSelect.alias : memoryObjectSelect.name + ' - inconnu',
-							sauvegarder: function () {
-								var list = {};
-								for (var keyChild in app.scene.children) {
-									if (app.scene.children[keyChild].type == 'object') {
-										if (list[app.scene.children[keyChild].name] == undefined)
-											list[app.scene.children[keyChild].name] = [];
-
-										list[app.scene.children[keyChild].name].push(app.scene.children[keyChild]);
-									}
-								}
-
-								if (list) {
-									var out = [];
-									for (var keyList in list) {
-										out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry) {");
-										for (var keyMesh in list[keyList]) {
-											var mesh = list[keyList][keyMesh];
-											out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
-											out.push("mesh.position.set(" + mesh.position.x + "," + mesh.position.y + "," + mesh.position.z + ");");
-											out.push("mesh.scale.set(" + mesh.scale.x + "," + mesh.scale.y + "," + mesh.scale.z + ");");
-											out.push("mesh.rotation.set(" + mesh.rotation.x + "," + mesh.rotation.y + "," + mesh.rotation.z + ");");
-											out.push("mesh.name = '" + keyList + "';");
-											out.push("mesh.alias = '" + mesh.alias + "';");
-											out.push("mesh.type = 'object';");
-											out.push("app.scene.add(mesh);");
-											console.log(mesh);
-										}
-										out.push("});");
-									}
-
-									$.post(url_script + 'mapping/fonction/', {fonction: out.join("\n"), id: dataRegion.id});
-								}
-							},
+							sauvegarder: sauvegardeObject,
 							dupliquer: function () {
 								memoryObjectSelect = memoryObjectSelect.clone();
 								memoryObjectSelect.position.x += 50;
 								memoryObjectSelect.position.y += 50;
 								memoryObjectSelect.position.z += 50;
 								app.scene.add(memoryObjectSelect);
+								sauvegardeObject();
 							},
 							supprimer: function () {
 								app.scene.remove(memoryObjectSelect);
 								memoryObjectSelect = null;
 								$('#my-gui-container').empty();
+								sauvegardeObject();
 							}
 						};
 						gui.saveObject = gui.add(gui.params, 'identifiant').onChange(function (value) {
@@ -603,7 +601,7 @@ function onDocumentMouseUp(event) {
 	};
 	var setCoordonnee = coordonnee;
 
-	typeAction = $("input[name='action']:checked").val();
+	typeAction = $('#actionCurrent').val();
 
 	if (typeAction == 'del') {
 		$.post(url_script + 'mapping/remove/', coordonnee);
@@ -685,7 +683,7 @@ function animate() {
 function render() {
 	var info = app.renderer.info;
 	//console.log('Memory Geometrie : '+info.memory.geometries+' - Memory programs : '+info.memory.programs+' - Memory textures : '+info.memory.textures+' - Render calls : '+info.render.calls+' - Render vertices : '+info.render.vertices+' - Render faces : '+info.render.faces+' - Render points : '+info.render.points);
-	//console.log(info.render.vertices,info.render.faces);
+	//console.log(info.memory.geometries);
 
 
 	if (objectSelect) {
@@ -758,6 +756,35 @@ function setGrid() {
 
 }
 
-function suppr(elt) {
-	elt.parentNode.removeChild(elt);
-}
+var sauvegardeObject = function () {
+	var list = {};
+	for (var keyChild in app.scene.children) {
+		if (app.scene.children[keyChild].type == 'object') {
+			if (list[app.scene.children[keyChild].name] == undefined)
+				list[app.scene.children[keyChild].name] = [];
+
+			list[app.scene.children[keyChild].name].push(app.scene.children[keyChild]);
+		}
+	}
+
+	if (list) {
+		var out = [];
+		for (var keyList in list) {
+			out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry) {");
+			for (var keyMesh in list[keyList]) {
+				var mesh = list[keyList][keyMesh];
+				out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
+				out.push("mesh.position.set(" + mesh.position.x + "," + mesh.position.y + "," + mesh.position.z + ");");
+				out.push("mesh.scale.set(" + mesh.scale.x + "," + mesh.scale.y + "," + mesh.scale.z + ");");
+				out.push("mesh.rotation.set(" + mesh.rotation.x + "," + mesh.rotation.y + "," + mesh.rotation.z + ");");
+				out.push("mesh.name = '" + keyList + "';");
+				out.push("mesh.alias = '" + mesh.alias + "';");
+				out.push("mesh.type = 'object';");
+				out.push("app.scene.add(mesh);");
+			}
+			out.push("});");
+		}
+
+		$.post(url_script + 'mapping/fonction/', {fonction: out.join("\n"), id: dataRegion.id});
+	}
+};
