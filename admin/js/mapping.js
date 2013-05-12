@@ -493,6 +493,18 @@ function onDocumentMouseDown(event) {
 
 							$.post(url_script + 'mapping/fonction/', {fonction : out.join("\n"), id : dataRegion.id});
 						}
+					},
+					dupliquer : function() {
+						memoryObjectSelect = memoryObjectSelect.clone();
+						memoryObjectSelect.position.x + 50;
+						memoryObjectSelect.position.y + 50;
+						memoryObjectSelect.position.z + 50;
+						app.scene.add(memoryObjectSelect);
+					},
+					supprimer : function () {
+						app.scene.remove(memoryObjectSelect);
+						memoryObjectSelect = null;
+						$('#my-gui-container').empty();
 					}
 				};
 				gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
@@ -523,6 +535,8 @@ function onDocumentMouseDown(event) {
 					memoryObjectSelect.scale.setZ(value);
 				});
 				gui.saveObject = gui.add(gui.params, 'sauvegarder');
+				gui.saveObject = gui.add(gui.params, 'dupliquer');
+				gui.saveObject = gui.add(gui.params, 'supprimer');
 
 				var customContainer = document.getElementById('my-gui-container');
 				customContainer.appendChild(gui.domElement);

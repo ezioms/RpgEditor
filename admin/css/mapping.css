@@ -50,8 +50,9 @@ section#main {
 
 #my-gui-container {
     position: absolute;
-    top: 441px;
+    top: 26px;
     right: 13px;
+    z-index: 99999;
 }
 
 .cubeBackground {
