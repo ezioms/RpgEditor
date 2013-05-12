@@ -445,124 +445,132 @@ function onDocumentMouseDown(event) {
 
 	var intersects = ray.intersectObjects(app.scene.children);
 	if (intersects.length > 0) {
-		if (intersects[0].object.type == 'object' && typeAction == 'obj') {
-			if (clickMouse && !objectSelect) {
+		if (typeAction == 'obj')
+			for (var keyIntersect in intersects) {
+				var element = intersects[keyIntersect];
+				if (element.distance > 1000)
+					continue;
 
-				memoryObjectSelect = intersects[0].object;
+				if (element.object.type == 'object') {
+					if (clickMouse && !objectSelect) {
 
-				/*
-				 GUI pour model
-				 */
-				gui = new dat.GUI({ autoPlace: false });
-				gui.params = {
-					material: 'texture',
-					positionY: memoryObjectSelect.position.y,
-					positionX: memoryObjectSelect.position.x,
-					positionZ: memoryObjectSelect.position.z,
-					rotationY: 180 * memoryObjectSelect.rotation.y / Math.PI,
-					rotationX: 180 * memoryObjectSelect.rotation.x / Math.PI,
-					rotationZ: 180 * memoryObjectSelect.rotation.z / Math.PI,
-					scaleY: memoryObjectSelect.scale.y,
-					scaleX: memoryObjectSelect.scale.x,
-					scaleZ: memoryObjectSelect.scale.z,
-					identifiant: memoryObjectSelect.alias != undefined ? memoryObjectSelect.alias : memoryObjectSelect.name + ' - inconnu',
-					sauvegarder: function () {
-						var list = {};
-						for (var keyChild in app.scene.children) {
-							if (app.scene.children[keyChild].type == 'object') {
-								if (list[app.scene.children[keyChild].name] == undefined)
-									list[app.scene.children[keyChild].name] = [];
+						memoryObjectSelect = element.object;
 
-								list[app.scene.children[keyChild].name].push(app.scene.children[keyChild]);
-							}
-						}
+						/*
+						 GUI pour model
+						 */
+						gui = new dat.GUI({ autoPlace: false });
+						gui.params = {
+							material: 'texture',
+							positionY: memoryObjectSelect.position.y,
+							positionX: memoryObjectSelect.position.x,
+							positionZ: memoryObjectSelect.position.z,
+							rotationY: 180 * memoryObjectSelect.rotation.y / Math.PI,
+							rotationX: 180 * memoryObjectSelect.rotation.x / Math.PI,
+							rotationZ: 180 * memoryObjectSelect.rotation.z / Math.PI,
+							scaleY: memoryObjectSelect.scale.y,
+							scaleX: memoryObjectSelect.scale.x,
+							scaleZ: memoryObjectSelect.scale.z,
+							identifiant: memoryObjectSelect.alias != undefined ? memoryObjectSelect.alias : memoryObjectSelect.name + ' - inconnu',
+							sauvegarder: function () {
+								var list = {};
+								for (var keyChild in app.scene.children) {
+									if (app.scene.children[keyChild].type == 'object') {
+										if (list[app.scene.children[keyChild].name] == undefined)
+											list[app.scene.children[keyChild].name] = [];
 
-						if (list) {
-							var out = [];
-							for (var keyList in list) {
-								out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry) {");
-								for (var keyMesh in list[keyList]) {
-									var mesh = list[keyList][keyMesh];
-									out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
-									out.push("mesh.position.set(" + mesh.position.x + "," + mesh.position.y + "," + mesh.position.z + ");");
-									out.push("mesh.scale.set(" + mesh.scale.x + "," + mesh.scale.y + "," + mesh.scale.z + ");");
-									out.push("mesh.rotation.set(" + mesh.rotation.x + "," + mesh.rotation.y + "," + mesh.rotation.z + ");");
-									out.push("mesh.name = '" + keyList + "';");
-									out.push("mesh.alias = '" + mesh.alias + "';");
-									out.push("mesh.type = 'object';");
-									out.push("app.scene.add(mesh);");
-									console.log(mesh);
+										list[app.scene.children[keyChild].name].push(app.scene.children[keyChild]);
+									}
 								}
-								out.push("});");
+
+								if (list) {
+									var out = [];
+									for (var keyList in list) {
+										out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry) {");
+										for (var keyMesh in list[keyList]) {
+											var mesh = list[keyList][keyMesh];
+											out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
+											out.push("mesh.position.set(" + mesh.position.x + "," + mesh.position.y + "," + mesh.position.z + ");");
+											out.push("mesh.scale.set(" + mesh.scale.x + "," + mesh.scale.y + "," + mesh.scale.z + ");");
+											out.push("mesh.rotation.set(" + mesh.rotation.x + "," + mesh.rotation.y + "," + mesh.rotation.z + ");");
+											out.push("mesh.name = '" + keyList + "';");
+											out.push("mesh.alias = '" + mesh.alias + "';");
+											out.push("mesh.type = 'object';");
+											out.push("app.scene.add(mesh);");
+											console.log(mesh);
+										}
+										out.push("});");
+									}
+
+									$.post(url_script + 'mapping/fonction/', {fonction: out.join("\n"), id: dataRegion.id});
+								}
+							},
+							dupliquer: function () {
+								memoryObjectSelect = memoryObjectSelect.clone();
+								memoryObjectSelect.position.x += 50;
+								memoryObjectSelect.position.y += 50;
+								memoryObjectSelect.position.z += 50;
+								app.scene.add(memoryObjectSelect);
+							},
+							supprimer: function () {
+								app.scene.remove(memoryObjectSelect);
+								memoryObjectSelect = null;
+								$('#my-gui-container').empty();
 							}
+						};
+						gui.saveObject = gui.add(gui.params, 'identifiant').onChange(function (value) {
+							memoryObjectSelect.alias = value;
+						});
+						gui.material = gui.add(gui.params, 'material', ['texture', 'wireframe', 'transparent']).onChange(function (value) {
+							if (value == 'texture') {
+								memoryObjectSelect.material = MeshFaceMaterial;
+							} else if (value == 'wireframe') {
+								memoryObjectSelect.material = materialSelectObject;
+								memoryObjectSelect.material.wireframe = true;
+							} else if (value == 'transparent') {
+								memoryObjectSelect.material = materialSelectObject;
+								memoryObjectSelect.material.wireframe = false;
+								memoryObjectSelect.material.opacity = 0.2;
+							}
+						});
+						gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
+							memoryObjectSelect.position.setX(value);
+						});
+						gui.positionY = gui.add(gui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
+							memoryObjectSelect.position.setY(value);
+						});
+						gui.positionZ = gui.add(gui.params, 'positionZ', -dataRegion.z * 25, dataRegion.x * 25).onChange(function (value) {
+							memoryObjectSelect.position.setZ(value);
+						});
+						gui.rotationY = gui.add(gui.params, 'rotationY', -180, 180).onChange(function (value) {
+							memoryObjectSelect.rotation.setY(value * Math.PI / 180);
+						});
+						gui.rotationX = gui.add(gui.params, 'rotationX', -180, 180).onChange(function (value) {
+							memoryObjectSelect.rotation.setX(value * Math.PI / 180);
+						});
+						gui.rotationZ = gui.add(gui.params, 'rotationZ', -180, 180).onChange(function (value) {
+							memoryObjectSelect.rotation.setZ(value * Math.PI / 180);
+						});
+						gui.scaleX = gui.add(gui.params, 'scaleX', -100, 100).onChange(function (value) {
+							memoryObjectSelect.scale.setX(value);
+						});
+						gui.scaleY = gui.add(gui.params, 'scaleY', -100, 100).onChange(function (value) {
+							memoryObjectSelect.scale.setY(value);
+						});
+						gui.scaleZ = gui.add(gui.params, 'scaleZ', -100, 100).onChange(function (value) {
+							memoryObjectSelect.scale.setZ(value);
+						});
+						gui.saveObject = gui.add(gui.params, 'sauvegarder');
+						gui.saveObject = gui.add(gui.params, 'dupliquer');
+						gui.saveObject = gui.add(gui.params, 'supprimer');
 
-							$.post(url_script + 'mapping/fonction/', {fonction: out.join("\n"), id: dataRegion.id});
-						}
-					},
-					dupliquer: function () {
-						memoryObjectSelect = memoryObjectSelect.clone();
-						memoryObjectSelect.position.x += 50;
-						memoryObjectSelect.position.y += 50;
-						memoryObjectSelect.position.z += 50;
-						app.scene.add(memoryObjectSelect);
-					},
-					supprimer: function () {
-						app.scene.remove(memoryObjectSelect);
-						memoryObjectSelect = null;
-						$('#my-gui-container').empty();
+						var customContainer = document.getElementById('my-gui-container');
+						customContainer.appendChild(gui.domElement);
+						gui.open();
+						return;
 					}
-				};
-				gui.saveObject = gui.add(gui.params, 'identifiant').onChange(function (value) {
-					memoryObjectSelect.alias = value;
-				});
-				gui.material = gui.add(gui.params, 'material', ['texture', 'wireframe', 'transparent']).onChange(function (value) {
-					if (value == 'texture') {
-						memoryObjectSelect.material = MeshFaceMaterial;
-					} else if (value == 'wireframe') {
-						memoryObjectSelect.material = materialSelectObject;
-						memoryObjectSelect.material.wireframe = true;
-					} else if (value == 'transparent') {
-						memoryObjectSelect.material = materialSelectObject;
-						memoryObjectSelect.material.wireframe = false;
-						memoryObjectSelect.material.opacity = 0.2;
-					}
-				});
-				gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
-					memoryObjectSelect.position.setX(value);
-				});
-				gui.positionY = gui.add(gui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
-					memoryObjectSelect.position.setY(value);
-				});
-				gui.positionZ = gui.add(gui.params, 'positionZ', -dataRegion.z * 25, dataRegion.x * 25).onChange(function (value) {
-					memoryObjectSelect.position.setZ(value);
-				});
-				gui.rotationY = gui.add(gui.params, 'rotationY', -180, 180).onChange(function (value) {
-					memoryObjectSelect.rotation.setY(value * Math.PI / 180);
-				});
-				gui.rotationX = gui.add(gui.params, 'rotationX', -180, 180).onChange(function (value) {
-					memoryObjectSelect.rotation.setX(value * Math.PI / 180);
-				});
-				gui.rotationZ = gui.add(gui.params, 'rotationZ', -180, 180).onChange(function (value) {
-					memoryObjectSelect.rotation.setZ(value * Math.PI / 180);
-				});
-				gui.scaleX = gui.add(gui.params, 'scaleX', -100, 100).onChange(function (value) {
-					memoryObjectSelect.scale.setX(value);
-				});
-				gui.scaleY = gui.add(gui.params, 'scaleY', -100, 100).onChange(function (value) {
-					memoryObjectSelect.scale.setY(value);
-				});
-				gui.scaleZ = gui.add(gui.params, 'scaleZ', -100, 100).onChange(function (value) {
-					memoryObjectSelect.scale.setZ(value);
-				});
-				gui.saveObject = gui.add(gui.params, 'sauvegarder');
-				gui.saveObject = gui.add(gui.params, 'dupliquer');
-				gui.saveObject = gui.add(gui.params, 'supprimer');
-
-				var customContainer = document.getElementById('my-gui-container');
-				customContainer.appendChild(gui.domElement);
-				gui.open();
+				}
 			}
-		}
 	}
 }
 
