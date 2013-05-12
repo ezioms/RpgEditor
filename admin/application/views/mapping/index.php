@@ -57,6 +57,6 @@
 
     var dataElements = [<?php echo $elements; ?>];
 
-    <?php echo str_replace('\'obj/', '\'../../../obj/', $data->fonction); ?>
+    <?php echo str_replace('\'obj/', '\'dir_script+ \'../obj/', $data->fonction); ?>
 </script>
 
