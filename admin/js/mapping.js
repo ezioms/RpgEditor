@@ -7,7 +7,7 @@ app.JSONLoader = new THREE.JSONLoader();
 
 var projector, plane, cube;
 var mouse2D, ray,
-	theta = 45, controls, cubes;
+	theta = 45, controls, cubes, cubesHide;
 
 var hoverTool = false;
 var typeAction = 'no';
@@ -20,6 +20,7 @@ var idClickMaterial;
 var dataTextureCube = {};
 var MeshFaceMaterial = new THREE.MeshFaceMaterial();
 var materialSelectObject = new THREE.MeshBasicMaterial({ ambient: 0x444444, color: 0x990000, opacity: 1, transparent: true, wireframe: false });
+var materialShadowMap = new THREE.MeshNormalMaterial();
 var grille;
 
 var clickMouse = false;
@@ -178,7 +179,7 @@ function init() {
 	controls.object.position.y = 50;
 	controls.object.position.x = -(dataRegion.x * 50 / 2);
 	controls.object.position.z = -(dataRegion.z * 50 / 2);
-	controls.movementSpeed = 200;
+	controls.movementSpeed = 400;
 	controls.lookSpeed = 0.1;
 	controls.lookVertical = true;
 	controls.lookVertical = true;
@@ -308,37 +309,60 @@ function init() {
 	Mapgui.params = {
 		vitesse: controls.movementSpeed,
 		vertical: controls.lookSpeed,
-		wireframe: false,
-		visible: true,
+		visibleMap: true,
+		visibleModels: true,
+		visibleHide: true,
+		material: 'texture',
 		lookVertical: true,
 		positionX: app.camera.position.x,
 		positionY: app.camera.position.y,
 		positionZ: app.camera.position.z
 	};
-	Mapgui.positionX = Mapgui.add(Mapgui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
+	var f1 = Mapgui.addFolder('Caméra');
+	f1.open();
+	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
 		app.camera.position.setX(value);
 	});
-	Mapgui.positionY = Mapgui.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
+	Mapgui.positionY = f1.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
 		app.camera.position.setY(value);
 	});
-	Mapgui.positionZ = Mapgui.add(Mapgui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
+	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
 		app.camera.position.setZ(value);
 	});
-	Mapgui.movementSpeed = Mapgui.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
+	Mapgui.movementSpeed = f1.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
 		controls.movementSpeed = value;
 	});
-	Mapgui.lookSpeed = Mapgui.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
+	Mapgui.lookSpeed = f1.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
 		controls.lookSpeed = value;
 	});
-	Mapgui.lookVertical = Mapgui.add(Mapgui.params, 'lookVertical').onChange(function (value) {
+	Mapgui.lookVertical = f1.add(Mapgui.params, 'lookVertical').onChange(function (value) {
 		controls.lookVertical = value;
 	});
-	Mapgui.wireframe = Mapgui.add(Mapgui.params, 'wireframe').onChange(function (value) {
-		for (var keyWireframe in cubes.geometry.materials)
-			cubes.geometry.materials[keyWireframe].wireframe = value;
-	});
-	Mapgui.visible = Mapgui.add(Mapgui.params, 'visible').onChange(function (value) {
+
+	var f2 = Mapgui.addFolder('Carte');
+
+	Mapgui.visibleMap = f2.add(Mapgui.params, 'visibleMap').onChange(function (value) {
 		cubes.visible = value;
+	});
+
+	Mapgui.visibleHide = f2.add(Mapgui.params, 'visibleHide').onChange(function (value) {
+		cubesHide.visible = value;
+	});
+	Mapgui.visibleModels = f2.add(Mapgui.params, 'visibleModels').onChange(function (value) {
+		for (var keyChild in app.scene.children)
+			if (app.scene.children[keyChild].type == 'object')
+				app.scene.children[keyChild].visible = value;
+	});
+	Mapgui.material = f2.add(Mapgui.params, 'material', ['texture', 'wireframe', 'relief']).onChange(function (value) {
+		if (value == 'texture') {
+			cubes.material = MeshFaceMaterial;
+		} else if (value == 'wireframe') {
+			cubes.material = materialShadowMap;
+			cubes.material.wireframe = true;
+		} else if (value == 'relief') {
+			cubes.material = materialShadowMap;
+			cubes.material.wireframe = false;
+		}
 	});
 
 	document.getElementById('map-gui-container').appendChild(Mapgui.domElement);
@@ -358,7 +382,14 @@ function getCubes() {
 		app.scene.remove(cubes);
 	}
 
+	if (cubesHide) {
+		app.renderer.deallocateObject(cubesHide);
+		cubesHide.deallocate();
+		app.scene.remove(cubesHide);
+	}
+
 	var geometry = new THREE.Geometry();
+	var geometryHide = new THREE.Geometry();
 
 	for (key in obstacles) {
 		var row = obstacles[key];
@@ -378,12 +409,23 @@ function getCubes() {
 		voxel.position.y = row.y * 50;
 		voxel.position.z = (row.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
 
-		THREE.GeometryUtils.merge(geometry, voxel);
+
+		var filter = row.materials[0].replace('images/background/', '');
+
+		if (filter == 'spacer.png')
+			THREE.GeometryUtils.merge(geometryHide, voxel);
+		else
+			THREE.GeometryUtils.merge(geometry, voxel);
 	}
 
 	cubes = new THREE.Mesh(geometry, MeshFaceMaterial);
 	cubes.name = 'cube';
 	app.scene.add(cubes);
+
+	cubesHide = new THREE.Mesh(geometryHide, MeshFaceMaterial);
+	cubesHide.name = 'cube';
+	app.scene.add(cubesHide);
+
 	container.style.display = 'block';
 }
 
@@ -611,6 +653,8 @@ function onDocumentMouseDown(event) {
 				}
 			}
 	}
+
+	Mapgui.open();
 }
 
 function onDocumentMouseUp(event) {
