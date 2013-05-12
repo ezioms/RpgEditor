@@ -192,3 +192,7 @@ section#main {
 .dg.ac {
     z-index: 9999999;
 }
+
+#my-gui-container{
+    margin-top: 20px;
+}
