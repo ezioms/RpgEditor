@@ -19,7 +19,7 @@ var i, intersector;
 var idClickMaterial;
 var dataTextureCube = {};
 var MeshFaceMaterial = new THREE.MeshFaceMaterial();
-var materialSelectObject = material = new THREE.MeshBasicMaterial({ ambient: 0x444444, color: 0x990000, opacity: 1, transparent: true, wireframe: false });
+var materialSelectObject = new THREE.MeshBasicMaterial({ ambient: 0x444444, color: 0x990000, opacity: 1, transparent: true, wireframe: false });
 var grille;
 
 var clickMouse = false;
@@ -306,7 +306,7 @@ function getCubes() {
 		var voxel = addCube(dataSend);
 
 		voxel.position.x = (row.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
-		voxel.position.y = row.y * 50 - 25;
+		voxel.position.y = row.y * 50;
 		voxel.position.z = (row.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
 
 		THREE.GeometryUtils.merge(geometry, voxel);
@@ -389,7 +389,7 @@ function setVoxelPosition(intersector, type) {
 	}
 
 	voxelPosition.x = Math.floor(position.x / 50) * 50 + 25;
-	voxelPosition.y = Math.floor(position.y / 50) * 50 + 25;
+	voxelPosition.y = Math.round(position.y / 50) * 50;
 	voxelPosition.z = Math.floor(position.z / 50) * 50 + 25;
 }
 
@@ -589,7 +589,7 @@ function onDocumentMouseUp(event) {
 
 	var coordonnee = {
 		x: Math.floor((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1,
-		y: Math.floor((voxelPosition.y) / 50) + 1,
+		y: Math.round((voxelPosition.y) / 50),
 		z: Math.floor((voxelPosition.z + (dataRegion.z * 50 / 2)) / 50) + 1,
 		region_id: dataRegion.id,
 		materials: [
@@ -656,7 +656,7 @@ function onDocumentMouseUp(event) {
 		var voxel = addCube(dataSend);
 
 		voxel.position.x = (coordonnee.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
-		voxel.position.y = coordonnee.y * 50 - 25;
+		voxel.position.y = coordonnee.y * 50;
 		voxel.position.z = (coordonnee.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
 
 		app.scene.add(voxel);
