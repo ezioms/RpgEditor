@@ -446,6 +446,7 @@ function onDocumentMouseDown(event) {
 	if (intersects.length > 0) {
 		if (intersects[0].object.type == 'object' && typeAction == 'obj') {
 			if (clickMouse && !objectSelect) {
+
 				memoryObjectSelect = intersects[0].object;
 
 				/*
@@ -453,6 +454,7 @@ function onDocumentMouseDown(event) {
 				 */
 				gui = new dat.GUI({ autoPlace: false });
 				gui.params = {
+					wireframe: false,
 					positionY: memoryObjectSelect.position.y,
 					positionX: memoryObjectSelect.position.x,
 					positionZ: memoryObjectSelect.position.z,
@@ -462,28 +464,30 @@ function onDocumentMouseDown(event) {
 					scaleY: memoryObjectSelect.scale.y,
 					scaleX: memoryObjectSelect.scale.x,
 					scaleZ: memoryObjectSelect.scale.z,
+					identifiant: memoryObjectSelect.alias != undefined ? memoryObjectSelect.alias : memoryObjectSelect.name + ' - inconnu',
 					sauvegarder: function () {
 						var list = {};
-						for( var keyChild in app.scene.children) {
-							if( app.scene.children[keyChild].type == 'object' ) {
-								if( list[app.scene.children[keyChild].name] == undefined )
+						for (var keyChild in app.scene.children) {
+							if (app.scene.children[keyChild].type == 'object') {
+								if (list[app.scene.children[keyChild].name] == undefined)
 									list[app.scene.children[keyChild].name] = [];
 
 								list[app.scene.children[keyChild].name].push(app.scene.children[keyChild]);
 							}
 						}
 
-						if(list) {
+						if (list) {
 							var out = [];
-							for( var keyList in list) {
-								out.push("app.JSONLoader.load('obj/"+keyList+"/json.js', function (geometry) {");
-								for( var keyMesh in list[keyList]) {
+							for (var keyList in list) {
+								out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry) {");
+								for (var keyMesh in list[keyList]) {
 									var mesh = list[keyList][keyMesh];
 									out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
-									out.push("mesh.position.set("+mesh.position.x+","+mesh.position.y+","+mesh.position.z+");");
-									out.push("mesh.scale.set("+mesh.scale.x+","+mesh.scale.y+","+mesh.scale.z+");");
-									out.push("mesh.rotation.set("+mesh.rotation.x+","+mesh.rotation.y+","+mesh.rotation.z+");");
-									out.push("mesh.name = '"+keyList+"';");
+									out.push("mesh.position.set(" + mesh.position.x + "," + mesh.position.y + "," + mesh.position.z + ");");
+									out.push("mesh.scale.set(" + mesh.scale.x + "," + mesh.scale.y + "," + mesh.scale.z + ");");
+									out.push("mesh.rotation.set(" + mesh.rotation.x + "," + mesh.rotation.y + "," + mesh.rotation.z + ");");
+									out.push("mesh.name = '" + keyList + "';");
+									out.push("mesh.alias = '" + mesh.alias + "';");
 									out.push("mesh.type = 'object';");
 									out.push("app.scene.add(mesh);");
 									console.log(mesh);
@@ -491,22 +495,29 @@ function onDocumentMouseDown(event) {
 								out.push("});");
 							}
 
-							$.post(url_script + 'mapping/fonction/', {fonction : out.join("\n"), id : dataRegion.id});
+							$.post(url_script + 'mapping/fonction/', {fonction: out.join("\n"), id: dataRegion.id});
 						}
 					},
-					dupliquer : function() {
+					dupliquer: function () {
 						memoryObjectSelect = memoryObjectSelect.clone();
-						memoryObjectSelect.position.x + 50;
-						memoryObjectSelect.position.y + 50;
-						memoryObjectSelect.position.z + 50;
+						memoryObjectSelect.position.x += 50;
+						memoryObjectSelect.position.y += 50;
+						memoryObjectSelect.position.z += 50;
 						app.scene.add(memoryObjectSelect);
 					},
-					supprimer : function () {
+					supprimer: function () {
 						app.scene.remove(memoryObjectSelect);
 						memoryObjectSelect = null;
 						$('#my-gui-container').empty();
 					}
 				};
+				gui.saveObject = gui.add(gui.params, 'identifiant').onChange(function (value) {
+					memoryObjectSelect.alias = value;
+				});
+				gui.wireframe = gui.add(gui.params, 'wireframe').onChange(function (value) {
+					for (var keyChildren in memoryObjectSelect.geometry.materials)
+						memoryObjectSelect.geometry.materials[keyChildren].wireframe = value;
+				});
 				gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
 					memoryObjectSelect.position.setX(value);
 				});
