@@ -29,6 +29,7 @@ var memoryObjectSelect = null;
 var clock = new THREE.Clock();
 
 var gui;
+var Mapgui;
 
 $(function () {
 	init();
@@ -303,18 +304,34 @@ function init() {
 
 	window.addEventListener('resize', onWindowResize, false);
 
-	var Mapgui = new dat.GUI({ autoPlace: false });
+	Mapgui = new dat.GUI({ autoPlace: false });
 	Mapgui.params = {
 		vitesse: controls.movementSpeed,
 		vertical: controls.lookSpeed,
 		wireframe: false,
-		visible: true
+		visible: true,
+		lookVertical: true,
+		positionX: app.camera.position.x,
+		positionY: app.camera.position.y,
+		positionZ: app.camera.position.z
 	};
+	Mapgui.positionX = Mapgui.add(Mapgui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
+		app.camera.position.setX(value);
+	});
+	Mapgui.positionY = Mapgui.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
+		app.camera.position.setY(value);
+	});
+	Mapgui.positionZ = Mapgui.add(Mapgui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
+		app.camera.position.setZ(value);
+	});
 	Mapgui.movementSpeed = Mapgui.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
 		controls.movementSpeed = value;
 	});
 	Mapgui.lookSpeed = Mapgui.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
 		controls.lookSpeed = value;
+	});
+	Mapgui.lookVertical = Mapgui.add(Mapgui.params, 'lookVertical').onChange(function (value) {
+		controls.lookVertical = value;
 	});
 	Mapgui.wireframe = Mapgui.add(Mapgui.params, 'wireframe').onChange(function (value) {
 		for (var keyWireframe in cubes.geometry.materials)
@@ -561,7 +578,7 @@ function onDocumentMouseDown(event) {
 						gui.positionY = gui.add(gui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
 							memoryObjectSelect.position.setY(value);
 						});
-						gui.positionZ = gui.add(gui.params, 'positionZ', -dataRegion.z * 25, dataRegion.x * 25).onChange(function (value) {
+						gui.positionZ = gui.add(gui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
 							memoryObjectSelect.position.setZ(value);
 						});
 						gui.rotationY = gui.add(gui.params, 'rotationY', -180, 180).onChange(function (value) {
@@ -588,6 +605,7 @@ function onDocumentMouseDown(event) {
 
 						document.getElementById('my-gui-container').appendChild(gui.domElement);
 						gui.open();
+						Mapgui.close();
 						return;
 					}
 				}
@@ -720,6 +738,9 @@ function render() {
 	}
 
 	controls.update(clock.getDelta(), dataRegion);
+	Mapgui.positionX.setValue(app.camera.position.x);
+	Mapgui.positionY.setValue(app.camera.position.y);
+	Mapgui.positionZ.setValue(app.camera.position.z);
 	app.renderer.render(app.scene, app.camera);
 }
 

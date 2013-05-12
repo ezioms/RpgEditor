@@ -1,5 +1,7 @@
 Enigma Cube
 ========
+![1](https://f.cloud.github.com/assets/4077369/492751/e9cdff50-bae5-11e2-9402-00c6e70b44a7.jpg)
+
 [Site officiel](http://www.enigmacube.com) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/85-enigma-cube)
 
 #### Jeu en javascript et PHP ####
