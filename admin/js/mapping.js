@@ -314,6 +314,9 @@ function init() {
 		visibleHide: true,
 		material: 'texture',
 		lookVertical: true,
+		rotationY: 180 * app.camera.rotation.y / Math.PI,
+		rotationX: 180 * app.camera.rotation.x / Math.PI,
+		rotationZ: 180 * app.camera.rotation.z / Math.PI,
 		positionX: app.camera.position.x,
 		positionY: app.camera.position.y,
 		positionZ: app.camera.position.z
@@ -328,6 +331,15 @@ function init() {
 	});
 	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
 		app.camera.position.setZ(value);
+	});
+	Mapgui.rotationY = f1.add(Mapgui.params, 'rotationY', -180, 180).onChange(function (value) {
+		app.camera.rotation.setY(value * Math.PI / 180);
+	});
+	Mapgui.rotationX = f1.add(Mapgui.params, 'rotationX', -180, 180).onChange(function (value) {
+		app.camera.rotation.setX(value * Math.PI / 180);
+	});
+	Mapgui.rotationZ = f1.add(Mapgui.params, 'rotationZ', -180, 180).onChange(function (value) {
+		app.camera.rotation.setZ(value * Math.PI / 180);
 	});
 	Mapgui.movementSpeed = f1.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
 		controls.movementSpeed = value;
@@ -785,6 +797,9 @@ function render() {
 	Mapgui.positionX.setValue(app.camera.position.x);
 	Mapgui.positionY.setValue(app.camera.position.y);
 	Mapgui.positionZ.setValue(app.camera.position.z);
+	Mapgui.rotationX.setValue(180 * app.camera.rotation.x / Math.PI);
+	Mapgui.rotationY.setValue(180 * app.camera.rotation.y / Math.PI);
+	Mapgui.rotationZ.setValue(180 * app.camera.rotation.z / Math.PI);
 	app.renderer.render(app.scene, app.camera);
 }
 
