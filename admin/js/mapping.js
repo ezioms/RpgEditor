@@ -151,7 +151,7 @@ $(function () {
 
 		var ray = new THREE.Ray(app.camera.position, vector.subSelf(app.camera.position).normalize());
 
-		app.JSONLoader.load('../../../obj/' + modelSelect + '/json.js', function (geometry) {
+		app.JSONLoader.load(dir_script+'/../obj/' + modelSelect + '/json.js', function (geometry) {
 			var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
 			mesh.position = ray.origin.clone().addSelf(ray.direction);
 			mesh.name = modelSelect;

@@ -47,7 +47,7 @@ class Mapping_Controller extends Template_Controller
                     Map_Model::instance()->delete((array)$row);
         }
 
-        $this->script = array('js/lib/three.min', 'js/lib/dat.gui.min', 'js/lib/three.control', 'js/lib/detector', 'js/mapping', 'js/lib/jquery.facebox', 'js/stats');
+        $this->script = array('js/lib/three.min', 'js/lib/dat.gui.min', 'js/lib/OBJLoader', 'js/lib/three.control', 'js/lib/detector', 'js/mapping', 'js/lib/jquery.facebox', 'js/stats');
 
         $this->css = array('facebox', 'mapping');
 
