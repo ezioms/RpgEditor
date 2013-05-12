@@ -35,7 +35,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		if (this.hp == 0) {
 			this.hp--;
 			this.die();
-		}else if (this.hp <= 0) {
+		} else if (this.hp <= 0) {
 			this.cycleDie++;
 		}
 
@@ -45,8 +45,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	/*
 	 * Update person et position
 	 */
-	this.update = function (type) {
-		if( this.name == 'bot' && tire >= 0 && tire < 5) {
+	this.update = function (type, shootgun) {
+		if (this.name == 'bot' && tire >= 0 && tire < 5) {
 			tire++;
 			return;
 		} else
@@ -68,6 +68,9 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 				this.walk();
 				break;
 		}
+
+		if (shootgun)
+			this.shootgun();
 	};
 
 
@@ -164,6 +167,10 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.head.rotation.y = this.headAccessory.rotation.y = Math.sin(time * 1.5) / 5;
 		this.head.rotation.z = this.headAccessory.rotation.z = Math.sin(time) / 5;
 
+		console.log(tire);
+		if (!tire) {
+		}
+
 		this.rightarm.rotation.z = 2 * Math.cos(z + PI);
 		this.rightarm.rotation.x = 1 * (cosX - 1);
 
@@ -173,8 +180,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.rightleg.rotation.z = 1.4 * cosZ;
 		this.leftleg.rotation.z = 1.4 * Math.cos(z + PI);
 	};
-
-
 
 
 	/*
@@ -227,7 +232,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		item.scale.y = 0.6;
 		item.scale.z = 0.6;
 		item.position.y = -14;
-			item.position.z = left ? -1 : 1;
+		item.position.z = left ? -1 : 1;
 		item.position.x = 2;
 		item.rotation.z = rotation * Math.PI / 180 - 0.5;
 		return item;
@@ -298,7 +303,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.loadTexture(4, 2, 2, 2)
 	];
 
-	this.head = new THREE.Mesh(new THREE.CubeGeometry(8, 8, 7, 0, 0, 0, this.materialHead), faceMesh);
+	this.head = new THREE.Mesh(new THREE.CubeGeometry(7, 8, 7, 0, 0, 0, this.materialHead), faceMesh);
 	this.head.position.y = 18;
 
 
@@ -313,14 +318,14 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	];
 
 
-	var tarm = new THREE.CubeGeometry(4, 12, 4, 0, 0, 0, this.materialArm)
+	var tarm = new THREE.CubeGeometry(3, 12, 3, 0, 0, 0, this.materialArm)
 	for (i = 0; i < 8; i += 1)
 		tarm.vertices[i].y -= 6;
 
 	this.leftarm = new THREE.Mesh(tarm, faceMesh);
 	this.rightarm = new THREE.Mesh(tarm, faceMesh);
-	this.leftarm.position.z = -6;
-	this.rightarm.position.z = 6;
+	this.leftarm.position.z = -5;
+	this.rightarm.position.z = 5;
 	this.leftarm.position.y = 14;
 	this.rightarm.position.y = 14;
 
@@ -371,7 +376,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	if (hand_left != undefined && hand_left)
 		this.changeLeft(hand_left);
 
-	this.lightGun= new THREE.PointLight(0xfbcb6c, 0, 600);
+	this.lightGun = new THREE.PointLight(0xfbcb6c, 0, 600);
 	this.handRight.add(this.lightGun);
 
 	this.bodyGroup.add(this.leftleg);

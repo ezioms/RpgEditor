@@ -47,7 +47,7 @@ class Mapping_Controller extends Template_Controller
                     Map_Model::instance()->delete((array)$row);
         }
 
-        $this->script = array('js/lib/three.min', 'js/lib/three.control', 'js/lib/detector', 'js/mapping', 'js/lib/jquery.facebox', 'js/stats');
+        $this->script = array('js/lib/three.min', 'js/lib/dat.gui.min', 'js/lib/three.control', 'js/lib/detector', 'js/mapping', 'js/lib/jquery.facebox', 'js/stats');
 
         $this->css = array('facebox', 'mapping');
 
@@ -198,6 +198,24 @@ class Mapping_Controller extends Template_Controller
         $array['fonction'] = isset($value['fonction']) ? $value['fonction'] : FALSE;
 
         Map_Model::instance()->update($array, array('id' => $value['id']));
+    }
+
+    /**
+     * Gestion fonction region
+     *
+     * @return  void
+     */
+    public function fonction()
+    {
+        $this->auto_render = FALSE;
+
+        if (!request::is_ajax() || !($value = $this->input->post()))
+            return;
+
+        $array = array();
+        $array['fonction'] = isset($value['fonction']) ? $value['fonction'] : FALSE;
+
+        Region_Model::instance()->update($array,  $value['id']);
     }
 
 }

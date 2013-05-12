@@ -23,7 +23,13 @@ var MeshFaceMaterial = new THREE.MeshFaceMaterial({
 });
 var grille;
 
+var clickMouse = false;
+var objectSelect = null;
+var memoryObjectSelect = null;
+
 var clock = new THREE.Clock();
+
+var gui;
 
 $(function () {
 	init();
@@ -43,12 +49,13 @@ $(function () {
 		$('#sidebar').animate({left: -210});
 		$('#selectAction').animate({right: -260});
 		$('#controlCube').animate({right: -260});
+		$('#my-gui-container').animate({right: -257});
 		$('#containerMapping > div').animate({right: -260});
 	});
 
 	$(document).keyup(function (e) {
 		if ($('#facebox').is(':visible'))
-		return;
+			return;
 
 		if (e.keyCode == 27) {
 			if ($('#noCursor').length)
@@ -59,6 +66,7 @@ $(function () {
 			$('#sidebar').animate({left: !controls.freeze ? -210 : 0});
 			$('#selectAction').animate({right: !controls.freeze ? -260 : 10});
 			$('#controlCube').animate({right: !controls.freeze ? -260 : 10});
+			$('#my-gui-container').animate({right: !controls.freeze ? -257 : 13});
 			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
 		} else if (e.keyCode == 80) {
 			savePNG();
@@ -259,12 +267,13 @@ function init() {
 
 	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.top = '60px';
+	stats.domElement.style.top = '34px';
 	stats.domElement.style.right = '20px';
 	container.appendChild(stats.domElement);
 
 	container.addEventListener('mousemove', onDocumentMouseMove, false);
 	container.addEventListener('mouseup', onDocumentMouseUp, false);
+	container.addEventListener('mousedown', onDocumentMouseDown, false);
 
 	window.addEventListener('resize', onWindowResize, false);
 }
@@ -395,6 +404,9 @@ function onDocumentMouseMove(event) {
 	if (typeAction == 'no')
 		return;
 
+	if (typeAction == 'obj')
+		rollOverMesh.visible = false;
+
 	mouse2D.x = ( event.clientX / window.innerWidth ) * 2 - 1;
 	mouse2D.y = -( event.clientY / window.innerHeight ) * 2 + 1;
 
@@ -402,6 +414,14 @@ function onDocumentMouseMove(event) {
 
 	var intersects = ray.intersectObjects(app.scene.children);
 	if (intersects.length > 0) {
+		if (intersects[0].object.type == 'object' && typeAction == 'obj') {
+			if (clickMouse && !objectSelect) {
+				objectSelect = intersects[0].object;
+				memoryObjectSelect = intersects[0].object;
+
+			}
+			return;
+		}
 		intersector = getRealIntersector(intersects);
 		if (intersector) {
 			setVoxelPosition(intersector, (typeAction == 'del' || typeAction == 'edit' ? false : true));
@@ -409,11 +429,121 @@ function onDocumentMouseMove(event) {
 		}
 	}
 }
+
+function onDocumentMouseDown(event) {
+	event.preventDefault();
+
+	$('#my-gui-container').empty();
+	memoryObjectSelect = null;
+	clickMouse = true;
+
+	mouse2D.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse2D.y = -( event.clientY / window.innerHeight ) * 2 + 1;
+
+	ray = projector.pickingRay(mouse2D.clone(), app.camera);
+
+	var intersects = ray.intersectObjects(app.scene.children);
+	if (intersects.length > 0) {
+		if (intersects[0].object.type == 'object' && typeAction == 'obj') {
+			if (clickMouse && !objectSelect) {
+				memoryObjectSelect = intersects[0].object;
+
+				/*
+				 GUI pour model
+				 */
+				gui = new dat.GUI({ autoPlace: false });
+				gui.params = {
+					positionY: memoryObjectSelect.position.y,
+					positionX: memoryObjectSelect.position.x,
+					positionZ: memoryObjectSelect.position.z,
+					rotationY: 180 * memoryObjectSelect.rotation.y / Math.PI,
+					rotationX: 180 * memoryObjectSelect.rotation.x / Math.PI,
+					rotationZ: 180 * memoryObjectSelect.rotation.z / Math.PI,
+					scaleY: memoryObjectSelect.scale.y,
+					scaleX: memoryObjectSelect.scale.x,
+					scaleZ: memoryObjectSelect.scale.z,
+					sauvegarder: function () {
+						var list = {};
+						for( var keyChild in app.scene.children) {
+							if( app.scene.children[keyChild].type == 'object' ) {
+								if( list[app.scene.children[keyChild].name] == undefined )
+									list[app.scene.children[keyChild].name] = [];
+
+								list[app.scene.children[keyChild].name].push(app.scene.children[keyChild]);
+							}
+						}
+
+						if(list) {
+							var out = [];
+							for( var keyList in list) {
+								out.push("app.JSONLoader.load('obj/"+keyList+"/json.js', function (geometry) {");
+								for( var keyMesh in list[keyList]) {
+									var mesh = list[keyList][keyMesh];
+									out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
+									out.push("mesh.position.set("+mesh.position.x+","+mesh.position.y+","+mesh.position.z+");");
+									out.push("mesh.scale.set("+mesh.scale.x+","+mesh.scale.y+","+mesh.scale.z+");");
+									out.push("mesh.rotation.set("+mesh.rotation.x+","+mesh.rotation.y+","+mesh.rotation.z+");");
+									out.push("mesh.name = '"+keyList+"';");
+									out.push("mesh.type = 'object';");
+									out.push("app.scene.add(mesh);");
+									console.log(mesh);
+								}
+								out.push("});");
+							}
+
+							$.post(url_script + 'mapping/fonction/', {fonction : out.join("\n"), id : dataRegion.id});
+						}
+					}
+				};
+				gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
+					memoryObjectSelect.position.setX(value);
+				});
+				gui.positionY = gui.add(gui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
+					memoryObjectSelect.position.setY(value);
+				});
+				gui.positionZ = gui.add(gui.params, 'positionZ', -dataRegion.z * 25, dataRegion.x * 25).onChange(function (value) {
+					memoryObjectSelect.position.setZ(value);
+				});
+				gui.rotationY = gui.add(gui.params, 'rotationY', -180, 180).onChange(function (value) {
+					memoryObjectSelect.rotation.setY(value * Math.PI / 180);
+				});
+				gui.rotationX = gui.add(gui.params, 'rotationX', -180, 180).onChange(function (value) {
+					memoryObjectSelect.rotation.setX(value * Math.PI / 180);
+				});
+				gui.rotationZ = gui.add(gui.params, 'rotationZ', -180, 180).onChange(function (value) {
+					memoryObjectSelect.rotation.setZ(value * Math.PI / 180);
+				});
+				gui.scaleX = gui.add(gui.params, 'scaleX', -100, 100).onChange(function (value) {
+					memoryObjectSelect.scale.setX(value);
+				});
+				gui.scaleY = gui.add(gui.params, 'scaleY', -100, 100).onChange(function (value) {
+					memoryObjectSelect.scale.setY(value);
+				});
+				gui.scaleZ = gui.add(gui.params, 'scaleZ', -100, 100).onChange(function (value) {
+					memoryObjectSelect.scale.setZ(value);
+				});
+				gui.saveObject = gui.add(gui.params, 'sauvegarder');
+
+				var customContainer = document.getElementById('my-gui-container');
+				customContainer.appendChild(gui.domElement);
+				gui.open();
+			}
+		}
+	}
+}
+
 function onDocumentMouseUp(event) {
 	event.preventDefault();
+	clickMouse = false;
+	objectSelect = null;
 
 	if (typeAction == 'no' || hoverTool || !ray.intersectObjects(app.scene.children).length)
 		return;
+
+
+	if (typeAction == 'obj') {
+		return;
+	}
 
 	var coordonnee = {
 		x: Math.floor((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1,
@@ -514,6 +644,18 @@ function render() {
 	var info = app.renderer.info;
 	//console.log('Memory Geometrie : '+info.memory.geometries+' - Memory programs : '+info.memory.programs+' - Memory textures : '+info.memory.textures+' - Render calls : '+info.render.calls+' - Render vertices : '+info.render.vertices+' - Render faces : '+info.render.faces+' - Render points : '+info.render.points);
 	//console.log(info.render.vertices,info.render.faces);
+
+
+	if (objectSelect) {
+
+		//var targetPos = ray.direction.clone().multiplyScalar(objectSelect.distance).addSelf(ray.origin);
+		//objectSelect.position.copy(targetPos.subSelf(_offset));
+		voxelPosition.add(intersector.point, intersector.object.matrixRotationWorld.multiplyVector3(tmpVec));
+
+		objectSelect.position.copy(voxelPosition);
+		//objectSelect.position.addSelf(ray.direction);
+	}
+
 	controls.update(clock.getDelta(), dataRegion);
 	app.renderer.render(app.scene, app.camera);
 }
@@ -572,4 +714,8 @@ function setGrid() {
 	else
 		grille.visible = true;
 
+}
+
+function suppr(elt) {
+	elt.parentNode.removeChild(elt);
 }

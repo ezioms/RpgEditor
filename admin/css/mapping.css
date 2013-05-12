@@ -14,7 +14,7 @@ section#main {
 
 #selectAction {
 		position: absolute;
-		top : 240px;
+		top : 213px;
 		right: 10px;
 		width: 230px;
 		z-index: 10;
@@ -36,7 +36,7 @@ section#main {
 
 #controlCube {
 		position: absolute;
-		top: 49px;
+		top: 22px;
 		right: 10px;
 		height: 170px;
 		width: 230px;
@@ -46,6 +46,12 @@ section#main {
 		border-top: 1px solid #555;
 		border-left: 1px solid #555;
 		border-right: 1px solid #555;
+}
+
+#my-gui-container {
+    position: absolute;
+    top: 441px;
+    right: 13px;
 }
 
 .cubeBackground {
@@ -155,4 +161,8 @@ section#main {
 
     cursor: pointer;
 
+}
+
+.dg.ac {
+    z-index:9999999;
 }

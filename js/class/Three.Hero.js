@@ -242,7 +242,6 @@ THREE.Hero = function (app) {
 			case 90 :
 			case 87 : // Flèche haut, z, w, Z, W
 				moveForward = false;
-				person.update(5);
 				break;
 			case 37 :
 			case 113 :
@@ -255,7 +254,6 @@ THREE.Hero = function (app) {
 			case 115 :
 			case 83 : // Flèche bas, s, S
 				moveBackward = false;
-				person.update(5);
 				break;
 			case 39 :
 			case 100 :
@@ -400,7 +398,7 @@ THREE.Hero = function (app) {
 			app.sound.move(false, inWater);
 
 		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
-			person.update(( !moveForward && !moveBackward ? (shootgun ? 3 : 2) : (speedTmp || inWater >= 1 ? 1 : 0)));
+			person.update(( !moveForward && !moveBackward ? 2 : (speedTmp || inWater >= 1 ? 1 : 0)), shootgun);
 
 			app.sound.audioMove.volume = 0.2;
 		}

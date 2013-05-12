@@ -15,7 +15,8 @@
 		<div><label><input type="radio" name="action" value="add"/>Ajouter un cube</label></div>
 		<div><label><input type="radio" name="action" value="mod"/>Ajouter un module</label></div>
 		<div><label><input type="radio" name="action" value="edit"/>Editer un module</label></div>
-		<div><label><input type="radio" name="action" value="del"/>Supprimer un élément</label></div>
+    <div><label><input type="radio" name="action" value="del"/>Supprimer un élément</label></div>
+    <div><label><input type="radio" name="action" value="obj"/>Déplacer un objet 3D</label></div>
 		<p>Appuyez sur la touche <strong>"MAJ"</strong><br/>pour faire pivoter la caméra.</p>
 		<p>Touches disponible :<br/>flèches, A, Z, R, Q, S, D, F, W.</p>
 </div>
@@ -29,6 +30,7 @@
 		<div id="allCube">Appliquer à tous <br/><img id="bloc_all" class="cubeBackground" src="<?php echo url::base(); ?>../images/background/dirt.png" /></div>
 </div>
 <div id="containerMapping"></div>
+<div id="my-gui-container"></div>
 <script>
 		var urlReplace = '<?php echo str_replace('admin/','', url::base()); ?>';
 
