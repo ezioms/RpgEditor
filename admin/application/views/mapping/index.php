@@ -12,10 +12,14 @@
 
 <div id="selectAction">
     <input type="button" value="Simple visite" data-action="no"/>
+
+    <div class="spacerMenu"></div>
     <input type="button" value="Ajouter des cubes" data-action="add"/>
     <input type="button" value="Ajouter des modules" data-action="mod"/>
     <input type="button" value="Editer les modules" data-action="edit"/>
     <input type="button" value="supprimer les cubes/modules" data-action="del"/>
+
+    <div class="spacerMenu"></div>
     <input type="button" value="Manipuler les objets" data-action="obj"/>
     <input type="button" value="Ajouter cet objet ->" id="addModel"/>
 
@@ -38,7 +42,10 @@
     <div id="allCube">Appliquer à tous <br/><img id="bloc_all" class="cubeBackground" src="<?php echo url::base(); ?>../images/background/dirt.png"/></div>
 </div>
 <div id="containerMapping"></div>
-<div id="my-gui-container"></div>
+<div id="gui-container">
+    <div id="map-gui-container"></div>
+    <div id="my-gui-container"></div>
+</div>
 <input type="hidden" id="actionCurrent" val="no"/>
 <script>
     var urlReplace = '<?php echo str_replace('admin/','', url::base()); ?>';

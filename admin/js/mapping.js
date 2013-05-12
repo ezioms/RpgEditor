@@ -66,7 +66,7 @@ $(function () {
 			$('#controlCube').animate({right: !controls.freeze ? -260 : 10});
 			$('#my-gui-container').animate({right: !controls.freeze ? -257 : 0});
 			$('#containerMapping > div').animate({right: !controls.freeze ? -260 : 20});
-			$('#selectAction').animate({top:  !controls.freeze ? -60 : 22});
+			$('#selectAction').animate({top: !controls.freeze ? -60 : 22});
 		} else if (e.keyCode == 80) {
 			savePNG();
 		} else if (e.keyCode == 71) {
@@ -177,7 +177,7 @@ function init() {
 	controls.object.position.y = 50;
 	controls.object.position.x = -(dataRegion.x * 50 / 2);
 	controls.object.position.z = -(dataRegion.z * 50 / 2);
-	controls.movementSpeed = 800;
+	controls.movementSpeed = 200;
 	controls.lookSpeed = 0.1;
 	controls.lookVertical = true;
 	controls.lookVertical = true;
@@ -293,8 +293,8 @@ function init() {
 
 	stats = new Stats();
 	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.bottom = '40px';
-	stats.domElement.style.right = '20px';
+	stats.domElement.style.bottom = '0';
+	stats.domElement.style.left = '0';
 	container.appendChild(stats.domElement);
 
 	container.addEventListener('mousemove', onDocumentMouseMove, false);
@@ -302,6 +302,30 @@ function init() {
 	container.addEventListener('mousedown', onDocumentMouseDown, false);
 
 	window.addEventListener('resize', onWindowResize, false);
+
+	var Mapgui = new dat.GUI({ autoPlace: false });
+	Mapgui.params = {
+		vitesse: controls.movementSpeed,
+		vertical: controls.lookSpeed,
+		wireframe: false,
+		visible: true
+	};
+	Mapgui.movementSpeed = Mapgui.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
+		controls.movementSpeed = value;
+	});
+	Mapgui.lookSpeed = Mapgui.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
+		controls.lookSpeed = value;
+	});
+	Mapgui.wireframe = Mapgui.add(Mapgui.params, 'wireframe').onChange(function (value) {
+		for (var keyWireframe in cubes.geometry.materials)
+			cubes.geometry.materials[keyWireframe].wireframe = value;
+	});
+	Mapgui.visible = Mapgui.add(Mapgui.params, 'visible').onChange(function (value) {
+		cubes.visible = value;
+	});
+
+	document.getElementById('map-gui-container').appendChild(Mapgui.domElement);
+	Mapgui.open();
 }
 
 
@@ -562,8 +586,7 @@ function onDocumentMouseDown(event) {
 						gui.saveObject = gui.add(gui.params, 'dupliquer');
 						gui.saveObject = gui.add(gui.params, 'supprimer');
 
-						var customContainer = document.getElementById('my-gui-container');
-						customContainer.appendChild(gui.domElement);
+						document.getElementById('my-gui-container').appendChild(gui.domElement);
 						gui.open();
 						return;
 					}

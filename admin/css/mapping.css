@@ -1,5 +1,9 @@
 body, html {
     overflow: hidden;
+    margin: 0;
+    padding:0;
+    width:100%;
+    height:100%;
 }
 
 #selectAction select {
@@ -32,21 +36,25 @@ section#main {
     right: 0;
     bottom: 0;
     position: absolute;
+    margin:0;
+    padding:0;
 }
 
 #selectAction {
     position: absolute;
     top: 22px;
-    left: 50%;
-    margin-left: -525px;
+    left: 220px;
+    right: 220px;
     z-index: 10;
-    width: 1050px;
 }
 
 #selectAction input, #selectAction select {
     float: left;
 }
-
+.spacerMenu {
+    float: left;
+    margin: 5px;
+}
 #controlCube {
     position: absolute;
     bottom: 20px;
@@ -57,9 +65,9 @@ section#main {
     display: none;
 }
 
-#my-gui-container {
+#gui-container {
     position: absolute;
-    top: 24px;
+    top: 0;
     right: 0;
     z-index: 99999;
 }
