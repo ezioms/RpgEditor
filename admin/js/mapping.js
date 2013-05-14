@@ -22,6 +22,7 @@ var MeshFaceMaterial = new THREE.MeshFaceMaterial();
 var materialSelectObject = new THREE.MeshBasicMaterial({ ambient: 0x444444, color: 0x990000, opacity: 1, transparent: true, wireframe: false });
 var materialShadowMap = new THREE.MeshNormalMaterial();
 var grille;
+var sizeCube = 50;
 
 var clickMouse = false;
 var objectSelect = null;
@@ -105,7 +106,7 @@ $(function () {
 
 		app.scene.remove(rollOverMesh);
 
-		rollOverMesh = addCube(dataTextureCube);
+		rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
 		rollOverMesh.position = position;
 
 		if (typeAction == 'del' || typeAction == 'no')
@@ -129,10 +130,10 @@ $(function () {
 		if (typeAction == 'no')
 			return;
 		else if (typeAction == 'add') {
-			rollOverMesh = addCube(dataTextureCube);
+			rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
 			rollOverMesh.visible = true;
 		} else {
-			rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(51, 51, 51), new THREE.MeshBasicMaterial({
+			rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(sizeCube, sizeCube, sizeCube), new THREE.MeshBasicMaterial({
 				color: typeAction == 'del' ? 0xff0000 : 0xffff00,
 				opacity: 0.3,
 				transparent: true
@@ -151,7 +152,7 @@ $(function () {
 
 		var ray = new THREE.Ray(app.camera.position, vector.subSelf(app.camera.position).normalize());
 
-		app.JSONLoader.load(dir_script+ '../obj/' + modelSelect + '/json.js', function (geometry) {
+		app.JSONLoader.load(dir_script + '../obj/' + modelSelect + '/json.js', function (geometry) {
 			var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
 			mesh.position = ray.origin.clone().addSelf(ray.direction);
 			mesh.name = modelSelect;
@@ -309,6 +310,7 @@ function init() {
 	Mapgui.params = {
 		vitesse: controls.movementSpeed,
 		vertical: controls.lookSpeed,
+		sizeCube: 'grand',
 		visibleMap: true,
 		visibleModels: true,
 		visibleHide: true,
@@ -376,6 +378,12 @@ function init() {
 			cubes.material.wireframe = false;
 		}
 	});
+	Mapgui.sizeCube = f2.add(Mapgui.params, 'sizeCube', ['grand', 'petit']).onChange(function (value) {
+		sizeCube = value == 'grand' ? 50 : 10;
+		app.scene.remove(rollOverMesh);
+		rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
+		app.scene.add(rollOverMesh);
+	});
 
 	document.getElementById('map-gui-container').appendChild(Mapgui.domElement);
 	Mapgui.open();
@@ -415,11 +423,23 @@ function getCubes() {
 			background_nz: dir_script + '../' + row.materials[5]
 		};
 
-		var voxel = addCube(dataSend);
 
-		voxel.position.x = (row.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
-		voxel.position.y = row.y * 50;
-		voxel.position.z = (row.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
+		var voxel;
+
+		if (row.subX > 0 || row.subY > 0 || row.subZ > 0) {
+			voxel = addCube(dataSend, true);
+
+			voxel.position.x = (row.x) * 50 - 5 - ( 50 - row.subX * 10) - ( dataRegion.x * 50 / 2);
+			voxel.position.y = row.y * 50 - 5 - ( 50 - row.subY * 10);
+			voxel.position.z = (row.z) * 50 - 5 - ( 50 - row.subZ * 10) - ( dataRegion.z * 50 / 2);
+			console.log(voxel);
+		} else {
+			voxel = addCube(dataSend);
+
+			voxel.position.x = (row.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
+			voxel.position.y = row.y * 50 - 25;
+			voxel.position.z = (row.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
+		}
 
 
 		var filter = row.materials[0].replace('images/background/', '');
@@ -428,6 +448,8 @@ function getCubes() {
 			THREE.GeometryUtils.merge(geometryHide, voxel);
 		else
 			THREE.GeometryUtils.merge(geometry, voxel);
+
+
 	}
 
 	cubes = new THREE.Mesh(geometry, MeshFaceMaterial);
@@ -445,12 +467,13 @@ function getCubes() {
 /*
  * Cr√©er un cube
  */
-function addCube(dataSend) {
-	var path = dataSend.background_px + dataSend.background_nx + dataSend.background_py + dataSend.background_ny + dataSend.background_pz + dataSend.background_nz;
+function addCube(dataSend, small) {
+	var sizeCube = small === true ? 10 : 50
+	var path = dataSend.background_px + dataSend.background_nx + dataSend.background_py + dataSend.background_ny + dataSend.background_pz + dataSend.background_nz + sizeCube;
 	if (listCube[path] == undefined)
 		listCube[path] = {
 			scr: path,
-			cube: new THREE.CubeGeometry(50, 50, 50, 0, 0, 0, [
+			cube: new THREE.CubeGeometry(sizeCube, sizeCube, sizeCube, 0, 0, 0, [
 				loadTexture(dataSend.background_px),
 				loadTexture(dataSend.background_nx),
 				loadTexture(dataSend.background_py),
@@ -506,14 +529,14 @@ function setVoxelPosition(intersector, type) {
 
 	if (!type) {
 		position = intersector.point;
-		position.x -= intersector.face.normal.x > 0 ? 50 : 0;
-		position.y -= intersector.face.normal.y > 0 ? 50 : 0;
-		position.z -= intersector.face.normal.z > 0 ? 50 : 0;
+		position.x -= intersector.face.normal.x > 0 ? sizeCube : 0;
+		position.y -= intersector.face.normal.y > 0 ? sizeCube : 0;
+		position.z -= intersector.face.normal.z > 0 ? sizeCube : 0;
 	}
 
-	voxelPosition.x = Math.floor(position.x / 50) * 50 + 25;
-	voxelPosition.y = Math.round(position.y / 50) * 50;
-	voxelPosition.z = Math.floor(position.z / 50) * 50 + 25;
+	voxelPosition.x = Math.floor(position.x / sizeCube) * sizeCube + (sizeCube / 2);
+	voxelPosition.y = Math.round(position.y / sizeCube) * sizeCube + (sizeCube / 2);
+	voxelPosition.z = Math.floor(position.z / sizeCube) * sizeCube + (sizeCube / 2);
 }
 
 
@@ -682,11 +705,19 @@ function onDocumentMouseUp(event) {
 		return;
 	}
 
+	var x = Math.floor((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1;
+	var y = Math.ceil((voxelPosition.y) / 50);
+	var z = Math.floor((voxelPosition.z + (dataRegion.z * 50 / 2)) / 50) + 1;
+
 	var coordonnee = {
-		x: Math.floor((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1,
-		y: Math.round((voxelPosition.y) / 50),
-		z: Math.floor((voxelPosition.z + (dataRegion.z * 50 / 2)) / 50) + 1,
+		x: x,
+		y: y,
+		z: z,
+		subX: (Math.round(( ((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1 - x ) * 10) + 1 ) / 2,
+		subY: (Math.round(((voxelPosition.y / 50) - y) * 10 + 1) / 2 ) + 5,
+		subZ: (Math.round(( ((voxelPosition.z + (dataRegion.z * 50 / 2)) / 50) + 1 - z ) * 10) + 1 ) / 2,
 		region_id: dataRegion.id,
+		size: sizeCube,
 		materials: [
 			dataTextureCube.background_px,
 			dataTextureCube.background_nx,
@@ -748,11 +779,21 @@ function onDocumentMouseUp(event) {
 			background_nz: dir_script + '../' + coordonnee.materials[5]
 		};
 
-		var voxel = addCube(dataSend);
+		var voxel;
 
-		voxel.position.x = (coordonnee.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
-		voxel.position.y = coordonnee.y * 50;
-		voxel.position.z = (coordonnee.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
+		if (coordonnee.subX > 0 || coordonnee.subY > 0 || coordonnee.subZ > 0) {
+			voxel = addCube(dataSend, true);
+
+			voxel.position.x = (coordonnee.x) * 50 - 5 - ( 50 - coordonnee.subX * 10) - ( dataRegion.x * 50 / 2);
+			voxel.position.y = coordonnee.y * 50 - 5 - ( 50 - coordonnee.subY * 10);
+			voxel.position.z = (coordonnee.z) * 50 - 5 - ( 50 - coordonnee.subZ * 10) - ( dataRegion.z * 50 / 2);
+		} else {
+			voxel = addCube(dataSend);
+
+			voxel.position.x = (coordonnee.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
+			voxel.position.y = coordonnee.y * 50 - 25;
+			voxel.position.z = (coordonnee.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
+		}
 
 		app.scene.add(voxel);
 	}

@@ -127,17 +127,13 @@ var initialize = function () {
 			app.scene.add(module);
 		}
 
-
 	//generate render
 	app.renderer = new THREE.WebGLRenderer({
-		clearColor: app.map.getBackgroundColor(),
 		antialias: true,
 		preserveDrawingBuffer: true
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
-	app.renderer.shadowMapEnabled = true;
-	app.renderer.shadowMapCascade = true;
-	app.renderer.sortObjects = false;
+	app.renderer.setClearColor(app.map.getBackgroundColor());
 
 	// load music
 	if (app.loader.map.music)
@@ -170,7 +166,8 @@ var render = function () {
 	// update bots in scene
 	for (var keyBot in app.bots)
 		if (app.bots[keyBot].update(app) == 'remove') {
-			removeReferences(app.bots[keyBot].getPerson());
+			app.bots[keyBot].getPerson().remove();
+			app.scene.remove(app.bots[keyBot].getPerson());
 			delete app.bots[keyBot];
 		}
 
@@ -285,7 +282,7 @@ var updateHeroVisual = function () {
 		return;
 
 	// fenetre action module
-	var module = app.map.getOverModule(app.hero.zone);
+	var module = app.map.getOverModule(app.hero.getZone());
 
 	if (module) {
 		if (!action) {
@@ -425,18 +422,14 @@ var simulEnter = function () {
 
 var removeReferences = function (removeme) {
 	try {
-		app.renderer.deallocateObject(removeme);
-		removeme.deallocate();
-	} catch (e) {
-		console.log('Error memory');
-	}
-	try {
 		removeme.traverse(function (ob) {
-			app.renderer.deallocateObject(ob);
-			ob.deallocate();
+			console.log(ob);
+			if (ob.geometry != undefined) {
+				ob.geometry.dispose();
+			}
 		});
 	} catch (e) {
-		console.log('Error memory children');
+		console.log('Error memory');
 	}
 	app.scene.remove(removeme);
 

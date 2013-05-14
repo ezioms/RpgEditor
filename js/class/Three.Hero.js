@@ -16,7 +16,6 @@ THREE.Hero = function (app) {
 	this.hand_left = app.loader.my.hand_left;
 	this.hand_right = app.loader.my.hand_right;
 	this.ammo = app.loader.my.ammo;
-	this.zone = new THREE.Vector3(app.loader.my.x, app.loader.my.y, app.loader.my.z);
 	this.currentdirection = {
 		x: app.loader.datas.my.currentdirection_x,
 		y: 0,
@@ -115,7 +114,6 @@ THREE.Hero = function (app) {
 	 *	SET position du héro
 	 */
 	this.setPosition = function (x, y, z) {
-		this.zone.set(x, y, z);
 		yawObject.position.set(-middleMaxX + (x * sizeBloc + middle), (y - 1) * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc + middle));
 	};
 
@@ -270,6 +268,34 @@ THREE.Hero = function (app) {
 
 
 	/*
+	 *	SET position du héro
+	 */
+	this.getZone = function (position) {
+		if (!position)
+			position = yawObject.position;
+
+		var x = Math.floor((position.x + middleMaxX) / sizeBloc);
+		var y = Math.floor(position.y / sizeBloc - 1);
+		var yTop = Math.floor((position.y + sizeBloc / 2) / sizeBloc);
+		var yBottom = Math.floor(position.y / sizeBloc);
+		var z = Math.floor((position.z + middleMaxZ) / sizeBloc);
+
+		return {
+			x: x + 1,
+			y: y,
+			yTop: yTop,
+			yBottom: yBottom,
+			z: z + 1,
+			subX: Math.floor((position.x + middleMaxX) / 10) - (x * 5) + 1,
+			subY: Math.floor(position.y / 10 - (y * 5)) - 4,
+			subYTop: 5 - Math.floor((position.y + 5) / 10 - (y * 5) - 1),
+			subYBottom: 5 - Math.floor((position.y - 5) / 10 - (y * 5) - 1),
+			subZ: Math.floor((position.z + middleMaxZ) / 10) - (z * 5) + 1
+		}
+	};
+
+
+	/*
 	 * UPDATE du héro
 	 */
 	this.update = function (appNew) {
@@ -318,13 +344,13 @@ THREE.Hero = function (app) {
 			jump = false;
 		}
 
-		//collision Y
-		var dirYx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirYyTop = Math.floor((clone.position.y + sizeBloc / 2) / sizeBloc);
-		var dirYyBottom = Math.floor(clone.position.y / sizeBloc);
-		var dirYz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
-		if (app.map.hasObstacle(dirYx, dirYyTop, dirYz) || app.map.hasObstacle(dirYx, dirYyBottom, dirYz)) {
+		//collision Y
+		var collisionY = this.getZone(clone.position);
+		if (app.map.hasObstacleSmall(collisionY.x, collisionY.yTop, collisionY.z, collisionY.subX, collisionY.subY, collisionY.subZ)
+			|| app.map.hasObstacle(collisionY.x, collisionY.yTop, collisionY.z)
+			|| app.map.hasObstacle(collisionY.x, collisionY.yBottom, collisionY.z)
+			|| app.map.hasObstacle(collisionY.x, collisionY.yBottom, collisionY.z, collisionY.subX, collisionY.subY, collisionY.subZ)) {
 			clone.position.y = yawObject.position.y;
 			if (jump)
 				app.sound.effect('jump2.ogg', 0.1);
@@ -334,25 +360,60 @@ THREE.Hero = function (app) {
 
 
 		// collision X
-		var dirXx = Math.floor(((clone.position.x + (clone.position.x > yawObject.position.x ? 10 : -10)) + middleMaxX) / sizeBloc) + 1;
-		var dirXyTop = Math.floor((clone.position.y + sizeBloc / 2) / sizeBloc);
-		var dirXyBottom = Math.floor(clone.position.y / sizeBloc);
-		var dirXz = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
+		var collisionX = clone.position.clone();
+		collisionX.x += clone.position.x > yawObject.position.x ? 5 : -5;
+		collisionX = this.getZone(collisionX);
 
-		if (app.map.hasObstacle(dirXx, dirXyTop, dirXz) || app.map.hasObstacle(dirXx, dirXyBottom, dirXz)) {
+		var overHeadX = app.map.hasObstacleSmall(collisionX.x, collisionX.y + 1, collisionX.z, collisionX.subX, collisionX.subY + 3, collisionX.subZ);
+		var headX = app.map.hasObstacleSmall(collisionX.x, collisionX.y + 1, collisionX.z, collisionX.subX, collisionX.subY + 2, collisionX.subZ);
+		var bodyX = app.map.hasObstacleSmall(collisionX.x, collisionX.y + 1, collisionX.z, collisionX.subX, collisionX.subY + 1, collisionX.subZ);
+		var footX = app.map.hasObstacleSmall(collisionX.x, collisionX.y + 1, collisionX.z, collisionX.subX, collisionX.subY, collisionX.subZ);
+
+		if ((moveForward || moveBackward || moveLeft || moveRight) && !jump)
+			if (footX && !bodyX && !headX && !overHeadX) {
+				headX = false;
+				bodyX = false;
+				footX = false;
+				clone.position.x +=  clone.position.x > yawObject.position.x ? 0.2 : -0.2;
+				clone.position.y = yawObject.position.y += 10;
+				console.log('monteX');
+			}
+
+		if (headX || bodyX || footX
+			|| app.map.hasObstacle(collisionX.x, collisionX.yTop, collisionX.z)
+			|| app.map.hasObstacle(collisionX.x, collisionX.yBottom, collisionX.z)) {
 			clone.position.x = yawObject.position.x;
 			speedTmp -= 0.05;
+			console.log('bloqueX');
 		}
 
-
 		// collision Z
-		var dirZx = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var dirZyTop = Math.floor((clone.position.y + sizeBloc / 2) / sizeBloc);
-		var dirZyBottom = Math.floor(clone.position.y / sizeBloc);
-		var dirZz = Math.floor(((clone.position.z + (clone.position.z > yawObject.position.z ? 10 : -10)) + middleMaxZ) / sizeBloc) + 1;
-		if (app.map.hasObstacle(dirZx, dirZyTop, dirZz) || app.map.hasObstacle(dirZx, dirZyBottom, dirZz)) {
+		var collisionZ = clone.position.clone();
+		collisionZ.z += clone.position.z > yawObject.position.z ? 0.2 : -0.2;
+		collisionZ = this.getZone(collisionZ);
+
+		var overHeadZ = app.map.hasObstacleSmall(collisionZ.x, collisionZ.y + 1, collisionZ.z, collisionZ.subX, collisionZ.subY + 3, collisionZ.subZ);
+		var headZ = app.map.hasObstacleSmall(collisionZ.x, collisionZ.y + 1, collisionZ.z, collisionZ.subX, collisionZ.subY + 2, collisionZ.subZ);
+		var bodyZ = app.map.hasObstacleSmall(collisionZ.x, collisionZ.y + 1, collisionZ.z, collisionZ.subX, collisionZ.subY + 1, collisionZ.subZ);
+		var footZ = app.map.hasObstacleSmall(collisionZ.x, collisionZ.y + 1, collisionZ.z, collisionZ.subX, collisionZ.subY, collisionZ.subZ);
+
+
+		if ((moveForward || moveBackward || moveLeft || moveRight) && !jump)
+			if (footZ && !bodyZ && !headZ && !overHeadZ) {
+				headZ = false;
+				bodyZ = false;
+				footZ = false;
+				clone.position.x +=  clone.position.z > yawObject.position.z ? 5 : -5;
+				clone.position.y = yawObject.position.y += 10;
+				console.log('monteZ');
+			}
+
+		if (headZ || bodyZ || footZ
+			|| app.map.hasObstacle(collisionZ.x, collisionZ.yTop, collisionZ.z)
+			|| app.map.hasObstacle(collisionZ.x, collisionZ.yBottom, collisionZ.z)) {
 			clone.position.z = yawObject.position.z;
 			speedTmp -= 0.05;
+			console.log('bloqueZ');
 		}
 
 
@@ -406,11 +467,11 @@ THREE.Hero = function (app) {
 			app.sound.audioMove.volume = 0;
 
 		var newZoneX = Math.floor((clone.position.x + middleMaxX) / sizeBloc) + 1;
-		var newZoneY = Math.floor(clone.position.y / sizeBloc) - 1;
+		var newZoneY = Math.floor((clone.position.y + 25 ) / sizeBloc) - 1;
 		var newZoneZ = Math.floor((clone.position.z + middleMaxZ) / sizeBloc) + 1;
 
 
-		if (app.map.hasWater(newZoneX, Math.floor((clone.position.y + 25 ) / sizeBloc) - 1, newZoneZ)) {
+		if (app.map.hasWater(newZoneX, newZoneY, newZoneZ)) {
 			water.style.display = 'block';
 			light.visible = false;
 			if (!inWater) {
@@ -429,9 +490,7 @@ THREE.Hero = function (app) {
 			water.style.display = 'none';
 		}
 
-
 		yawObject.position.set(clone.position.x, clone.position.y, clone.position.z);
-		this.zone.set(newZoneX, newZoneY, newZoneZ);
 		person.position.set(clone.position.x, clone.position.y - 16, clone.position.z);
 		person.rotation.y = PIDivise2 + yawObject.rotation.y;
 
@@ -472,6 +531,7 @@ THREE.Hero = function (app) {
 
 			}
 		}
+
 	};
 
 
@@ -507,13 +567,14 @@ THREE.Hero = function (app) {
 	 * Geneate GET for URL hero
 	 */
 	this.getData = function () {
+		var zone = this.getZone();
 		return 'region=' + this.region + '\
 						&positionX=' + yawObject.position.x + '\
 						&positionY=' + yawObject.position.y + '\
 						&positionZ=' + yawObject.position.z + '\
-						&x=' + this.zone.x + '\
-						&y=' + this.zone.y + '\
-						&z=' + this.zone.z + '\
+						&x=' + zone.x + '\
+						&y=' + zone.y + '\
+						&z=' + zone.z + '\
 						&argent=' + this.argent + '\
 						&xp=' + this.xp + '\
 						&hp=' + this.hp + '\

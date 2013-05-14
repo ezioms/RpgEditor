@@ -31,7 +31,7 @@ class Mapping_Controller extends Template_Controller
 
         if (($rows = Map_Model::instance()->select(array('region_id' => $id))) !== FALSE) {
             foreach ($rows as $row)
-                if($row->background_px != 'images/background/water.png')
+                if ($row->background_px != 'images/background/water.png')
                     $listOptimise[$row->x][$row->y][$row->z] = true;
 
             foreach ($rows as $row)
@@ -42,7 +42,7 @@ class Mapping_Controller extends Template_Controller
                     || !isset($listOptimise[$row->x][$row->y][$row->z + 1])
                     || !isset($listOptimise[$row->x][$row->y][$row->z - 1])
                 )
-                    $elements[] = '{"x" : "' . $row->x . '", "z" : "' . $row->z . '", "y" : "' . $row->y . '", "materials" : [ "' . $row->background_px . '", "' . $row->background_nx . '", "' . $row->background_py . '", "' . $row->background_ny . '", "' . $row->background_pz . '", "' . $row->background_nz . '"	] }';
+                    $elements[] = '{"x" : "' . $row->x . '", "z" : "' . $row->z . '", "y" : "' . $row->y . '", "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "materials" : [ "' . $row->background_px . '", "' . $row->background_nx . '", "' . $row->background_py . '", "' . $row->background_ny . '", "' . $row->background_pz . '", "' . $row->background_nz . '"	] }';
                 else
                     Map_Model::instance()->delete((array)$row);
         }
@@ -88,13 +88,24 @@ class Mapping_Controller extends Template_Controller
             return FALSE;
 
         $value = $this->input->post();
+        $size = $value['size'];
+
+        if ($size == 10) {
+            $x = $value['x'];
+            $dixaine = floor($x / 10);
+            $restant = $x - ($dixaine * 10);
+            echo $dixaine . ' - ' . $restant;
+        } else {
+            $value['subX'] = $value['subY'] = $value['subZ'] = 0;
+        }
+
         $value['background_px'] = $value['materials'][0];
         $value['background_nx'] = $value['materials'][1];
         $value['background_py'] = $value['materials'][2];
         $value['background_ny'] = $value['materials'][3];
         $value['background_pz'] = $value['materials'][4];
         $value['background_nz'] = $value['materials'][5];
-        unset($value['materials']);
+        unset($value['materials'], $value['size']);
 
         Map_Model::instance()->insert($value);
     }
@@ -112,7 +123,12 @@ class Mapping_Controller extends Template_Controller
             return FALSE;
 
         $value = $this->input->post();
-        unset($value['materials']);
+        $size = $value['size'];
+
+        if ($size == 50) {
+            $value['subX'] = $value['subY'] = $value['subZ'] = 0;
+        }
+        unset($value['materials'], $value['size']);
 
         Map_Model::instance()->delete($value);
     }
@@ -216,7 +232,7 @@ class Mapping_Controller extends Template_Controller
         $array = array();
         $array['fonction'] = isset($value['fonction']) ? $value['fonction'] : FALSE;
 
-        Region_Model::instance()->update($array,  $value['id']);
+        Region_Model::instance()->update($array, $value['id']);
     }
 
 }

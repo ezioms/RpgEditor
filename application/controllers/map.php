@@ -57,7 +57,7 @@ class Map_Controller extends Authentic_Controller
 
             foreach ($rows as $row) {
                 if (!$row->module_map && !$row->bot)
-                    $elements[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "materials" : [ "' . $row->background_px . '", "' . $row->background_nx . '", "' . $row->background_py . '", "' . $row->background_ny . '", "' . $row->background_pz . '", "' . $row->background_nz . '"	] }';
+                    $elements[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "materials" : [ "' . $row->background_px . '", "' . $row->background_nx . '", "' . $row->background_py . '", "' . $row->background_ny . '", "' . $row->background_pz . '", "' . $row->background_nz . '"	] }';
                 else {
                     $data = @unserialize($row->action_map);
                     $action = json_encode($data);
@@ -67,7 +67,7 @@ class Map_Controller extends Authentic_Controller
                             'id_article' => $data->id_article,
                             'article_category_id' => 2,
                             'status' => 1), 1);
-                        $modules[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "data" : ' . $action . ', "article" : ' . json_encode($article->article) . ' }';
+                        $modules[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "data" : ' . $action . ', "article" : ' . json_encode($article->article) . ' }';
                     } elseif ($row->bot) {
 
                         $v = new stdClass;
@@ -97,10 +97,10 @@ class Map_Controller extends Authentic_Controller
                         $this->botFixe[] = $v;
 
                         if ($row->module_map == 'quete')
-                            $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "data" : ' . $action . ', "article" : "" }';
+                            $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "data" : ' . $action . ', "article" : "" }';
 
                     } else
-                        $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "data" : ' . $action . ', "article" : "" }';
+                        $modules[] = '{"x" : ' . ($row->x) . ', "z" : ' . ($row->z) . ', "y" : ' . ($row->y - 1) . ', "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "data" : ' . $action . ', "article" : "" }';
                 }
             }
         }

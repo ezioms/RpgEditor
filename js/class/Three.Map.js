@@ -4,6 +4,8 @@ THREE.Map = function (app) {
 
 	this.wireframe = false;
 
+	this.group = [];
+
 	var region = {};
 
 	var listImg = {};
@@ -44,6 +46,7 @@ THREE.Map = function (app) {
 	var modules = {};
 	var water = {};
 	var lights = {};
+	var subObstacles = {};
 
 
 	/*
@@ -73,17 +76,8 @@ THREE.Map = function (app) {
 	/*
 	 * GET data for obstacles map current
 	 */
-	this.getArticles = function () {
-		var article = app.loader.map.articles[random(0, (app.loader.map.articles.length - 1))];
-		return article ? article : false;
-	};
-
-
-	/*
-	 * GET data for obstacles map current
-	 */
 	this.getObstacles = function () {
-		return region.obstacles ? region.obstacles : false;
+		return obstacles;
 	};
 
 
@@ -91,7 +85,128 @@ THREE.Map = function (app) {
 	 * GET data for module map current
 	 */
 	this.getModules = function () {
-		return region.modules ? region.modules : false;
+		return modules;
+	};
+
+
+	/*
+	 * GET data for univers map current
+	 */
+	this.getUnivers = function () {
+		return univers;
+	};
+
+
+	/*
+	 * GET water
+	 */
+	this.getWater = function () {
+		return water;
+	};
+
+
+	/*
+	 * GET water
+	 */
+	this.getSubObstacles = function () {
+		return subObstacles;
+	};
+
+
+	/*
+	 * GET data for obstacles map current
+	 */
+	this.getArticles = function () {
+		return app.loader.map.articles[random(0, (app.loader.map.articles.length - 1))];
+	};
+
+
+	/*
+	 * GET data for bots map current
+	 */
+	this.getBots = function () {
+		return app.loader.bots.list ? app.loader.bots.list : false;
+	};
+
+
+	/*
+	 * GET la couleur de fond de la map
+	 */
+	this.getBackgroundColor = function () {
+		return app.loader.map.colorBackground ? app.loader.map.colorBackground : 0x8fa2ff;
+	};
+
+
+	/*
+	 * GET obstacles
+	 */
+	this.hasObstacle = function (x, y, z) {
+		if (obstacles[x] != undefined && obstacles[x][y] != undefined && obstacles[x][y][z] != undefined && obstacles[x][y][z] === true)
+			return true;
+
+		return false;
+	};
+
+
+	/*
+	 * GET obstacles small
+	 */
+	this.hasObstacleSmall = function (x, y, z, subX, subY, subZ) {
+		if (subObstacles[x] != undefined
+			&& subObstacles[x][y] != undefined
+			&& subObstacles[x][y][z] != undefined
+			&& subObstacles[x][y][z][subX] != undefined
+			&& subObstacles[x][y][z][subX][subY] != undefined
+			&& subObstacles[x][y][z][subX][subY][subZ] != undefined
+			&& subObstacles[x][y][z][subX][subY][subZ] === true)
+			return true;
+
+		return false;
+	};
+
+
+	/*
+	 * GET water
+	 */
+	this.hasWater = function (x, y, z) {
+		y += 1;
+		if (region.water[x] != undefined && region.water[x][y] != undefined && region.water[x][y][z] != undefined && region.water[x][y][z] === true)
+			return true;
+
+		return false;
+	};
+
+
+	/*
+	 * GET light ambience
+	 */
+	this.getOtherElements = function () {
+		return eval(fonction);
+	};
+
+
+	/*
+	 * Tool load image / gestion en cache
+	 */
+	var materials = [];
+	var index = -1;
+	this.loadTexture = function (path) {
+		if (listImg[path.src] !== undefined)
+			return listImg[path.src];
+
+		var material = new THREE.MeshLambertMaterial({
+			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
+			ambient: 0xbbbbbb,
+			wireframe: this.wireframe,
+			transparent: true,
+			side: 2
+		});
+		material.map.needsUpdate = true;
+
+		materials.push(material);
+		index++;
+
+		return listImg[path.src] = index;
 	};
 
 
@@ -167,126 +282,18 @@ THREE.Map = function (app) {
 
 
 	/*
-	 * GET data for univers map current
-	 */
-	this.getUnivers = function () {
-		return region.univers ? region.univers : false;
-	};
-
-
-	/*
-	 * GET water
-	 */
-	this.getWater = function () {
-		return region.water ? region.water : false;
-	};
-
-
-	/*
-	 * GET data for bots map current
-	 */
-	this.getBots = function () {
-		return app.loader.bots.list ? app.loader.bots.list : false;
-	};
-
-
-	/*
-	 * GET la couleur de fond de la map
-	 */
-	this.getBackgroundColor = function () {
-		return app.loader.map.colorBackground ? app.loader.map.colorBackground : 0x8fa2ff;
-	};
-
-
-	/*
-	 * GET obstacles
-	 */
-	this.hasObstacle = function (x, y, z) {
-		if (region.obstacles[x] != undefined && region.obstacles[x][y] != undefined && region.obstacles[x][y][z] != undefined && region.obstacles[x][y][z] === true)
-			return true;
-
-		return false;
-	};
-
-
-	/*
-	 * GET water
-	 */
-	this.hasWater = function (x, y, z) {
-		y += 1;
-		if (region.water[x] != undefined && region.water[x][y] != undefined && region.water[x][y][z] != undefined && region.water[x][y][z] === true)
-			return true;
-
-		return false;
-	};
-
-
-	/*
-	 * GET light ambience
-	 */
-	this.getOtherElements = function () {
-		return eval(fonction);
-	};
-
-
-	/*
-	 * Tool load image / gestion en cache
-	 */
-	this.loadTexture = function (path) {
-		if (listImg[path.src] !== undefined)
-			return listImg[path.src];
-
-		var material = new THREE.MeshLambertMaterial({
-			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
-			ambient: 0xbbbbbb,
-			wireframe: this.wireframe,
-			transparent: true,
-			side: 2
-		});
-		material.map.needsUpdate = true;
-
-		return listImg[path.src] = material;
-	};
-
-
-	/*
 	 * Create element
 	 */
-	this.addCube = function (row, obstacles, water) {
-		var title = [];
-		var faces = {
-			px: obstacles[row.x + 1][row.y][row.z] ? false : true,
-			nx: obstacles[row.x - 1][row.y][row.z] ? false : true,
-			py: obstacles[row.x][row.y + 1][row.z] ? false : true,
-			ny: obstacles[row.x][row.y - 1][row.z] ? false : true,
-			pz: obstacles[row.x][row.y][row.z + 1] ? false : true,
-			nz: obstacles[row.x][row.y][row.z - 1] ? false : true
-		};
+	var cubeMesh = new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc);
+	var cubeMeshSmall = new THREE.CubeGeometry(sizeBloc / 5, sizeBloc / 5, sizeBloc / 5);
+	this.addCube = function (row, small) {
 
-		if (Object.prototype.toString.apply(row.materials) === '[object Array]') {
-			for (keyImg in row.materials)
-				if (row.materials) {
-					title.push(row.materials[keyImg].src);
-					row.materials[keyImg] = this.loadTexture(row.materials[keyImg]);
-				}
+		var mesh = new THREE.Mesh(small === true ? cubeMeshSmall : cubeMesh);
 
-			if (water)
-				row.materials[0].opacity = 0.8;
-		}
-		else if (row.materials) {
-			title.push(row.materials.src);
-			row.materials = this.loadTexture(row.materials);
-			if (water)
-				row.materials.opacity = 0.8;
-		}
+		for (keyImg in row.materials)
+			mesh.geometry.faces[keyImg].materialIndex = this.loadTexture(row.materials[keyImg]);
 
-
-		title = title.join('-') + '-' + faces.px + '-' + faces.nx + '-' + faces.py + '-' + faces.ny + '-' + faces.pz + '-' + faces.nz;
-
-		if (listCube[title] !== undefined)
-			return listCube[title];
-
-		return listCube[title] = new THREE.Mesh(new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc, 0, 0, 0, row.materials, water ? faces : null));
+		return mesh;
 	};
 
 
@@ -294,9 +301,9 @@ THREE.Map = function (app) {
 	 * GET if over module
 	 */
 	this.getOverModule = function (position) {
-		var x = Math.floor(position.x);
-		var y = Math.floor(position.y);
-		var z = Math.floor(position.z);
+		var x = position.x;
+		var y = position.y;
+		var z = position.z;
 
 		if (region.modules[x + '-' + y + '-' + z] != undefined)
 			return region.modules[x + '-' + y + '-' + z];
@@ -326,34 +333,52 @@ THREE.Map = function (app) {
 	material.repeat.set(infoSize.xMax, infoSize.zMax);
 	material.needsUpdate = true;
 
-	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, maxY, maxZ, infoSize.xMax, infoSize.yMax, infoSize.zMax, new THREE.MeshLambertMaterial({
+	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, maxY, maxZ, infoSize.xMax, infoSize.yMax, infoSize.zMax), new THREE.MeshLambertMaterial({
 		map: material,
 		wireframe: this.wireframe,
 		ambient: 0xbbbbbb,
 		side: 2
-	})));
+	}));
 	mesh.position.y = (maxY / 2) + (sizeBloc / 2);
 
-	THREE.GeometryUtils.merge(geometry, mesh);
+	univers.add(mesh);
 
 	for (var x = 0; x <= infoSize.xMax + 1; x++) {
 		obstacles[x] = {};
 		water[x] = {};
+		subObstacles[x] = {};
 		for (var y = 0; y <= infoSize.yMax + 1; y++) {
 			obstacles[x][y] = {};
 			water[x][y] = {};
+			subObstacles[x][y] = {};
 			for (var z = 0; z <= infoSize.zMax + 1; z++) {
 				obstacles[x][y][z] = y == 0 ? true : false;
 				water[x][y][z] = false;
+				subObstacles[x][y][z] = {};
+				for (var x2 = 0; x2 <= 5; x2++) {
+					subObstacles[x][y][z][x2] = {};
+					for (var y2 = 0; y2 <= 5; y2++) {
+						subObstacles[x][y][z][x2][y2] = {};
+						for (var z2 = 0; z2 <= 5; z2++) {
+							subObstacles[x][y][z][x2][y2][z2] = false;
+						}
+					}
+				}
 			}
 		}
 	}
 
-	for (var keyEl in app.loader.map.elements)
-		if (app.loader.map.elements[keyEl].materials[0].src.replace(url_script + 'images/background/', '') != 'water.png')
-			obstacles[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
-		else
-			water[app.loader.map.elements[keyEl].x][app.loader.map.elements[keyEl].y][app.loader.map.elements[keyEl].z] = true;
+	for (var keyEle in app.loader.map.elements) {
+		var row = app.loader.map.elements[keyEle];
+		if (row.subX > 0 || row.subY > 0 || row.subZ > 0)
+			subObstacles[row.x][row.y][row.z][row.subX][row.subY][row.subZ] = true;
+		else {
+			if (row.materials[0].src.replace(url_script + 'images/background/', '') != 'water.png')
+				obstacles[row.x][row.y][row.z] = true;
+			else
+				water[row.x][row.y][row.z] = true;
+		}
+	}
 
 	for (var keyModule in app.loader.map.modules)
 		if (app.loader.map.modules[keyModule].data.module == 'light')
@@ -361,8 +386,8 @@ THREE.Map = function (app) {
 		else
 			modules[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = app.loader.map.modules[keyModule];
 
-	for (var keyEle in app.loader.map.elements) {
-		var row = app.loader.map.elements[keyEle];
+	for (var keyEle2 in app.loader.map.elements) {
+		var row = app.loader.map.elements[keyEle2];
 		var cube;
 		var filter = row.materials[0].src.replace(url_script + 'images/background/', '');
 
@@ -370,12 +395,17 @@ THREE.Map = function (app) {
 			continue;
 
 		if (filter == 'water.png') {
-			cube = this.addCube(row, water, true);
+			cube = this.addCube(row);
 			cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
 			THREE.GeometryUtils.merge(geometryWater, cube);
 		} else {
-			cube = this.addCube(row, obstacles);
-			cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
+			if (row.subX > 0 || row.subY > 0 || row.subZ > 0) {
+				cube = this.addCube(row, true);
+				cube.position.set(-middleMaxX + row.x * sizeBloc - 5 - ( 50 - row.subX * 10), row.y * sizeBloc + middle - 5 - ( 50 - row.subY * 10), -middleMaxZ + row.z * sizeBloc - 5 - ( 50 - row.subZ * 10));
+			} else {
+				cube = this.addCube(row);
+				cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
+			}
 			THREE.GeometryUtils.merge(geometry, cube);
 		}
 	}
@@ -390,8 +420,10 @@ THREE.Map = function (app) {
 		geometry.vertices[ i ].z += Math.random() * degradation;
 	}
 
-	var element = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
-	var elementWater = new THREE.Mesh(geometryWater, new THREE.MeshFaceMaterial());
+
+	var material = new THREE.MeshFaceMaterial(materials);
+	var element = new THREE.Mesh(geometry, material);
+	var elementWater = new THREE.Mesh(geometryWater, material);
 
 	univers.add(element);
 	univers.add(elementWater);
@@ -401,6 +433,7 @@ THREE.Map = function (app) {
 	region = {
 		univers: univers,
 		obstacles: obstacles,
+		subObstacles: subObstacles,
 		modules: modules,
 		lights: lights,
 		water: water

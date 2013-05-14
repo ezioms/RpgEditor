@@ -18,8 +18,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	this.bodyGroup = new THREE.Object3D();
 
-	var faceMesh = new THREE.MeshFaceMaterial();
-
 	var listImg = {};
 
 	var tire = -1;
@@ -167,7 +165,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.head.rotation.y = this.headAccessory.rotation.y = Math.sin(time * 1.5) / 5;
 		this.head.rotation.z = this.headAccessory.rotation.z = Math.sin(time) / 5;
 
-		console.log(tire);
 		if (!tire) {
 		}
 
@@ -242,6 +239,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	/*
 	 * Load texture
 	 */
+	var materials = [];
+	var index = -1;
 	this.loadTexture = function (x, y, xSize, ySize) {
 
 		var ratio = picture.width / 16;
@@ -264,21 +263,24 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 		context.drawImage(picture, x, y, xSize, ySize, 0, 0, xSize, ySize);
 
-		var texture = new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
-		texture.needsUpdate = true;
-
-		return listImg[path] = new THREE.MeshLambertMaterial({
-			map: texture,
+		var material = new THREE.MeshLambertMaterial({
+			map: new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
+			ambient: 0xbbbbbb,
 			wireframe: this.wireframe,
 			transparent: true
 		});
+		material.map.needsUpdate = true;
+
+		materials.push(material);
+		index++;
+
+		return listImg[path] = index;
 	};
 
 
 	/*
 	 * Contructor person
 	 */
-	var i = 0;
 
 	//Head
 	this.materialHeadAccessory = [
@@ -289,9 +291,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.loadTexture(8, 2, 2, 2),
 		this.loadTexture(12, 2, 2, 2)
 	];
-	this.headAccessory = new THREE.Mesh(new THREE.CubeGeometry(10, 10, 9, 0, 0, 0, this.materialHeadAccessory), faceMesh);
-	this.headAccessory.position.x = -1;
-	this.headAccessory.position.y = 18;
 
 	//Head
 	this.materialHead = [
@@ -303,10 +302,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.loadTexture(4, 2, 2, 2)
 	];
 
-	this.head = new THREE.Mesh(new THREE.CubeGeometry(7, 8, 7, 0, 0, 0, this.materialHead), faceMesh);
-	this.head.position.y = 18;
-
-
 	// Left / Right arm
 	this.materialArm = [
 		this.loadTexture(11, 4, 1, 4),
@@ -316,22 +311,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.loadTexture(11, 4, 1, 4),
 		this.loadTexture(11, 4, 1, 4)
 	];
-
-
-	var tarm = new THREE.CubeGeometry(3, 12, 3, 0, 0, 0, this.materialArm)
-	for (i = 0; i < 8; i += 1)
-		tarm.vertices[i].y -= 6;
-
-	this.leftarm = new THREE.Mesh(tarm, faceMesh);
-	this.rightarm = new THREE.Mesh(tarm, faceMesh);
-	this.leftarm.position.z = -5;
-	this.rightarm.position.z = 5;
-	this.leftarm.position.y = 14;
-	this.rightarm.position.y = 14;
-
-	this.bodyGroup.add(this.leftarm);
-	this.bodyGroup.add(this.rightarm);
-
 
 	// Body
 	this.materialBody = [
@@ -343,12 +322,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.loadTexture(7, 5, 1, 3)
 	];
 
-	this.body = new THREE.Mesh(new THREE.CubeGeometry(4, 12, 8, 0, 0, 0, this.materialBody), faceMesh);
-	this.body.position.y = 8;
-
-	this.bodyGroup.add(this.body);
-
-
 	// Left / Right leg
 	this.materialLeg = [
 		this.loadTexture(0, 5, 1, 3),
@@ -359,16 +332,63 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.loadTexture(1, 5, 1, 3)
 	];
 
+	var faceMesh = new THREE.MeshFaceMaterial(materials);
 
-	var leg = new THREE.CubeGeometry(4, 12, 4, 0, 0, 0, this.materialLeg)
+	var headAccessory = new THREE.CubeGeometry(10, 10, 9);
+	this.headAccessory = new THREE.Mesh(headAccessory, faceMesh);
+	for (keyImg in this.materialHeadAccessory)
+		this.headAccessory.geometry.faces[keyImg].materialIndex = this.materialHeadAccessory[keyImg];
+	this.headAccessory.position.x = -1;
+	this.headAccessory.position.y = 18;
+
+	var head = new THREE.CubeGeometry(7, 8, 7);
+	this.head = new THREE.Mesh(head, faceMesh);
+	for (keyImg in this.materialHead)
+		this.head.geometry.faces[keyImg].materialIndex = this.materialHead[keyImg];
+	this.head.position.y = 18;
+
+
+	var arm = new THREE.CubeGeometry(3, 12, 3)
+	for (i = 0; i < 8; i += 1)
+		arm.vertices[i].y -= 6;
+
+	this.leftarm = new THREE.Mesh(arm, faceMesh);
+	this.rightarm = new THREE.Mesh(arm, faceMesh);
+	for (keyImg in this.materialArm) {
+		this.leftarm.geometry.faces[keyImg].materialIndex = this.materialArm[keyImg];
+		this.rightarm.geometry.faces[keyImg].materialIndex = this.materialArm[keyImg];
+	}
+	this.leftarm.position.z = -5;
+	this.rightarm.position.z = 5;
+	this.leftarm.position.y = 14;
+	this.rightarm.position.y = 14;
+
+	this.bodyGroup.add(this.leftarm);
+	this.bodyGroup.add(this.rightarm);
+
+	var body = new THREE.CubeGeometry(4, 12, 8);
+	this.body = new THREE.Mesh(body, faceMesh);
+	for (keyImg in this.materialBody)
+		this.body.geometry.faces[keyImg].materialIndex = this.materialBody[keyImg];
+	this.body.position.y = 8;
+
+	this.bodyGroup.add(this.body);
+
+
+	var leg = new THREE.CubeGeometry(4, 12, 4)
 	for (i = 0; i < 8; i += 1)
 		leg.vertices[i].y -= 6;
 	this.leftleg = new THREE.Mesh(leg, faceMesh);
 	this.rightleg = new THREE.Mesh(leg, faceMesh);
+	for (keyImg in this.materialLeg) {
+		this.leftleg.geometry.faces[keyImg].materialIndex = this.materialLeg[keyImg];
+		this.rightleg.geometry.faces[keyImg].materialIndex = this.materialLeg[keyImg];
+	}
 	this.leftleg.position.z = -2;
 	this.rightleg.position.z = 2;
 	this.leftleg.position.y = 2;
 	this.rightleg.position.y = 2;
+
 
 	if (hand_right != undefined && hand_right)
 		this.changeRight(hand_right);
@@ -382,6 +402,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	this.bodyGroup.add(this.leftleg);
 	this.bodyGroup.add(this.rightleg);
 
+
 	this.ray = new THREE.Mesh(new THREE.CubeGeometry(15, 28, 15));
 	this.ray.visible = false;
 	this.ray.position.y = 8;
@@ -389,12 +410,20 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	this.add(this.bodyGroup);
 	this.add(this.head);
-	this.add(this.headAccessory);
+	//this.add(this.headAccessory);
 	this.add(this.ray);
 
 	this.rotation.y = PIDivise2;
 
 	this.scale.set(0.9, 0.9, 0.9);
+
+	this.remove = function () {
+		headAccessory.dispose();
+		head.dispose();
+		arm.dispose();
+		body.dispose();
+		leg.dispose();
+	};
 };
 
 THREE.Person.prototype = Object.create(THREE.Object3D.prototype);

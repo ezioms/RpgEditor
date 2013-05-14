@@ -22,7 +22,7 @@ THREE.Battle = function () {
 		var vector = new THREE.Vector3(0, 0, 0.5);
 		projector.unprojectVector(vector, app.camera);
 
-		var ray = new THREE.Ray(app.hero.getCamera().position, vector.subSelf(app.hero.getCamera().position).normalize());
+		var ray = new THREE.Raycaster(app.hero.getCamera().position, vector.sub(app.hero.getCamera().position).normalize());
 
 		var intersects = ray.intersectObjects(app.group);
 
