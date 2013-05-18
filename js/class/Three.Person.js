@@ -51,6 +51,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 			this.initialGesture();
 
 		this.lightGun.intensity = 0;
+		this.ray.visible = false;
 
 		switch (type) {
 			case 1 :
@@ -76,7 +77,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Initialisation position person
 	 */
 	this.initialGesture = function () {
-		this.ray.visible = false;
 		this.rightarm.rotation.set(0, 0, 0.5);
 		this.leftarm.rotation.set(0, 0, 0.3);
 		this.rightleg.rotation.set(0, 0, 0);
@@ -138,8 +138,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		var cosSpeed = Math.cos(speed);
 		var sinSpeed = Math.sin(speed);
 
-		this.head.rotation.y = this.headAccessory.rotation.y = Math.sin(time * 1.5) / 5;
-		this.head.rotation.z = this.headAccessory.rotation.z = Math.sin(time) / 5;
+		this.head.rotation.y = Math.sin(time * 1.5) / 5;
+		this.head.rotation.z = Math.sin(time) / 5;
 
 		this.leftarm.rotation.z = -sinSpeed / 2;
 		this.leftarm.rotation.x = (cosSpeed + PIDivise2) / 30;
@@ -162,8 +162,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		var cosX = Math.cos(x);
 		var cosZ = Math.cos(z);
 
-		this.head.rotation.y = this.headAccessory.rotation.y = Math.sin(time * 1.5) / 5;
-		this.head.rotation.z = this.headAccessory.rotation.z = Math.sin(time) / 5;
+		this.head.rotation.y = Math.sin(time * 1.5) / 5;
+		this.head.rotation.z = Math.sin(time) / 5;
 
 		if (!tire) {
 		}
@@ -279,22 +279,12 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	this.setRotationY = function( value ) {
 		this.rotation.y = PIDivise2 + value;
-	}
+	};
 
 
 	/*
 	 * Contructor person
 	 */
-
-	//Head
-	this.materialHeadAccessory = [
-		this.loadTexture(10, 2, 2, 2),
-		this.loadTexture(10, 0, 2, 2),
-		this.loadTexture(10, 0, 2, 2),
-		this.loadTexture(12, 0, 2, 2),
-		this.loadTexture(8, 2, 2, 2),
-		this.loadTexture(12, 2, 2, 2)
-	];
 
 	//Head
 	this.materialHead = [
@@ -337,13 +327,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	];
 
 	var faceMesh = new THREE.MeshFaceMaterial(materials);
-
-	var headAccessory = new THREE.CubeGeometry(10, 10, 9);
-	this.headAccessory = new THREE.Mesh(headAccessory, faceMesh);
-	for (keyImg in this.materialHeadAccessory)
-		this.headAccessory.geometry.faces[keyImg].materialIndex = this.materialHeadAccessory[keyImg];
-	this.headAccessory.position.x = -1;
-	this.headAccessory.position.y = 18;
 
 	var head = new THREE.CubeGeometry(7, 8, 7);
 	this.head = new THREE.Mesh(head, faceMesh);
@@ -414,13 +397,11 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	this.add(this.bodyGroup);
 	this.add(this.head);
-	//this.add(this.headAccessory);
 	this.add(this.ray);
 
 	this.scale.set(0.9, 0.9, 0.9);
 
 	this.remove = function () {
-		headAccessory.dispose();
 		head.dispose();
 		arm.dispose();
 		body.dispose();

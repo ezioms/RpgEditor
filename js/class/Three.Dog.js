@@ -192,6 +192,10 @@ THREE.Dog = function (picture, id) {
 		return listImg[path] = index;
 	};
 
+	this.setRotationY = function( value ) {
+		this.rotation.y = PIDivise2 + value;
+	};
+
 
 	/*
 	 * Contructor person
@@ -321,7 +325,7 @@ THREE.Dog = function (picture, id) {
 	this.bodyGroup.add(this.leftleg);
 
 	// right
-	this.leftleg.position.set(-8, 6, 4);
+	this.rightleg.position.set(-8, 6, 4);
 	this.bodyGroup.add(this.rightleg);
 
 
@@ -337,8 +341,6 @@ THREE.Dog = function (picture, id) {
 	this.add(this.head);
 	this.add(this.headAccessory);
 	this.add(this.ray);
-
-	this.rotation.setY(PIDivise2);
 
 	this.scale.set(0.9, 0.9, 0.9);
 

@@ -193,6 +193,10 @@ THREE.Bears = function (picture, id) {
 		return listImg[path] = index;
 	};
 
+	this.setRotationY = function (value) {
+		this.rotation.y = PIDivise2 + value;
+	};
+
 
 	/*
 	 * Contructor person
@@ -339,8 +343,6 @@ THREE.Bears = function (picture, id) {
 	this.add(this.head);
 	this.add(this.headAccessory);
 	this.add(this.ray);
-
-	this.rotation.setY(PIDivise2);
 
 	this.scale.set(1.2, 1.2, 1.2);
 

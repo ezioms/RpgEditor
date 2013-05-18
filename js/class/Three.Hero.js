@@ -142,10 +142,14 @@ THREE.Hero = function (app) {
 		if (moveForward && !moveBackward) {
 			if (!inWater)
 				speedTmp += 0.05;
+			else
+				speedTmp += 0.01;
 			clone.translateZ(-(this.speed + speedTmp));
 		}
-		if (moveBackward && !moveForward)
+		if (moveBackward && !moveForward) {
+			speedTmp += 0.01;
 			clone.translateZ(this.speed);
+		}
 
 		//if in water
 		if (inWater && pitchObject.rotation.x < 0.1 && pitchObject.rotation.x > -0.1)
@@ -175,7 +179,7 @@ THREE.Hero = function (app) {
 					|| app.scene.children[key] instanceof THREE.Dog
 					|| app.scene.children[key] instanceof THREE.Person )) {
 					var distance = app.scene.children[key].position.distanceTo(clone.position);
-					if (distance < sizeBloc / 2 && memoryDistance > distance)
+					if (distance <= 20 && memoryDistance > distance)
 						clone.position = yawObject.position.clone();
 
 					memoryDistance = distance;
