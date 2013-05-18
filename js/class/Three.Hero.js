@@ -549,9 +549,9 @@ THREE.Hero = function (app) {
 			spacerActive = true;
 			if (jump && !inWater)
 				return;
-			if (lastJump > date - (inWater ? 300 : 500))
+			if (lastJump > app.clock.getElapsedTime() - (inWater ? 0.3 : 0.5))
 				return;
-			lastJump = date;
+			lastJump = app.clock.getElapsedTime();
 			jump = true;
 			this.currentdirection.jump = inWater ? 1 : heightJump;
 			app.sound.effect((inWater ? 'jumpWater.ogg' : 'jump.ogg'), 0.1);
