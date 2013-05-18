@@ -407,7 +407,6 @@ var simulEnter = function () {
 var removeReferences = function (removeme) {
 	try {
 		removeme.traverse(function (ob) {
-			console.log(ob);
 			if (ob.geometry != undefined) {
 				ob.geometry.dispose();
 			}

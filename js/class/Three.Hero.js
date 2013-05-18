@@ -62,7 +62,7 @@ THREE.Hero = function (app) {
 
 	var yawObject = new THREE.Object3D();
 	yawObject.name = 'camera';
-	yawObject.rotation.y = this.currentdirection.x;
+	yawObject.rotation.y = app.loader.datas.my.currentdirection_x;
 	yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
 	yawObject.add(pitchObject);
 
@@ -181,8 +181,8 @@ THREE.Hero = function (app) {
 		this.collision();
 
 		// collision pnj
-		if (moveForward || moveBackward || moveLeft || moveRight)
-			for (var key in app.scene.children)
+		if (moveForward || moveBackward || moveLeft || moveRight) {
+			for (var key in app.scene.children) {
 				if (app.scene.children[key].name != 'hero'
 					&& (app.scene.children[key] instanceof THREE.Bears
 					|| app.scene.children[key] instanceof THREE.Dog
@@ -193,13 +193,8 @@ THREE.Hero = function (app) {
 
 					memoryDistance = distance;
 				}
-
-
-		// update coordonnée
-		yawObject.position.copy(clone.position);
-		person.position.copy(clone.position);
-		person.rotation.y = PIDivise2 + yawObject.rotation.y;
-		person.position.y -= 16;
+			}
+		}
 
 
 		if (!moveForward && !moveBackward)
@@ -231,7 +226,7 @@ THREE.Hero = function (app) {
 
 
 		//update person
-		if (person.position.x != clone.position.x || person.position.y != clone.position.y - 50 || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
+		if (person.position.x != clone.position.x || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
 			person.update(( !moveForward && !moveBackward ? 2 : (speedTmp || inWater >= 1 ? 1 : 0)), shootgun);
 
 			app.sound.audioMove.volume = 0.2;
@@ -249,6 +244,13 @@ THREE.Hero = function (app) {
 		light.position.copy(yawObject.position);
 		light.position.x += random(0, maxTorch);
 		light.position.z += random(0, maxTorch);
+
+
+		// update coordonnée
+		yawObject.position.copy(clone.position);
+		person.position.copy(clone.position);
+		person.rotation.y = PIDivise2 + yawObject.rotation.y;
+		person.position.y -= 16;
 
 
 		//data user
@@ -412,8 +414,8 @@ THREE.Hero = function (app) {
 		// no out map
 		if (clone.position.x < 0)
 			clone.position.x = 0;
-		else if (clone.position.x > maxX )
-			clone.position.x = maxX ;
+		else if (clone.position.x > maxX)
+			clone.position.x = maxX;
 
 		if (clone.position.z < 0)
 			clone.position.z = 0;
@@ -455,20 +457,20 @@ THREE.Hero = function (app) {
 	this.getData = function () {
 		var zone = this.getZone();
 		return 'region=' + this.region + '\
-						&x=' + (zone.x * sizeBloc + (sizeBloc / 2)) + '\
-						&y=' + (zone.y * sizeBloc + (sizeBloc / 2)) + '\
-						&z=' + (zone.z * sizeBloc + (sizeBloc / 2)) + '\
-						&positionX=' + yawObject.position.x + '\
-						&positionY=' + yawObject.position.y + '\
-						&positionZ=' + yawObject.position.z + '\
-						&argent=' + this.argent + '\
-						&xp=' + this.xp + '\
-						&hp=' + this.hp + '\
-						&hpMax=' + this.hpMax + '\
-						&niveau=' + this.niveau + '\
-						&gravity=' + this.gravity + '\
-						&speed=' + this.speed + '\
-						&currentdirection_x=' + this.currentdirection.x;
+			&x=' + (zone.x * sizeBloc + (sizeBloc / 2)) + '\
+			&y=' + (zone.y * sizeBloc + (sizeBloc / 2)) + '\
+			&z=' + (zone.z * sizeBloc + (sizeBloc / 2)) + '\
+			&positionX=' + yawObject.position.x + '\
+			&positionY=' + yawObject.position.y + '\
+			&positionZ=' + yawObject.position.z + '\
+			&argent=' + this.argent + '\
+			&xp=' + this.xp + '\
+			&hp=' + this.hp + '\
+			&hpMax=' + this.hpMax + '\
+			&niveau=' + this.niveau + '\
+			&gravity=' + this.gravity + '\
+			&speed=' + this.speed + '\
+			&currentdirection_x=' + this.currentdirection.x;
 	};
 
 	/*
@@ -479,7 +481,6 @@ THREE.Hero = function (app) {
 	/*
 	 * Position de la sourie
 	 */
-	var INTERSECTED, raycaster;
 	this.onMouseMove = function (event) {
 		// var global voir map.js
 		if (!control)
@@ -532,57 +533,33 @@ THREE.Hero = function (app) {
 		if (event.keyCode != 13)
 			document.getElementById('notifications').innerHTML = '';
 
-		switch (event.keyCode) {
-			case 38 :
-			case 122 :
-			case 119 :
-			case 90 :
-			case 87 : // Flèche haut, z, w, Z, W
-				if (!moveForward)
-					moveForward = true;
-				break;
-			case 37 :
-			case 113 :
-			case 97 :
-			case 81 :
-			case 65 : // Flèche gauche, q, a, Q, A
-				if (!moveLeft)
-					moveLeft = true;
-				break;
-			case 40 :
-			case 115 :
-			case 83 : // Flèche bas, s, S
-				if (!moveBackward)
-					moveBackward = true;
-				break;
-			case 39 :
-			case 100 :
-			case 68 : // Flèche droite, d, D
-				if (!moveRight)
-					moveRight = true;
-				break;
-			case 32:
-				spacerActive = true;
-				if (jump && !inWater)
-					return;
-
-				var date = Date.now();
-				if (lastJump > date - (inWater ? 300 : 500))
-					return;
-
-				lastJump = date;
-
-				jump = true;
-				this.currentdirection.jump = inWater ? 1 : heightJump;
-
-				app.sound.effect((inWater ? 'jumpWater.ogg' : 'jump.ogg'), 0.1);
-				break;
-			case 76 :
-				if (light.visible)
-					light.visible = false;
-				else if (!inWater)
-					light.visible = true;
-				break;
+		if (event.keyCode == 38 || event.keyCode == 122 || event.keyCode == 119 || event.keyCode == 90 || event.keyCode == 87) {
+			if (!moveForward)
+				moveForward = true;
+		} else if (event.keyCode == 37 || event.keyCode == 113 || event.keyCode == 97 || event.keyCode == 81 || event.keyCode == 65) {
+			if (!moveLeft)
+				moveLeft = true;
+		} else if (event.keyCode == 40 || event.keyCode == 115 || event.keyCode == 83) {
+			if (!moveBackward)
+				moveBackward = true;
+		} else if (event.keyCode == 39 || event.keyCode == 100 || event.keyCode == 68) {
+			if (!moveRight)
+				moveRight = true;
+		} else if (event.keyCode == 32) {
+			spacerActive = true;
+			if (jump && !inWater)
+				return;
+			if (lastJump > date - (inWater ? 300 : 500))
+				return;
+			lastJump = date;
+			jump = true;
+			this.currentdirection.jump = inWater ? 1 : heightJump;
+			app.sound.effect((inWater ? 'jumpWater.ogg' : 'jump.ogg'), 0.1);
+		} else if (event.keyCode == 76) {
+			if (light.visible)
+				light.visible = false;
+			else if (!inWater)
+				light.visible = true;
 		}
 	};
 
@@ -591,34 +568,16 @@ THREE.Hero = function (app) {
 	 * On relache une touche du clavier
 	 */
 	this.onKeyUp = function (event) {
-		switch (event.keyCode) {
-			case 38 :
-			case 122 :
-			case 119 :
-			case 90 :
-			case 87 : // Flèche haut, z, w, Z, W
-				moveForward = false;
-				break;
-			case 37 :
-			case 113 :
-			case 97 :
-			case 81 :
-			case 65 : // Flèche gauche, q, a, Q, A
-				moveLeft = false;
-				break;
-			case 40 :
-			case 115 :
-			case 83 : // Flèche bas, s, S
-				moveBackward = false;
-				break;
-			case 39 :
-			case 100 :
-			case 68 : // Flèche droite, d, D
-				moveRight = false;
-				break;
-			case 32 :
-				spacerActive = false;
-				break;
+		if (event.keyCode == 38 || event.keyCode == 122 || event.keyCode == 119 || event.keyCode == 90 || event.keyCode == 87) {
+			moveForward = false;
+		} else if (event.keyCode == 37 || event.keyCode == 113 || event.keyCode == 97 || event.keyCode == 81 || event.keyCode == 65) {
+			moveLeft = false;
+		} else if (event.keyCode == 40 || event.keyCode == 115 || event.keyCode == 83) {
+			moveBackward = false;
+		} else if (event.keyCode == 39 || event.keyCode == 100 || event.keyCode == 68) {
+			moveRight = false;
+		} else if (event.keyCode == 32) {
+			spacerActive = false;
 		}
 
 		this.saveSession();

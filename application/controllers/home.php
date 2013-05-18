@@ -38,6 +38,7 @@ class Home_Controller extends Template_Controller
 
         $this->template->content = new View('home/index');
         $this->template->content->admin = in_array('admin', $this->role->name);
+        $this->template->content->region = $this->user->region_id;
 
         $this->template->content->info_user = new View('user/information');
         $this->template->content->info_user->user = $this->user;

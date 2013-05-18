@@ -1,5 +1,5 @@
 body, html {
-    color: #333;
+    color: #FFFFFF;
     font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
     font-size: 11px;
     line-height: 1.28;
@@ -15,6 +15,14 @@ body, html {
     padding: 0;
     cursor: default;
     background: #111111;
+    overflow: hidden;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 :focus {

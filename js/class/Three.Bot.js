@@ -12,6 +12,8 @@ THREE.Bot = function (app, dataBot) {
 	this.speedMin = 0.5;
 	this.speedMax = 2;
 
+	var clone = this.clone();
+
 	var lastAction = false;
 
 	var target = new THREE.Vector3(0, 0, 0);
@@ -146,8 +148,6 @@ THREE.Bot = function (app, dataBot) {
 		var moveForward = true;
 		var moveLeft = false;
 		var moveRight = false;
-
-		var clone = this.clone();
 
 		// On vérifie que le bot se trouve dans la partie action du hero
 		this.speed = this.speedMin;
@@ -284,7 +284,7 @@ THREE.Bot = function (app, dataBot) {
 
 		this.lookAt(target);
 	};
-	console.log(dataBot.x, dataBot.y, dataBot.z);
+
 	this.position.set(dataBot.x, dataBot.y, dataBot.z);
 };
 

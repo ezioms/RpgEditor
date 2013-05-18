@@ -1,4 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
+<style type="text/css">
+    body {
+        background: url('<?php echo url::base(); ?>images/loading/region_<?php echo $region; ?>.jpg') no-repeat center center fixed;
+        background-size: cover;
+    }
+</style>
 <div id="barTop"></div>
 <section id="logout"><a href="<?php echo url::site('logout'); ?>">Se déconnecter</a></section>
 
@@ -12,7 +18,7 @@
 <!-- la map -->
 <section id="noCursor">
     <div id="instructions">
-            <span style="font-size:45px">Cliquez pour jouer</span>
+        <span style="font-size:45px">Cliquez pour jouer</span>
         <br/><span style="font-size:16px"><b>Z, Q, S, D ET LES FLECHES</b> = Déplacement</span>
         <br/><span style="font-size:16px"><b>SOURIS</b> = Regarder</span>
         <br/><span style="font-size:16px"><b>CLIQUE SOURIS</b> = Tirer</span>
