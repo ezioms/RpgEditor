@@ -42,6 +42,21 @@ THREE.Collision = function (app) {
 
 		isCollision = false;
 
+		//collision GROUND
+		if (clone.position.y < middle) {
+			clone.position.y = middle;
+			currentdirectionJump = 0;
+			if (isJump)
+				app.sound.effect('jump2.ogg', 0.1);
+			isJump = false;
+			isCollision ='collisionGround';
+		} else if (clone.position.y > maxY) {
+			clone.position.y = max;
+			currentdirectionJump = 0;
+			isJump = false;
+			isCollision ='collisionCeiling';
+		}
+
 		//collision Y
 		var collisionY = this.getZone(clone.position);
 		var collisionYFooter = app.map.hasObstacle(collisionY.x, collisionY.y, collisionY.z);
@@ -74,21 +89,6 @@ THREE.Collision = function (app) {
 			clone.position.z = yawObject.position.z;
 			speedTmp -= 0.05;
 			isCollision ='collisionBigZ';
-		}
-
-		//collision GROUND
-		if (clone.position.y < middle) {
-			clone.position.y = middle;
-			currentdirectionJump = 0;
-			if (isJump)
-				app.sound.effect('jump2.ogg', 0.1);
-			isJump = false;
-			isCollision ='collisionGround';
-		} else if (clone.position.y > maxY) {
-			clone.position.y = max;
-			currentdirectionJump = 0;
-			isJump = false;
-			isCollision ='collisionCeiling';
 		}
 
 		//Small elements

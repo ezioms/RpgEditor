@@ -161,9 +161,9 @@ THREE.Bot = function (app, dataBot) {
 		if (distance < this.radar) {
 			this.rotation.y = Math.atan2(person.position.x - hero.x, person.position.z - hero.z);
 		} else if (moveLeft && !this.fixe)
-			this.rotation.y += 0.02;
+			this.rotation.y += 0.05;
 		else if (moveRight && !this.fixe)
-			this.rotation.y -= 0.02;
+			this.rotation.y -= 0.05;
 
 
 		var clone = this.clone();
@@ -184,6 +184,15 @@ THREE.Bot = function (app, dataBot) {
 		speedTmp = resultCollision.speed;
 		currentdirection.jump = resultCollision.currentJump;
 
+		console.log(resultCollision.isCollision);
+		if (resultCollision.isCollision && resultCollision.isCollision != 'collisionY' && resultCollision.isCollision != 'collisionGround' && resultCollision.isCollision != 'collisionBigY' && !moveLeft && !moveRight) {
+			if (random(0, 1) == 0)
+				moveLeft = true;
+			else
+				moveRight = true;
+		} else if (!resultCollision.isCollision || resultCollision.isCollision == 'collisionGround' )
+			moveLeft = moveRight = false;
+
 		if (!moveForward)
 			speedTmp = 0;
 		else if (speedTmp > 2)
@@ -199,9 +208,8 @@ THREE.Bot = function (app, dataBot) {
 				this.position.copy(clone.position);
 
 			if (person.position.x != this.position.x || person.position.y != this.position.y - 50 || person.position.z != this.position.z)
-				person.update(speedTmp >= 2 ? 1 : this.fixe ? 2 : 0);
-		} else
-			person.update(2);
+				person.update(speedTmp >= 1 ? 1 : this.fixe ? 2 : 0);
+		}
 
 		person.position.copy(this.position);
 		person.position.y -= 16;
