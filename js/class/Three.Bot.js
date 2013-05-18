@@ -12,8 +12,6 @@ THREE.Bot = function (app, dataBot) {
 	this.speedMin = 0.5;
 	this.speedMax = 2;
 
-	var clone = this.clone();
-
 	var lastAction = false;
 
 	var target = new THREE.Vector3(0, 0, 0);
@@ -107,7 +105,6 @@ THREE.Bot = function (app, dataBot) {
 	 * UPDATE
 	 */
 	this.update = function (app) {
-
 		if (person.getDie()) {
 			if (person.cycleDie == 500)
 				return 'remove';
@@ -139,6 +136,8 @@ THREE.Bot = function (app, dataBot) {
 				child.visible = true;
 			});
 		}
+
+		var clone = this.clone();
 
 		var rand = random(0, 100);
 
@@ -220,8 +219,8 @@ THREE.Bot = function (app, dataBot) {
 			currentdirection.y = 0;
 		}
 
-		if (clone.position.y < 0)
-			clone.position.y = 0;
+		if (clone.position.y < sizeBloc / 2)
+			clone.position.y = sizeBloc / 2;
 
 		if (turn)
 			if (app.clock.elapsedTime % 5 < 2.5)

@@ -226,13 +226,12 @@ THREE.Hero = function (app) {
 
 
 		//update person
-		if (person.position.x != clone.position.x || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y) {
-			person.update(( !moveForward && !moveBackward ? 2 : (speedTmp || inWater >= 1 ? 1 : 0)), shootgun);
-
+		if (person.position.x != clone.position.x || person.position.z != clone.position.z || person.rotation.y != PIDivise2 + yawObject.rotation.y)
 			app.sound.audioMove.volume = 0.2;
-		}
 		else
 			app.sound.audioMove.volume = 0;
+
+		person.update(( !moveForward && !moveBackward ? 2 : (speedTmp || inWater >= 1 ? 1 : 0)), shootgun);
 
 
 		//update de la torche

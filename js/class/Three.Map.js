@@ -10,8 +10,6 @@ THREE.Map = function (app) {
 
 	var listImg = {};
 
-	var listCube = {};
-
 	var degradation = app.loader.map.degradation;
 	var frequence = app.loader.map.frequence;
 	var fonction = app.loader.map.fonction;
@@ -23,10 +21,6 @@ THREE.Map = function (app) {
 	var maxX = infoSize.xMax * sizeBloc;
 	var maxY = infoSize.yMax * sizeBloc;
 	var maxZ = infoSize.zMax * sizeBloc;
-	var middle = sizeBloc / 2;
-	var middleMaxX = maxX / 2;
-	var middleMaxY = maxY / 2;
-	var middleMaxZ = maxZ / 2;
 
 
 	var univers = new THREE.Object3D();
