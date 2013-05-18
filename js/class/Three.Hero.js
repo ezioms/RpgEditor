@@ -44,6 +44,7 @@ THREE.Hero = function (app) {
 	var memoryBarValue = 0;
 	var memoryScoreValue = 0;
 	var memoryAmmoValue = 0;
+	var memoryDistance = 0;
 
 	var light = new THREE.PointLight(0xffaa00, 1.2, 400);
 
@@ -68,7 +69,6 @@ THREE.Hero = function (app) {
 
 	var person = new THREE.Person('hero', this.img, this.hand_left, this.hand_right);
 	person.name = 'hero';
-	person.rotation.y = PIDivise2;
 
 	var shootgun = false;
 
@@ -82,6 +82,13 @@ THREE.Hero = function (app) {
 		return yawObject;
 	};
 
+	/*
+	 *	GET myRay
+	 */
+	this.getRay = function () {
+		return person.ray;
+	};
+
 
 	/*
 	 *	GET collision du héro
@@ -91,7 +98,7 @@ THREE.Hero = function (app) {
 	};
 
 	/*
-	 *	GET myRay
+	 *	GET Torch
 	 */
 	this.getTorch = function () {
 		return light;
@@ -249,7 +256,7 @@ THREE.Hero = function (app) {
 		// update coordonnée
 		yawObject.position.copy(clone.position);
 		person.position.copy(clone.position);
-		person.rotation.y = PIDivise2 + yawObject.rotation.y;
+		person.setRotationY(yawObject.rotation.y);
 		person.position.y -= 16;
 
 

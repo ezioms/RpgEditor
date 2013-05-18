@@ -20,6 +20,7 @@ THREE.Battle = function () {
 		app.hero.deleteAmmo();
 
 		var vector = new THREE.Vector3(0, 0, 0.5);
+
 		projector.unprojectVector(vector, app.camera);
 
 		var ray = new THREE.Raycaster(app.hero.getCamera().position, vector.sub(app.hero.getCamera().position).normalize());
@@ -42,17 +43,31 @@ THREE.Battle = function () {
 	/*
 	 * Création d'un tire pour un bot
 	 */
-	this.addForBot = function (app, distance, noGun) {
-		if (random(0, distance) < 50) {
-			var pt = random(3, 12);
-			app.hero.hp -= pt;
-			app.alert = pt * 1000;
-		}
+	this.addForBot = function (app, self, noGun) {
+		var distance = self.position.distanceTo(app.hero.getCamera().position);
 
-		if (noGun)
-			app.sound.play('poing.mp3', null, distance);
-		else
-			app.sound.play('gunFire.mp3', null, distance);
+		var vector = app.hero.getCamera().position.clone();
+
+		var listObject = app.map.getUnivers().children;
+		listObject.push(app.hero.getRay());
+
+		var ray = new THREE.Raycaster(self.position, vector.sub(self.position).normalize());
+		var intersects = ray.intersectObjects(listObject);
+
+		if (intersects.length > 0 && intersects[0].distance < noGun ? 100 : 2000) {
+			if (intersects[0].object.name != undefined && intersects[0].object.name == 'rayPerson') {
+				if (random(0, distance) < 50) {
+					var pt = random(3, 12);
+					app.hero.hp -= pt;
+					app.alert = pt * 1000;
+				}
+
+				if (noGun)
+					app.sound.play('poing.mp3', null, distance);
+				else
+					app.sound.play('gunFire.mp3', null, distance);
+			}
+		}
 	}
 
 	/*

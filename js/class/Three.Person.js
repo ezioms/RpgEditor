@@ -277,6 +277,10 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		return listImg[path] = index;
 	};
 
+	this.setRotationY = function( value ) {
+		this.rotation.y = PIDivise2 + value;
+	}
+
 
 	/*
 	 * Contructor person
@@ -406,14 +410,12 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	this.ray = new THREE.Mesh(new THREE.CubeGeometry(15, 28, 15));
 	this.ray.visible = false;
 	this.ray.position.y = 8;
-	this.ray.name = 'rayBear';
+	this.ray.name = 'rayPerson';
 
 	this.add(this.bodyGroup);
 	this.add(this.head);
 	//this.add(this.headAccessory);
 	this.add(this.ray);
-
-	this.rotation.y = PIDivise2;
 
 	this.scale.set(0.9, 0.9, 0.9);
 

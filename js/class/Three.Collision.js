@@ -1,7 +1,5 @@
 THREE.Collision = function (app) {
 
-	var memoryDistance = 0;
-
 	//size
 	var infoSize = app.loader.map.size;
 	var sizeBloc = infoSize.elements;

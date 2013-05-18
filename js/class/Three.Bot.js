@@ -12,6 +12,8 @@ THREE.Bot = function (app, dataBot) {
 	this.speedMin = 0.5;
 	this.speedMax = 2;
 
+	this.target = new THREE.Vector3(0, 0, 0);
+
 
 	var moveForward = true;
 	var moveLeft = false;
@@ -21,8 +23,6 @@ THREE.Bot = function (app, dataBot) {
 	var lastAction = false;
 	var isDie = false;
 	var turn = false;
-
-	var target = new THREE.Vector3(0, 0, 0);
 
 	var timeSpeed = false;
 
@@ -55,7 +55,6 @@ THREE.Bot = function (app, dataBot) {
 	}
 
 	person.name = 'bot';
-	person.rotation.y = PIDivise2;
 
 	var action = function () {
 		if (isDie)
@@ -128,9 +127,9 @@ THREE.Bot = function (app, dataBot) {
 		if (buttonEnter)
 			this.speack(app);
 
-		var hero = app.hero.getCamera().position;
+		var hero = app.hero.getPerson().position;
 
-		var distance = this.position.distanceTo(hero);
+		var distance = person.position.distanceTo(hero);
 
 		// Afficher le bot ou non selon sa distance avec le hero
 		if (distance > 1000) {
@@ -148,9 +147,6 @@ THREE.Bot = function (app, dataBot) {
 			});
 		}
 
-		var clone = this.clone();
-		var rand = random(0, 100);
-
 		// On vérifie que le bot se trouve dans la partie action du hero
 		this.speed = this.speedMin;
 
@@ -158,18 +154,24 @@ THREE.Bot = function (app, dataBot) {
 			timeSpeed = app.clock.elapsedTime + random(3, 10);
 			if (!this.fixe)
 				this.speed = this.speedMax;
-		} else if (turn)
-			if (app.clock.elapsedTime % 5 < 2.5)
-				moveRight = true;
-			else
-				moveLeft = true;
+		}
 
+
+		// On vérifie que le bot se trouve dans la partie action du hero
+		if (distance < this.radar) {
+			this.rotation.y = Math.atan2(person.position.x - hero.x, person.position.z - hero.z);
+		} else if (moveLeft && !this.fixe)
+			this.rotation.y += 0.02;
+		else if (moveRight && !this.fixe)
+			this.rotation.y -= 0.02;
+
+
+		var clone = this.clone();
 		clone.position.y += currentdirection.jump -= this.gravity;
 
 		if (moveForward) {
-			speedTmp += 0.05;
-			clone.position.x += Math.sin(currentdirection.x / 360 * PImulti2) * speedTmp;
-			clone.position.z += Math.cos(currentdirection.x / 360 * PImulti2) * speedTmp;
+			speedTmp += 0.01;
+			clone.translateZ(-(this.speed + speedTmp));
 		}
 
 
@@ -190,18 +192,6 @@ THREE.Bot = function (app, dataBot) {
 			speedTmp = 0;
 
 
-		// On vérifie que le bot se trouve dans la partie action du hero
-		if (distance < this.radar) {
-			var theta = Math.atan2(person.position.x - hero.x, person.position.z - hero.z);
-
-			currentdirection.x = ( ((theta / PI * 180) + (theta > 0 ? 0 : 360) + 90) * PIDivise180 ) / PIDivise180 + 90;
-
-		} else if (moveLeft)
-			currentdirection.x += rand / 50;
-		else if (moveRight)
-			currentdirection.x -= rand / 50;
-
-
 		if (distance > sizeBloc + (sizeBloc / 2)) {
 			if (this.fixe)
 				this.position.set(this.position.x, clone.position.y, this.position.z);
@@ -212,6 +202,10 @@ THREE.Bot = function (app, dataBot) {
 				person.update(speedTmp >= 2 ? 1 : this.fixe ? 2 : 0);
 		} else
 			person.update(2);
+
+		person.position.copy(this.position);
+		person.position.y -= 16;
+		person.setRotationY(this.rotation.y);
 
 
 		// si c est un bot et a porté du hero on peut attaquer
@@ -230,19 +224,9 @@ THREE.Bot = function (app, dataBot) {
 			if (app.clock.elapsedTime % 1 < 0.2)
 				if (random(0, 5) < 1) {
 					person.update(3);
-					battle.addForBot(app, person.position.distanceTo(app.hero.getCamera().position), dataBot.fixe);
+					battle.addForBot(app, this, dataBot.fixe);
 				}
 		}
-
-		person.position.copy(this.position);
-		person.position.y -= 16;
-
-		person.rotation.y = (currentdirection.x + 270 % 360) * PIDivise180;
-
-		target.x = Math.round(this.position.x + (Math.sin(PImulti2 * (currentdirection.x / 360)) * this.far));
-		target.z = Math.round(this.position.z + (Math.cos(PImulti2 * (currentdirection.x / 360)) * this.far));
-
-		this.lookAt(target);
 	};
 
 	this.position.set(dataBot.x, dataBot.y, dataBot.z);
