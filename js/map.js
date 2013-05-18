@@ -102,6 +102,8 @@ var initialize = function () {
 	// add point light in scene
 	app.scene.add(app.map.getLight2());
 
+	app.group = app.map.getUnivers().children;
+
 	// add element on backend
 	app.map.getOtherElements();
 
@@ -111,8 +113,8 @@ var initialize = function () {
 		for (var keyBot in bots) {
 			var bot = new THREE.Bot(app, bots[keyBot]);
 			app.bots[bot.id] = bot;
-			app.group.push(bot.getRay());
 			app.scene.add(bot.getPerson());
+			app.group.push(bot.getRay());
 		}
 
 	// generate bots and add in scene

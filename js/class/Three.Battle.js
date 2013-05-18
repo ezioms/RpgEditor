@@ -27,7 +27,7 @@ THREE.Battle = function () {
 
 		var intersects = ray.intersectObjects(app.group);
 
-		if (intersects.length > 0 && intersects[0].distance < 2000 && intersects[0].object.parent.hp >= 0) {
+		if (intersects.length > 0 && intersects[0].distance < 2000 && intersects[0].object.parent.hp != undefined && intersects[0].object.parent.hp >= 0) {
 			intersects[0].object.parent.hp--;
 			if (intersects[0].object.parent.hp)
 				app.hero.argent += 100;
