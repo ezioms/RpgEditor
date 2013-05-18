@@ -12,7 +12,15 @@ THREE.Bot = function (app, dataBot) {
 	this.speedMin = 0.5;
 	this.speedMax = 2;
 
+
+	var moveForward = true;
+	var moveLeft = false;
+	var moveRight = false;
+	var jump = false;
+
 	var lastAction = false;
+	var isDie = false;
+	var turn = false;
 
 	var target = new THREE.Vector3(0, 0, 0);
 
@@ -20,7 +28,7 @@ THREE.Bot = function (app, dataBot) {
 
 	var currentdirection = {
 		x: 0,
-		y: 0
+		jump: 0
 	};
 
 	var speedTmp = 0;
@@ -28,11 +36,11 @@ THREE.Bot = function (app, dataBot) {
 	//size
 	var infoSize = app.loader.map.size;
 	var sizeBloc = infoSize.elements;
-	var maxX = infoSize.xMax * sizeBloc;
-	var maxZ = infoSize.zMax * sizeBloc;
 
 	// les battle
 	var battle = new THREE.Battle();
+
+	var collision = new THREE.Collision(app);
 
 	var person;
 
@@ -48,6 +56,20 @@ THREE.Bot = function (app, dataBot) {
 
 	person.name = 'bot';
 	person.rotation.y = PIDivise2;
+
+	var action = function () {
+		if (isDie)
+			return;
+
+		var rand = random(0, 100);
+
+		// On fait tourner le bot aléatoirement
+		turn = (rand > 90) ? true : false;
+
+		//console.log('action', turn);
+
+		setTimeout(action, 100);
+	}
 
 
 	this.getPerson = function () {
@@ -68,7 +90,7 @@ THREE.Bot = function (app, dataBot) {
 		else
 			app.sound.play('touch.ogg', person);
 
-		currentdirection.y = value;
+		currentdirection.jump = value;
 	};
 
 
@@ -89,27 +111,16 @@ THREE.Bot = function (app, dataBot) {
 	};
 
 
-	this.getZone = function (position) {
-		if (!position)
-			position = this.position;
-		return {
-			x: Math.floor(position.x / sizeBloc),
-			y: Math.floor((position.y - 25) / sizeBloc),
-			yTop: Math.floor((position.y ) / sizeBloc),
-			z: Math.floor(position.z / sizeBloc)
-		};
-	};
-
-
 	/*
 	 * UPDATE
 	 */
 	this.update = function (app) {
 		if (person.getDie()) {
+			isDie = true;
 			if (person.cycleDie == 500)
 				return 'remove';
 			if (person.name == 'bot')
-				app.map.deleteOverModule(this.getZone());
+				app.map.deleteOverModule(collision.getZone(this.position));
 			return;
 
 		}
@@ -138,95 +149,45 @@ THREE.Bot = function (app, dataBot) {
 		}
 
 		var clone = this.clone();
-
 		var rand = random(0, 100);
-
-		// On fait tourner le bot aléatoirement
-		var turn = (rand > 90) ? true : false;
-
-		var moveForward = true;
-		var moveLeft = false;
-		var moveRight = false;
 
 		// On vérifie que le bot se trouve dans la partie action du hero
 		this.speed = this.speedMin;
 
 		if (distance < this.radar) {
 			timeSpeed = app.clock.elapsedTime + random(3, 10);
-			turn = false;
 			if (!this.fixe)
 				this.speed = this.speedMax;
-		}
-
-
-		//Calcul du déplacement
-		if (moveForward) {
-			speedTmp += 0.2;
-			clone.position.x += Math.sin(currentdirection.x / 360 * PImulti2) * speedTmp;
-			clone.position.z += Math.cos(currentdirection.x / 360 * PImulti2) * speedTmp;
-		}
-		else
-			speedTmp = 0;
-
-		if (speedTmp < 0)
-			speedTmp = 0;
-		else if (speedTmp > this.speed)
-			speedTmp = this.speed;
-
-		// collision X
-		var collisionX = clone.position.clone();
-		collisionX.x += clone.position.x > this.position.x ? 10 : -10;
-		collisionX = this.getZone(collisionX);
-		if (app.map.hasObstacle(collisionX.x, collisionX.yTop, collisionX.z) || app.map.hasObstacle(collisionX.x, collisionX.y, collisionX.z)) {
-			clone.position.x = this.position.x;
-			speedTmp -= 0.2;
-			turn = true;
-		}
-
-		// collision Z
-		var collisionZ = clone.position.clone();
-		collisionZ.z += clone.position.z > this.position.z ? 10 : -10;
-		collisionZ = this.getZone(collisionZ);
-		if (app.map.hasObstacle(collisionZ.x, collisionZ.yTop, collisionZ.z) || app.map.hasObstacle(collisionZ.x, collisionZ.y, collisionZ.z)) {
-			clone.position.z = this.position.z;
-			speedTmp -= 0.2;
-			turn = true;
-		}
-
-		if (clone.position.x < 0) {
-			clone.position.x = 0;
-			turn = true;
-		} else if (clone.position.x > maxX) {
-			clone.position.x = maxX;
-			turn = true;
-		}
-
-		if (clone.position.z < 0) {
-			clone.position.z = 0;
-			turn = true;
-		} else if (clone.position.z > maxZ) {
-			clone.position.z = maxZ;
-			turn = true;
-		}
-
-
-		clone.position.y += currentdirection.y -= this.gravity;
-
-		//collision Y
-		var collisionY = this.getZone(clone.position);
-		if (app.map.hasObstacle(collisionY.x, collisionY.y, collisionY.z)) {
-			clone.position.y = this.position.y;
-			currentdirection.y = 0;
-		}
-
-		if (clone.position.y < sizeBloc / 2)
-			clone.position.y = sizeBloc / 2;
-
-		if (turn)
+		} else if (turn)
 			if (app.clock.elapsedTime % 5 < 2.5)
 				moveRight = true;
 			else
 				moveLeft = true;
+
+		if (moveForward) {
+			speedTmp += 0.05;
+			clone.position.x += Math.sin(currentdirection.x / 360 * PImulti2) * speedTmp;
+			clone.position.z += Math.cos(currentdirection.x / 360 * PImulti2) * speedTmp;
+		}
+
+		clone.position.y += currentdirection.jump -= this.gravity;
+
+		var isMove = false;
+		if (moveForward || moveBackward || moveLeft || moveRight)
+			isMove = true;
+
+
+		var resultCollision = collision.update(this, clone, this.gravity, currentdirection.jump, jump, isMove, speedTmp);
+		jump = resultCollision.jump;
+		speedTmp = resultCollision.speed;
+		currentdirection.jump = resultCollision.currentJump;
+
+		if (!moveForward && !moveBackward)
+			speedTmp = 0;
+		else if (speedTmp > 2)
+			speedTmp = 2;
+		else if (speedTmp < 0)
+			speedTmp = 0;
 
 
 		// On vérifie que le bot se trouve dans la partie action du hero
@@ -285,6 +246,7 @@ THREE.Bot = function (app, dataBot) {
 	};
 
 	this.position.set(dataBot.x, dataBot.y, dataBot.z);
+	setTimeout(action, 500);
 };
 
 THREE.Bot.prototype = Object.create(THREE.Object3D.prototype);

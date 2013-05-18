@@ -266,7 +266,7 @@ var updateHeroVisual = function () {
 		return;
 
 	// fenetre action module
-	var module = app.map.getOverModule(app.hero.getZone());
+	var module = app.map.getOverModule(app.hero.getCollisionModule());
 
 	if (module) {
 		if (!action) {
