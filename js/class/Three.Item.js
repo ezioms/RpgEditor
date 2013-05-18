@@ -16,35 +16,12 @@ THREE.Item = function (app, img) {
 
 	var geometry = new THREE.Object3D();
 
-	//size
-	var infoSize = app.loader.map.size;
-	var sizeBloc = infoSize.elements;
-	var maxX = infoSize.xMax * sizeBloc;
-	var maxY = infoSize.yMax * sizeBloc;
-	var maxZ = infoSize.zMax * sizeBloc;
-	var middle = sizeBloc / 2;
-	var middleMaxX = maxX / 2;
-	var middleMaxY = maxY / 2;
-	var middleMaxZ = maxZ / 2;
-
-
-	/*
-	 * SET la position de l'item
-	 */
-	this.setPosition = function (x, y, z, no_calcul) {
-		if (no_calcul) {
-			this.position.set(x, y, z);
-			return;
-		}
-		this.position.set(-middleMaxX + (x * sizeBloc - middle), y * sizeBloc + sizeBloc, -middleMaxZ + (z * sizeBloc - middle));
-	};
-
 
 	/*
 	 * UPDATE
 	 */
 	this.update = function (app) {
-		var visible = this.position.distanceTo(app.hero.getCamera().position) < 1000 ? true : false;
+		var visible = !!(this.position.distanceTo(app.hero.getCamera().position) < 1000);
 
 		if (this.visible != visible) {
 			geometry.visible = visible;
@@ -60,7 +37,6 @@ THREE.Item = function (app, img) {
 		geometry.rotation.y += this.speedRotation;
 	};
 
-//	img = 'obj/munition.js';
 	/*
 	 * Constructor item
 	 */
@@ -71,11 +47,9 @@ THREE.Item = function (app, img) {
 			geometry.add(mesh);
 		});
 	else
-
 		geometry.add(memoryItemObj[img]);
 
-
 	this.add(geometry);
-}
+};
 
 THREE.Item.prototype = Object.create(THREE.Object3D.prototype);

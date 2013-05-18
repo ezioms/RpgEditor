@@ -122,7 +122,7 @@ var initialize = function () {
 			if (getIsHistoryModule('memoryItemModule', modules[keyCaseModule], true) || app.loader.items['item_' + modules[keyCaseModule].data.id_item] == undefined)
 				continue;
 			var module = new THREE.Item(app, app.loader.items['item_' + modules[keyCaseModule].data.id_item].image);
-			module.setPosition(modules[keyCaseModule].x, modules[keyCaseModule].y, modules[keyCaseModule].z);
+			module.position.copy(modules[keyCaseModule]);
 			app.modules[modules[keyCaseModule].x + '-' + modules[keyCaseModule].y + '-' + modules[keyCaseModule].z] = module;
 			app.scene.add(module);
 		}
@@ -262,22 +262,6 @@ var killSpeackBot = function () {
 var loadMove = false;
 var action = false;
 var updateHeroVisual = function () {
-
-	for (var keyChildren in app.scene.children) {
-		var child = app.scene.children[keyChildren];
-		if (child.name != 'hero' && child instanceof THREE.Person) {
-			var person = child.position;
-			var hero = app.hero.getPerson().position;
-			if (hero.x > person.x - 150 && hero.x < person.x + 150
-				&& hero.y > person.y - 150 && hero.y < person.y + 150
-				&& hero.z > person.z - 150 && hero.z < person.z + 150) {
-				child.text.visible = true;
-			}
-			else
-				child.text.visible = false;
-		}
-	}
-
 	if (loadMove)
 		return;
 

@@ -127,6 +127,8 @@ class Mapping_Controller extends Template_Controller
 
         if ($size == 50) {
             $value['subX'] = $value['subY'] = $value['subZ'] = 0;
+        } else {
+            $value['x'] = $value['y'] = $value['z'] = 0;
         }
         unset($value['materials'], $value['size']);
 
@@ -233,6 +235,26 @@ class Mapping_Controller extends Template_Controller
         $array['fonction'] = isset($value['fonction']) ? $value['fonction'] : FALSE;
 
         Region_Model::instance()->update($array, $value['id']);
+    }
+
+    /**
+     * Gestion edit module
+     *
+     * @return  void
+     */
+    public function up()
+    {
+        $this->auto_render = FALSE;
+        $rows = Map_Model::instance()->select();
+        foreach ($rows as $row) {
+            if ($row->subX || $row->subY || $row->subZ) {
+                $array['subX'] = $row->x + $row->subX;
+                $array['subX'] = $row->y + $row->subY;
+                $array['subZ'] = $row->z + $row->subZ;
+                $array['x'] = $array['y'] = $array['z'] = 0;
+                Map_Model::instance()->update($array, array('id' => $row->id));
+            }
+        }
     }
 
 }

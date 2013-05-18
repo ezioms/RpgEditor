@@ -45,7 +45,7 @@ class Map_Controller extends Authentic_Controller
         $elements = $modules = $items = FALSE;
 
         if (($rows = Map_Model::instance()->select(array(
-            'region_id' => $this->region->id, 'y >' => 0), FALSE)) !== FALSE
+            'region_id' => $this->region->id), FALSE)) !== FALSE
         ) {
             $prenoms = Name_Model::instance()->select();
 
@@ -73,9 +73,9 @@ class Map_Controller extends Authentic_Controller
                         $v = new stdClass;
                         $v->id = 0;
                         $v->name = $row->bot ? $row->title : $listName[array_rand($listName)];
-                        $v->x = $row->x - 1;
-                        $v->y = $row->y - 1;
-                        $v->z = $row->z - 1;
+                        $v->x = $row->x;
+                        $v->y = $row->y;
+                        $v->z = $row->z;
                         $v->region_id = $row->region_id;
                         $v->user_id = $this->user->id;
 

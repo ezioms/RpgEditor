@@ -12,7 +12,7 @@ var mouse2D, ray,
 var hoverTool = false;
 var typeAction = 'no';
 
-var listImg = {}, obstacles = [], modules = [], listCube = {};
+var listImg = {}, obstacles = {}, modules = [], listCube = {};
 
 var rollOverMesh, voxelPosition = new THREE.Vector3(), tmpVec = new THREE.Vector3();
 var i, intersector;
@@ -178,8 +178,6 @@ function init() {
 	controls = new THREE.FirstPersonControls(app.camera, container);
 
 	controls.object.position.y = 50;
-	controls.object.position.x = -(dataRegion.x * 50 / 2);
-	controls.object.position.z = -(dataRegion.z * 50 / 2);
 	controls.movementSpeed = 400;
 	controls.lookSpeed = 0.1;
 	controls.lookVertical = true;
@@ -213,7 +211,8 @@ function init() {
 		map: material
 	}));
 	plane.rotation.x = -Math.PI / 2;
-	plane.position.y = -1;
+	plane.position.x += dataRegion.x * 25;
+	plane.position.z += dataRegion.z * 25;
 	plane.name = 'planeBackground';
 
 	app.scene.add(plane);
@@ -223,6 +222,8 @@ function init() {
 		wireframe: true
 	}));
 	grille.rotation.x = -Math.PI / 2;
+	grille.position.x += dataRegion.x * 25;
+	grille.position.z += dataRegion.z * 25;
 	grille.name = 'planeGrille';
 	app.scene.add(grille);
 
@@ -268,8 +269,12 @@ function init() {
 	px.rotation.y = -90 * PI;
 	app.scene.add(px);
 
-	for (keyEl in dataElements)
-		obstacles.push(dataElements[keyEl]);
+	for (keyEl in dataElements) {
+		if (dataElements[keyEl].subX > 0 || dataElements[keyEl].subZ > 0 || dataElements[keyEl].subZ > 0)
+			addObstacle(dataElements[keyEl].subX, dataElements[keyEl].subY, dataElements[keyEl].subZ, dataElements[keyEl]);
+		else
+			addObstacle(dataElements[keyEl].x, dataElements[keyEl].y, dataElements[keyEl].z, dataElements[keyEl]);
+	}
 
 	getCubes();
 
@@ -325,13 +330,13 @@ function init() {
 	};
 	var f1 = Mapgui.addFolder('Caméra');
 	f1.open();
-	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
+	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', 0, dataRegion.x * 50).onChange(function (value) {
 		app.camera.position.setX(value);
 	});
 	Mapgui.positionY = f1.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
 		app.camera.position.setY(value);
 	});
-	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
+	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', 0, dataRegion.z * 50).onChange(function (value) {
 		app.camera.position.setZ(value);
 	});
 	Mapgui.rotationY = f1.add(Mapgui.params, 'rotationY', -180, 180).onChange(function (value) {
@@ -411,45 +416,48 @@ function getCubes() {
 	var geometry = new THREE.Geometry();
 	var geometryHide = new THREE.Geometry();
 
-	for (key in obstacles) {
-		var row = obstacles[key];
+	for (var x in obstacles) {
+		for (var y in obstacles[x]) {
+			for (var z in obstacles[x][y]) {
+				var row = obstacles[x][y][z];
 
-		var dataSend = {
-			background_px: dir_script + '../' + row.materials[0],
-			background_nx: dir_script + '../' + row.materials[1],
-			background_py: dir_script + '../' + row.materials[2],
-			background_ny: dir_script + '../' + row.materials[3],
-			background_pz: dir_script + '../' + row.materials[4],
-			background_nz: dir_script + '../' + row.materials[5]
-		};
+				var dataSend = {
+					background_px: dir_script + '../' + row.materials[0],
+					background_nx: dir_script + '../' + row.materials[1],
+					background_py: dir_script + '../' + row.materials[2],
+					background_ny: dir_script + '../' + row.materials[3],
+					background_pz: dir_script + '../' + row.materials[4],
+					background_nz: dir_script + '../' + row.materials[5]
+				};
 
 
-		var voxel;
+				var voxel;
 
-		if (row.subX > 0 || row.subY > 0 || row.subZ > 0) {
-			voxel = addCube(dataSend, true);
+				if (row.subX > 0 || row.subY > 0 || row.subZ > 0) {
+					voxel = addCube(dataSend, true);
 
-			voxel.position.x = (row.x) * 50 - 5 - ( 50 - row.subX * 10) - ( dataRegion.x * 50 / 2);
-			voxel.position.y = row.y * 50 - 5 - ( 50 - row.subY * 10);
-			voxel.position.z = (row.z) * 50 - 5 - ( 50 - row.subZ * 10) - ( dataRegion.z * 50 / 2);
-			console.log(voxel);
-		} else {
-			voxel = addCube(dataSend);
+					voxel.position.x = row.subX + 5;
+					voxel.position.y = row.subY;
+					voxel.position.z = row.subZ + 5;
+				} else {
+					voxel = addCube(dataSend);
 
-			voxel.position.x = (row.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
-			voxel.position.y = row.y * 50 - 25;
-			voxel.position.z = (row.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
+					voxel.position.x = row.x;
+					voxel.position.y = row.y;
+					voxel.position.z = row.z;
+				}
+
+
+				var filter = row.materials[0].replace('images/background/', '');
+
+				if (filter == 'spacer.png')
+					THREE.GeometryUtils.merge(geometryHide, voxel);
+				else
+					THREE.GeometryUtils.merge(geometry, voxel);
+
+
+			}
 		}
-
-
-		var filter = row.materials[0].replace('images/background/', '');
-
-		if (filter == 'spacer.png')
-			THREE.GeometryUtils.merge(geometryHide, voxel);
-		else
-			THREE.GeometryUtils.merge(geometry, voxel);
-
-
 	}
 
 	cubes = new THREE.Mesh(geometry, MeshFaceMaterial);
@@ -490,17 +498,6 @@ function addCube(dataSend, small) {
 
 
 /*
- * Resize de la fenetre
- */
-function onWindowResize() {
-	app.camera.setSize(window.innerWidth, window.innerHeight);
-	app.camera.updateProjectionMatrix();
-
-	app.renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-
-/*
  * Detection collision voxel
  */
 function getRealIntersector(intersects) {
@@ -535,7 +532,7 @@ function setVoxelPosition(intersector, type) {
 	}
 
 	voxelPosition.x = Math.floor(position.x / sizeCube) * sizeCube + (sizeCube / 2);
-	voxelPosition.y = Math.round(position.y / sizeCube) * sizeCube + (sizeCube / 2);
+	voxelPosition.y = Math.floor(position.y / sizeCube) * sizeCube + (sizeCube / 2);
 	voxelPosition.z = Math.floor(position.z / sizeCube) * sizeCube + (sizeCube / 2);
 }
 
@@ -649,13 +646,13 @@ function onDocumentMouseDown(event) {
 								memoryObjectSelect.material.opacity = 0.2;
 							}
 						});
-						gui.positionX = gui.add(gui.params, 'positionX', -dataRegion.x * 25, dataRegion.x * 25).onChange(function (value) {
+						gui.positionX = gui.add(gui.params, 'positionX', 0, dataRegion.x * 50).onChange(function (value) {
 							memoryObjectSelect.position.setX(value);
 						});
 						gui.positionY = gui.add(gui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
 							memoryObjectSelect.position.setY(value);
 						});
-						gui.positionZ = gui.add(gui.params, 'positionZ', -dataRegion.z * 25, dataRegion.z * 25).onChange(function (value) {
+						gui.positionZ = gui.add(gui.params, 'positionZ', 0, dataRegion.z * 50).onChange(function (value) {
 							memoryObjectSelect.position.setZ(value);
 						});
 						gui.rotationY = gui.add(gui.params, 'rotationY', -180, 180).onChange(function (value) {
@@ -697,25 +694,17 @@ function onDocumentMouseUp(event) {
 	clickMouse = false;
 	objectSelect = null;
 
-	if (typeAction == 'no' || hoverTool || !ray.intersectObjects(app.scene.children).length)
+	if (typeAction == 'no' || typeAction == 'obj' || hoverTool || !ray.intersectObjects(app.scene.children).length)
 		return;
 
-
-	if (typeAction == 'obj') {
-		return;
-	}
-
-	var x = Math.floor((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1;
-	var y = Math.ceil((voxelPosition.y) / 50);
-	var z = Math.floor((voxelPosition.z + (dataRegion.z * 50 / 2)) / 50) + 1;
 
 	var coordonnee = {
-		x: x,
-		y: y,
-		z: z,
-		subX: (Math.round(( ((voxelPosition.x + (dataRegion.x * 50 / 2)) / 50) + 1 - x ) * 10) + 1 ) / 2,
-		subY: (Math.round(((voxelPosition.y / 50) - y) * 10 + 1) / 2 ) + 5,
-		subZ: (Math.round(( ((voxelPosition.z + (dataRegion.z * 50 / 2)) / 50) + 1 - z ) * 10) + 1 ) / 2,
+		x: sizeCube == 10 ? 0 : voxelPosition.x,
+		y: sizeCube == 10 ? 0 : voxelPosition.y,
+		z: sizeCube == 10 ? 0 : voxelPosition.z,
+		subX: sizeCube != 10 ? 0 : voxelPosition.x - 5,
+		subY: sizeCube != 10 ? 0 : voxelPosition.y,
+		subZ: sizeCube != 10 ? 0 : voxelPosition.z - 5,
 		region_id: dataRegion.id,
 		size: sizeCube,
 		materials: [
@@ -732,41 +721,44 @@ function onDocumentMouseUp(event) {
 	typeAction = $('#actionCurrent').val();
 
 	if (typeAction == 'del') {
-		$.post(url_script + 'mapping/remove/', coordonnee);
-		for (key in obstacles)
-			if (obstacles[key].x == setCoordonnee.x && obstacles[key].y == setCoordonnee.y && obstacles[key].z == setCoordonnee.z)
-				delete obstacles[key];
-		setCoordonnee = false;
+
+		if (sizeCube != 10 && obstacles[voxelPosition.x] != undefined && obstacles[voxelPosition.x][voxelPosition.y] != undefined && obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z] != undefined)
+			delete obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z];
+		else if (obstacles[voxelPosition.x - 5] != undefined && obstacles[voxelPosition.x - 5][voxelPosition.y] != undefined && obstacles[voxelPosition.x - 5][voxelPosition.y][voxelPosition.z - 5] != undefined)
+			delete obstacles[voxelPosition.x - 5][voxelPosition.y][voxelPosition.z - 5];
 
 		getCubes();
+
+		$.post(url_script + 'mapping/remove/', coordonnee);
 		return;
 	}
-
-	if (typeAction == 'edit') {
+	else if (typeAction == 'edit') {
 		$.facebox({
 			ajax: url_script + 'mapping/form/' + dataRegion.id + '/' + coordonnee.x + '/' + coordonnee.y + '/' + coordonnee.z
 		});
 		return;
-	}
-
-	if (typeAction == 'mod') {
+	} else if (typeAction == 'mod') {
 		for (key in coordonnee.materials)
 			coordonnee.materials[key] = 'images/background/module.png';
 
-		setCoordonnee = coordonnee;
 		$.facebox({
 			ajax: url_script + 'mapping/form/' + dataRegion.id + '/' + coordonnee.x + '/' + coordonnee.y + '/' + coordonnee.z
 		});
 
-		obstacles.push(setCoordonnee);
-	}
-	else {
+		if (sizeCube == 10)
+			addObstacle(coordonnee.subX, coordonnee.subY, coordonnee.subZ, coordonnee);
+		else
+			addObstacle(coordonnee.x, coordonnee.y, coordonnee.z, coordonnee);
+	} else {
 		for (key in coordonnee.materials)
 			coordonnee.materials[key] = coordonnee.materials[key].replace(urlReplace, '');
 
 		$.post(url_script + 'mapping/add/', coordonnee);
 
-		obstacles.push(setCoordonnee);
+		if (sizeCube == 10)
+			addObstacle(coordonnee.subX, coordonnee.subY, coordonnee.subZ, coordonnee);
+		else
+			addObstacle(coordonnee.x, coordonnee.y, coordonnee.z, coordonnee);
 	}
 
 	if (app.scene.children.length < 200) {
@@ -783,16 +775,14 @@ function onDocumentMouseUp(event) {
 
 		if (coordonnee.subX > 0 || coordonnee.subY > 0 || coordonnee.subZ > 0) {
 			voxel = addCube(dataSend, true);
-
-			voxel.position.x = (coordonnee.x) * 50 - 5 - ( 50 - coordonnee.subX * 10) - ( dataRegion.x * 50 / 2);
-			voxel.position.y = coordonnee.y * 50 - 5 - ( 50 - coordonnee.subY * 10);
-			voxel.position.z = (coordonnee.z) * 50 - 5 - ( 50 - coordonnee.subZ * 10) - ( dataRegion.z * 50 / 2);
+			voxel.position.x = coordonnee.subX + 5;
+			voxel.position.y = coordonnee.subY;
+			voxel.position.z = coordonnee.subZ + 5;
 		} else {
 			voxel = addCube(dataSend);
-
-			voxel.position.x = (coordonnee.x - 1) * 50 + 25 - ( dataRegion.x * 50 / 2);
-			voxel.position.y = coordonnee.y * 50 - 25;
-			voxel.position.z = (coordonnee.z - 1) * 50 + 25 - ( dataRegion.z * 50 / 2);
+			voxel.position.x = coordonnee.x;
+			voxel.position.y = coordonnee.y;
+			voxel.position.z = coordonnee.z;
 		}
 
 		app.scene.add(voxel);
@@ -824,14 +814,9 @@ function render() {
 	//console.log(info.memory.geometries);
 
 
-	if (objectSelect) {
-
-		//var targetPos = ray.direction.clone().multiplyScalar(objectSelect.distance).addSelf(ray.origin);
-		//objectSelect.position.copy(targetPos.subSelf(_offset));
+	if (objectSelect && intersector && intersector.point) {
 		voxelPosition.add(intersector.point, intersector.object.matrixRotationWorld.multiplyVector3(tmpVec));
-
 		objectSelect.position.copy(voxelPosition);
-		//objectSelect.position.addSelf(ray.direction);
 	}
 
 	controls.update(clock.getDelta(), dataRegion);
@@ -885,21 +870,6 @@ function loadTexture(path) {
 	return listImg[path].mesh;
 }
 
-function savePNG() {
-
-	window.open(app.renderer.domElement.toDataURL('image/png'), 'Capture');
-
-}
-
-function setGrid() {
-
-	if (grille.visible)
-		grille.visible = false;
-	else
-		grille.visible = true;
-
-}
-
 var sauvegardeObject = function () {
 	var list = {};
 	for (var keyChild in app.scene.children) {
@@ -914,10 +884,10 @@ var sauvegardeObject = function () {
 	if (list) {
 		var out = [];
 		for (var keyList in list) {
-			out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry) {");
+			out.push("app.JSONLoader.load('obj/" + keyList + "/json.js', function (geometry, material) {");
 			for (var keyMesh in list[keyList]) {
 				var mesh = list[keyList][keyMesh];
-				out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());");
+				out.push("var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial(material));");
 				out.push("mesh.position.set(" + mesh.position.x + "," + mesh.position.y + "," + mesh.position.z + ");");
 				out.push("mesh.scale.set(" + mesh.scale.x + "," + mesh.scale.y + "," + mesh.scale.z + ");");
 				out.push("mesh.rotation.set(" + mesh.rotation.x + "," + mesh.rotation.y + "," + mesh.rotation.z + ");");
@@ -932,3 +902,38 @@ var sauvegardeObject = function () {
 		$.post(url_script + 'mapping/fonction/', {fonction: out.join("\n"), id: dataRegion.id});
 	}
 };
+
+var addObstacle = function (x, y, z, data) {
+	if (obstacles[x] == undefined)
+		obstacles[x] = {};
+	if (obstacles[x][y] == undefined)
+		obstacles[x][y] = {};
+
+	obstacles[x][y][z] = data;
+}
+
+
+/*
+ * Resize de la fenetre
+ */
+function onWindowResize() {
+	app.camera.setSize(window.innerWidth, window.innerHeight);
+	app.camera.updateProjectionMatrix();
+
+	app.renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function savePNG() {
+
+	window.open(app.renderer.domElement.toDataURL('image/png'), 'Capture');
+
+}
+
+function setGrid() {
+
+	if (grille.visible)
+		grille.visible = false;
+	else
+		grille.visible = true;
+
+}

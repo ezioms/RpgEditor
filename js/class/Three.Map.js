@@ -152,13 +152,7 @@ THREE.Map = function (app) {
 	 * GET obstacles small
 	 */
 	this.hasObstacleSmall = function (x, y, z, subX, subY, subZ) {
-		if (subObstacles[x] != undefined
-			&& subObstacles[x][y] != undefined
-			&& subObstacles[x][y][z] != undefined
-			&& subObstacles[x][y][z][subX] != undefined
-			&& subObstacles[x][y][z][subX][subY] != undefined
-			&& subObstacles[x][y][z][subX][subY][subZ] != undefined
-			&& subObstacles[x][y][z][subX][subY][subZ] === true)
+		if (subObstacles[x] != undefined && subObstacles[x][y] != undefined && subObstacles[x][y][z] != undefined && subObstacles[x][y][z] === true)
 			return true;
 
 		return false;
@@ -169,7 +163,6 @@ THREE.Map = function (app) {
 	 * GET water
 	 */
 	this.hasWater = function (x, y, z) {
-		y += 1;
 		if (region.water[x] != undefined && region.water[x][y] != undefined && region.water[x][y][z] != undefined && region.water[x][y][z] === true)
 			return true;
 
@@ -286,9 +279,9 @@ THREE.Map = function (app) {
 	 */
 	var cubeMesh = new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc);
 	var cubeMeshSmall = new THREE.CubeGeometry(sizeBloc / 5, sizeBloc / 5, sizeBloc / 5);
-	this.addCube = function (row, small) {
+	this.addCube = function (row) {
 
-		var mesh = new THREE.Mesh(small === true ? cubeMeshSmall : cubeMesh);
+		var mesh = new THREE.Mesh((row.subX || row.subY || row.subZ) ? cubeMeshSmall : cubeMesh);
 
 		for (keyImg in row.materials)
 			mesh.geometry.faces[keyImg].materialIndex = this.loadTexture(row.materials[keyImg]);
@@ -301,12 +294,8 @@ THREE.Map = function (app) {
 	 * GET if over module
 	 */
 	this.getOverModule = function (position) {
-		var x = position.x;
-		var y = position.y;
-		var z = position.z;
-
-		if (region.modules[x + '-' + y + '-' + z] != undefined)
-			return region.modules[x + '-' + y + '-' + z];
+		if (region.modules[position.x + '-' + position.y + '-' + position.z] != undefined)
+			return region.modules[position.x + '-' + position.y + '-' + position.z];
 
 		return false;
 	};
@@ -316,18 +305,42 @@ THREE.Map = function (app) {
 	 * GET if over module
 	 */
 	this.deleteOverModule = function (position) {
-		var x = Math.floor(position.x);
-		var y = Math.floor(position.y) - 1;
-		var z = Math.floor(position.z);
+		var x = Math.floor(position.x / sizeBloc);
+		var y = Math.floor(position.y / sizeBloc);
+		var z = Math.floor(position.z / sizeBloc);
 
 		if (region.modules[x + '-' + y + '-' + z] != undefined)
 			delete region.modules[x + '-' + y + '-' + z];
 	};
 
 
+	this.getZone = function (position) {
+		return {
+			x: Math.floor(position.x / sizeBloc),
+			y: Math.floor(position.y / sizeBloc),
+			yTop: Math.floor((position.y + sizeBloc / 2) / sizeBloc),
+			yBottom: Math.floor(position.y / sizeBloc),
+			z: Math.floor(position.z / sizeBloc)
+		};
+	};
+
+
+	this.getZoneSmall = function (position) {
+		return {
+			x: Math.floor(position.x / 10),
+			y: Math.floor(position.y / 10),
+			yTop: Math.floor((position.y + 10 / 2) / 10),
+			yBottom: Math.floor(position.y / 10),
+			z: Math.floor(position.z / 10)
+		};
+	};
+
+
 	/*
 	 * CONSTRUCTOR
 	 */
+
+	//ground
 	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
 	material.wrapS = material.wrapT = THREE.RepeatWrapping;
 	material.repeat.set(infoSize.xMax, infoSize.zMax);
@@ -339,75 +352,79 @@ THREE.Map = function (app) {
 		ambient: 0xbbbbbb,
 		side: 2
 	}));
-	mesh.position.y = (maxY / 2) + (sizeBloc / 2);
+	mesh.position.set((maxX / 2), (maxY / 2), (maxZ / 2));
 
 	univers.add(mesh);
 
-	for (var x = 0; x <= infoSize.xMax + 1; x++) {
+	//blocs
+	for (var x = 0; x <= infoSize.xMax; x++) {
 		obstacles[x] = {};
 		water[x] = {};
-		subObstacles[x] = {};
-		for (var y = 0; y <= infoSize.yMax + 1; y++) {
+		for (var y = 0; y <= infoSize.yMax; y++) {
 			obstacles[x][y] = {};
 			water[x][y] = {};
-			subObstacles[x][y] = {};
-			for (var z = 0; z <= infoSize.zMax + 1; z++) {
-				obstacles[x][y][z] = y == 0 ? true : false;
+			for (var z = 0; z <= infoSize.zMax; z++) {
+				obstacles[x][y][z] = false;
 				water[x][y][z] = false;
-				subObstacles[x][y][z] = {};
-				for (var x2 = 0; x2 <= 5; x2++) {
-					subObstacles[x][y][z][x2] = {};
-					for (var y2 = 0; y2 <= 5; y2++) {
-						subObstacles[x][y][z][x2][y2] = {};
-						for (var z2 = 0; z2 <= 5; z2++) {
-							subObstacles[x][y][z][x2][y2][z2] = false;
-						}
-					}
-				}
 			}
 		}
 	}
 
-	for (var keyEle in app.loader.map.elements) {
-		var row = app.loader.map.elements[keyEle];
-		if (row.subX > 0 || row.subY > 0 || row.subZ > 0)
-			subObstacles[row.x][row.y][row.z][row.subX][row.subY][row.subZ] = true;
-		else {
-			if (row.materials[0].src.replace(url_script + 'images/background/', '') != 'water.png')
-				obstacles[row.x][row.y][row.z] = true;
-			else
-				water[row.x][row.y][row.z] = true;
+	//blocs small
+	for (var x = 0; x <= infoSize.xMax * 5; x++) {
+		subObstacles[x] = {};
+		for (var y = 0; y <= infoSize.yMax * 5; y++) {
+			subObstacles[x][y] = {};
+			for (var z = 0; z <= infoSize.zMax * 5; z++) {
+				subObstacles[x][y][z] = false;
+			}
 		}
 	}
 
-	for (var keyModule in app.loader.map.modules)
-		if (app.loader.map.modules[keyModule].data.module == 'light')
-			lights[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = new THREE.Vector3(-middleMaxX + app.loader.map.modules[keyModule].x * sizeBloc - middle, app.loader.map.modules[keyModule].y * sizeBloc, -middleMaxZ + app.loader.map.modules[keyModule].z * sizeBloc - middle)
+
+	for (var keyEle in app.loader.map.elements) {
+		var row = app.loader.map.elements[keyEle];
+
+		if (row.subX || row.subY || row.subZ) {
+			var zoneSmall = this.getZoneSmall({x: row.subX, y: row.subY, z: row.subZ});
+			subObstacles[zoneSmall.x][zoneSmall.y][zoneSmall.z] = true;
+		} else {
+			var zone = this.getZone({x: row.x, y: row.y, z: row.z});
+
+			if (row.materials[0].src.replace(url_script + 'images/background/', '') == 'water.png')
+				water[zone.x][zone.y][zone.z] = true;
+			else
+				obstacles[zone.x][zone.y][zone.z] = true;
+		}
+	}
+
+
+	for (var keyModule in app.loader.map.modules) {
+		var row = app.loader.map.modules[keyModule];
+		if (row.data.module == 'light')
+			lights[row.x + '-' + row.y + '-' + row.z] = new THREE.Vector3(row.x, row.y, row.z);
 		else
-			modules[app.loader.map.modules[keyModule].x + '-' + app.loader.map.modules[keyModule].y + '-' + app.loader.map.modules[keyModule].z] = app.loader.map.modules[keyModule];
+			modules[Math.floor(row.x / sizeBloc) + '-' + Math.floor(row.y / sizeBloc) + '-' + Math.floor(row.z / sizeBloc)] = row;
+	}
+
 
 	for (var keyEle2 in app.loader.map.elements) {
 		var row = app.loader.map.elements[keyEle2];
-		var cube;
 		var filter = row.materials[0].src.replace(url_script + 'images/background/', '');
 
 		if (filter == 'spacer.png')
 			continue;
 
-		if (filter == 'water.png') {
-			cube = this.addCube(row);
-			cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
+		var cube = this.addCube(row);
+		if (row.subX || row.subY || row.subZ)
+			cube.position.set(row.subX + 5, row.subY, row.subZ + 5);
+		else
+			cube.position.set(row.x, row.y, row.z);
+
+		if (filter == 'water.png')
 			THREE.GeometryUtils.merge(geometryWater, cube);
-		} else {
-			if (row.subX > 0 || row.subY > 0 || row.subZ > 0) {
-				cube = this.addCube(row, true);
-				cube.position.set(-middleMaxX + row.x * sizeBloc - 5 - ( 50 - row.subX * 10), row.y * sizeBloc + middle - 5 - ( 50 - row.subY * 10), -middleMaxZ + row.z * sizeBloc - 5 - ( 50 - row.subZ * 10));
-			} else {
-				cube = this.addCube(row);
-				cube.position.set(-middleMaxX + row.x * sizeBloc - middle, row.y * sizeBloc, -middleMaxZ + row.z * sizeBloc - middle);
-			}
+		else
 			THREE.GeometryUtils.merge(geometry, cube);
-		}
 	}
 
 
@@ -424,6 +441,7 @@ THREE.Map = function (app) {
 	var material = new THREE.MeshFaceMaterial(materials);
 	var element = new THREE.Mesh(geometry, material);
 	var elementWater = new THREE.Mesh(geometryWater, material);
+
 
 	univers.add(element);
 	univers.add(elementWater);
