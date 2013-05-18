@@ -30,11 +30,7 @@ class Home_Controller extends Template_Controller
 
         $this->css = 'css/core';
 
-        foreach (file::listing_dir(DOCROOT . 'js/class') as $row)
-            if (is_file(DOCROOT . 'js/class/' . $row))
-                $this->script[] = 'js/class/' . str_replace('.js', '', $row);
-
-        $this->script[] = 'js/map';
+        $this->script[] = 'js/compile';
 
         $this->template->content = new View('home/index');
         $this->template->content->admin = in_array('admin', $this->role->name);
@@ -42,6 +38,27 @@ class Home_Controller extends Template_Controller
 
         $this->template->content->info_user = new View('user/information');
         $this->template->content->info_user->user = $this->user;
+    }
+
+
+    /**
+     * Methode : génération du fichier JS
+     */
+    public function compileJs()
+    {
+        header( 'Content-type: text/javascript' );
+
+        $display = null;
+
+        foreach (file::listing_dir(DOCROOT . 'js/class') as $row)
+            if (is_file(DOCROOT . 'js/class/' . $row))
+                $display .= implode( '', file( DOCROOT . 'js/class/' . $row ) )."\n";
+
+        $display .= implode( '', file( DOCROOT . 'js/map.js') )."\n";
+
+        $this->auto_render = FALSE;
+
+        echo $display;
     }
 
 }

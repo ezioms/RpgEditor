@@ -883,7 +883,7 @@
 			if (me.isClosed) return;
 
 			targetDom.body.removeChild(divWidget);
-			delete this;
+			//delete this;
 
 			me.isClosed = true;
 		}

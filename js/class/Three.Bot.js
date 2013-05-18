@@ -132,11 +132,12 @@ THREE.Bot = function (app, dataBot) {
 		var distance = person.position.distanceTo(hero);
 
 		// Afficher le bot ou non selon sa distance avec le hero
-		if (distance > 1000) {
+		if (distance > 800) {
 			if (person.visible) {
 				person.visible = false;
 				person.traverse(function (child) {
 					child.visible = false;
+					person.ray.visible = false;
 				});
 			}
 			return;
@@ -144,6 +145,7 @@ THREE.Bot = function (app, dataBot) {
 			person.visible = true;
 			person.traverse(function (child) {
 				child.visible = true;
+				person.ray.visible = false;
 			});
 		}
 
@@ -189,10 +191,8 @@ THREE.Bot = function (app, dataBot) {
 				moveLeft = true;
 			else
 				moveRight = true;
-		} else if (!resultCollision.isCollision || resultCollision.isCollision == 'collisionGround' || resultCollision.isCollision == 'collisionY' || resultCollision.isCollision == 'collisionBigY') {
-			console.log('no');
+		} else if (!resultCollision.isCollision || resultCollision.isCollision == 'collisionGround' || resultCollision.isCollision == 'collisionY' || resultCollision.isCollision == 'collisionBigY')
 			moveLeft = moveRight = false;
-		}
 
 		if (speedTmp > 2)
 			speedTmp = 2;

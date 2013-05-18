@@ -13,4 +13,7 @@ $config['send'] = '/logger/send';
 //plugins
 $config['actions/(.*)/(.*)'] = '/plugin_$1/$2';
 $config['actions/(.*)'] = '/plugin_$1';
+
+//js
+$config['js/compile.js'] = '/home/compileJs';
 ?>

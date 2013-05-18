@@ -44,6 +44,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	 * Update person et position
 	 */
 	this.update = function (type, shootgun) {
+		this.ray.visible = false;
 		if (this.name == 'bot' && tire >= 0 && tire < 5) {
 			tire++;
 			return;
@@ -51,7 +52,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 			this.initialGesture();
 
 		this.lightGun.intensity = 0;
-		this.ray.visible = false;
 
 		switch (type) {
 			case 1 :
@@ -164,9 +164,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 		this.head.rotation.y = Math.sin(time * 1.5) / 5;
 		this.head.rotation.z = Math.sin(time) / 5;
-
-		if (!tire) {
-		}
 
 		this.rightarm.rotation.z = 2 * Math.cos(z + PI);
 		this.rightarm.rotation.x = 1 * (cosX - 1);
