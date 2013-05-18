@@ -4,7 +4,7 @@ THREE.Bot = function (app, dataBot) {
 
 	this.wireframe = false;
 
-	this.gravity = 0.5;
+	this.gravity = app.loader.my.gravity;
 	this.fixe = dataBot.fixe;
 	this.leak = dataBot.leak;
 	this.radar = 200;
@@ -164,25 +164,25 @@ THREE.Bot = function (app, dataBot) {
 			else
 				moveLeft = true;
 
+		clone.position.y += currentdirection.jump -= this.gravity;
+
 		if (moveForward) {
 			speedTmp += 0.05;
 			clone.position.x += Math.sin(currentdirection.x / 360 * PImulti2) * speedTmp;
 			clone.position.z += Math.cos(currentdirection.x / 360 * PImulti2) * speedTmp;
 		}
 
-		clone.position.y += currentdirection.jump -= this.gravity;
 
 		var isMove = false;
-		if (moveForward || moveBackward || moveLeft || moveRight)
+		if (moveForward || moveLeft || moveRight)
 			isMove = true;
-
 
 		var resultCollision = collision.update(this, clone, this.gravity, currentdirection.jump, jump, isMove, speedTmp);
 		jump = resultCollision.jump;
 		speedTmp = resultCollision.speed;
 		currentdirection.jump = resultCollision.currentJump;
 
-		if (!moveForward && !moveBackward)
+		if (!moveForward)
 			speedTmp = 0;
 		else if (speedTmp > 2)
 			speedTmp = 2;

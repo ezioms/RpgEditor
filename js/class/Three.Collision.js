@@ -85,10 +85,12 @@ THREE.Collision = function (app) {
 			if (isJump)
 				app.sound.effect('jump2.ogg', 0.1);
 			isJump = false;
-		} else if (clone.position.y > maxY - middle) {
-			clone.position.y = maxY - middle;
+			isCollision ='collisionGround';
+		} else if (clone.position.y > maxY) {
+			clone.position.y = max;
 			currentdirectionJump = 0;
 			isJump = false;
+			isCollision ='collisionCeiling';
 		}
 
 		//Small elements
@@ -153,27 +155,12 @@ THREE.Collision = function (app) {
 			clone.position.z = 0;
 		else if (clone.position.z > maxZ)
 			clone.position.z = maxZ;
-
-		// collision pnj
-		if (isMove) {
-			for (var key in app.scene.children) {
-				if (app.scene.children[key].name != 'hero'
-					&& (app.scene.children[key] instanceof THREE.Bears
-					|| app.scene.children[key] instanceof THREE.Dog
-					|| app.scene.children[key] instanceof THREE.Person )) {
-					var distance = app.scene.children[key].position.distanceTo(clone.position);
-					if (distance < sizeBloc / 2 && memoryDistance > distance)
-						clone.position = yawObject.position.clone();
-
-					memoryDistance = distance;
-				}
-			}
-		}
 		
 		return {
 			jump : isJump,
 			currentJump : currentdirectionJump,
-			speed : speedTmp
+			speed : speedTmp,
+			isCollision : isCollision
 		};
 	};
 };

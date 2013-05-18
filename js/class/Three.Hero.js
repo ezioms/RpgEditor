@@ -160,6 +160,22 @@ THREE.Hero = function (app) {
 		speedTmp = resultCollision.speed;
 		this.currentdirection.jump = resultCollision.currentJump;
 
+		// collision pnj
+		if (isMove) {
+			for (var key in app.scene.children) {
+				if (app.scene.children[key].name != 'hero'
+					&& (app.scene.children[key] instanceof THREE.Bears
+					|| app.scene.children[key] instanceof THREE.Dog
+					|| app.scene.children[key] instanceof THREE.Person )) {
+					var distance = app.scene.children[key].position.distanceTo(clone.position);
+					if (distance < sizeBloc / 2 && memoryDistance > distance)
+						clone.position = yawObject.position.clone();
+
+					memoryDistance = distance;
+				}
+			}
+		}
+
 
 		var newZone = collision.getZone(yawObject.position);
 		if (app.map.hasWater(newZone.x, newZone.y, newZone.x)) {
