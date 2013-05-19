@@ -330,6 +330,9 @@ var updateHeroVisual = function () {
 					app.messages.push(module.data.title);
 
 			}
+			else if (module.data.module == 'gameover') {
+				app.hero.gameover();
+			}
 			else if (module.data.module == 'quete') {
 				$.get('actions/' + module.data.module + '?' + app.hero.getData(), function (data) {
 					if (data == 'no')
