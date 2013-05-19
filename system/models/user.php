@@ -93,16 +93,27 @@
 		 return $this->db->delete( 'users', array( 'id' => $id ? $id : $this->id ) );
 	 }
 
-	 /**
-		* Vérifier d'un mail n'existe pas déjà.
-		*
-		* @param string email à vérifier
-		* @return	 int 0 ou 1
-		*/
-	 public static function verification_mail( $email )
-	 {
-		 return Database::instance()->select( 'id' )->from( 'users' )->where( 'email', $email )->limit( 1 )->get()->count();
-	 }
+     /**
+      * Vérifier d'un mail n'existe pas déjà.
+      *
+      * @param string email à vérifier
+      * @return	 int 0 ou 1
+      */
+     public static function verification_mail( $email )
+     {
+         return Database::instance()->select( 'id' )->from( 'users' )->where( 'email', $email )->limit( 1 )->get()->count();
+     }
+
+     /**
+      * Vérifier d'un username n'existe pas déjà.
+      *
+      * @param string username à vérifier
+      * @return	 int 0 ou 1
+      */
+     public static function verification_username($username)
+     {
+         return Database::instance()->select( 'id' )->from( 'users' )->where( 'username', $username )->limit( 1 )->get()->count();
+     }
 
 	 /**
 		* Modifier un mot de passe selon un mail.
@@ -130,7 +141,7 @@
 		*
 		* @return void
 		*/
-	 public static function view_xp()
+	 public function view_xp()
 	 {
 		 return (int) round( $this->xp / ( $this->niveau_suivant() / 100 ) );
 	 }

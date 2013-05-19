@@ -27,9 +27,9 @@ class User_Controller extends Template_Controller
      */
     public function index()
     {
-        $v = new View( 'user/profil' );
+        $v = new View('user/profil');
         $v->user = $this->user;
-        $v->render( TRUE );
+        $v->render(TRUE);
     }
 
     /**
@@ -39,15 +39,30 @@ class User_Controller extends Template_Controller
      */
     public function update_pwd()
     {
-        $new_pwd = $this->input->post( 'new_pwd' );
+        $new_pwd = $this->input->post('new_pwd');
 
-        if( strlen( $new_pwd ) <= 4 )
-            echo Kohana::lang( 'user.error_pwd' );
-        else
-        {
-            $this->user->update( array( 'password' => Auth::instance()->hash_password( $new_pwd ) ) );
-            echo Kohana::lang( 'user.valid_change_pwd' );
+        if (strlen($new_pwd) <= 4)
+            echo Kohana::lang('user.error_pwd');
+        else {
+            $this->user->update(array('password' => Auth::instance()->hash_password($new_pwd)));
+            echo Kohana::lang('user.valid_change_pwd');
         }
+    }
+
+    /**
+     * Sauvegarder le nouvel mot de passe d'un user
+     *
+     * @return  void
+     */
+    public function update_username()
+    {
+        $username = $this->input->post('username');
+
+        if (!User_Model::verification_username($username)) {
+            $this->user->update(array('username' => $username));
+            echo $username;
+        } else
+            echo $this->user->username;
     }
 
     /**
@@ -55,14 +70,14 @@ class User_Controller extends Template_Controller
      *
      * @return  void
      */
-    public function show( $type )
+    public function show($type)
     {
-        $v = new View( 'user/'.$type );
-        $v->stats = Statistiques_Model::instance()->user_show( $this->user->id );
+        $v = new View('user/' . $type);
+        $v->stats = Statistiques_Model::instance()->user_show($this->user->id);
         $v->user = $this->user;
         $v->modif = TRUE;
 
-        $v->render( TRUE );
+        $v->render(TRUE);
     }
 
     public function update($noScript = false)

@@ -57,22 +57,35 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 function savePassword() {
 	var new_pwd = $('#new_pwd').val();
 
-	$('#repeat_new_pwd, #new_pwd').removeClass('border-rouge');
+	if( new_pwd ) {
+		$('#repeat_new_pwd, #new_pwd').removeClass('border-rouge');
 
-	if (new_pwd == '') {
-		$('#new_pwd').addClass('border-rouge');
-		return;
+		if (new_pwd == '') {
+			$('#new_pwd').addClass('border-rouge');
+			return;
+		}
+
+		if (new_pwd != $('#repeat_new_pwd').val()) {
+			$('#repeat_new_pwd, #new_pwd').addClass('border-rouge');
+			return;
+		}
+
+		$.post(url_script + 'user/update_pwd', {
+			'new_pwd': new_pwd
+		}, function (data) {
+			$('#overlay').append(data);
+			$('#repeat_new_pwd, #new_pwd').val('');
+		});
 	}
 
-	if (new_pwd != $('#repeat_new_pwd').val()) {
-		$('#repeat_new_pwd, #new_pwd').addClass('border-rouge');
-		return;
+	var username = $('#pseudo').val();
+
+	if(username) {
+		$.post(url_script + 'user/update_username', {
+			'username': username
+		}, function (data) {
+			$('#pseudo').val(data);
+		});
 	}
 
-	$.post(url_script + 'user/update_pwd', {
-		'new_pwd': new_pwd
-	}, function (data) {
-		$('#overlay').append(data);
-		$('#repeat_new_pwd, #new_pwd').val('');
-	});
 }
