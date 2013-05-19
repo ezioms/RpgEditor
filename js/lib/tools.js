@@ -73,7 +73,6 @@ function savePassword() {
 		$.post(url_script + 'user/update_pwd', {
 			'new_pwd': new_pwd
 		}, function (data) {
-			$('#overlay').append(data);
 			$('#repeat_new_pwd, #new_pwd').val('');
 		});
 	}

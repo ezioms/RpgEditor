@@ -499,6 +499,7 @@ fieldset {
     font-weight: bold;
     margin: 50px auto;
     text-shadow: #444 1px 1px 2px;
+    cursor:pointer;
 }
 
 .reponse {
@@ -516,6 +517,9 @@ fieldset {
 
 #logout a {
     color:#FFFFFF;
+}
+#logout span {
+    cursor: pointer;
 }
 
 #overlay {

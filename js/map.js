@@ -442,6 +442,7 @@ if (havePointerLock) {
 			noCursor.style.display = 'none';
 			lookMessage('Souris désactivé');
 			control = true;
+			app.overlay.close();
 		} else {
 			noCursor.style.display = 'block';
 			control = false;
