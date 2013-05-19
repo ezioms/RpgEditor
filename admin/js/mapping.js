@@ -114,54 +114,6 @@ $(function () {
 
 		app.scene.add(rollOverMesh);
 	});
-
-
-	$("#selectAction input").live('click', function () {
-		app.scene.remove(rollOverMesh);
-
-		typeAction = $(this).data('action');
-
-		if (typeAction == 'add')
-			$('#controlCube').show();
-		else
-			$('#controlCube').hide();
-
-		$('#actionCurrent').val(typeAction);
-		if (typeAction == 'no')
-			return;
-		else if (typeAction == 'add') {
-			rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
-			rollOverMesh.visible = true;
-		} else {
-			rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(sizeCube, sizeCube, sizeCube), new THREE.MeshBasicMaterial({
-				color: typeAction == 'del' ? 0xff0000 : 0xffff00,
-				opacity: 0.3,
-				transparent: true
-			}));
-		}
-
-		app.scene.add(rollOverMesh);
-	});
-
-
-	$('#addModel').click(function () {
-		var modelSelect = $('#selectModel').val();
-
-		var vector = new THREE.Vector3(0, 0, 0.5);
-		projector.unprojectVector(vector, app.camera);
-
-		var ray = new THREE.Ray(app.camera.position, vector.subSelf(app.camera.position).normalize());
-
-		app.JSONLoader.load(dir_script + '../obj/' + modelSelect + '/json.js', function (geometry) {
-			var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
-			mesh.position = ray.origin.clone().addSelf(ray.direction);
-			mesh.name = modelSelect;
-			mesh.alias = modelSelect + ' - inconnue';
-			mesh.type = 'object';
-			app.scene.add(mesh);
-			sauvegardeObject();
-		});
-	});
 });
 
 
@@ -171,6 +123,7 @@ $(function () {
 
 function init() {
 
+	var modelSelect = 'arbre';
 	container = document.getElementById('containerMapping');
 
 	app.camera = new THREE.CombinedCamera(window.innerWidth, window.innerHeight, 60, 1, 8000);
@@ -274,6 +227,8 @@ function init() {
 		vitesse: controls.movementSpeed,
 		vertical: controls.lookSpeed,
 		sizeCube: 'grand',
+		typeAction: 'Simple Visite',
+		selectObject: null,
 		visibleMap: true,
 		visibleModels: true,
 		visibleHide: true,
@@ -284,7 +239,26 @@ function init() {
 		rotationZ: 180 * app.camera.rotation.z / Math.PI,
 		positionX: app.camera.position.x,
 		positionY: app.camera.position.y,
-		positionZ: app.camera.position.z
+		positionZ: app.camera.position.z,
+		addObject : function() {
+
+			Mapgui.typeAction.setValue('Manipuler un objet');
+
+			var vector = new THREE.Vector3(0, 0, 1);
+			projector.unprojectVector(vector, app.camera);
+
+			var ray = new THREE.Ray(app.camera.position, vector.subSelf(app.camera.position).normalize());
+
+			app.JSONLoader.load(dir_script + '../obj/' + modelSelect + '/json.js', function (geometry) {
+				var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
+				mesh.position = ray.origin.clone().addSelf(ray.direction);
+				mesh.name = modelSelect;
+				mesh.alias = modelSelect + ' - inconnue';
+				mesh.type = 'object';
+				app.scene.add(mesh);
+				sauvegardeObject();
+			});
+		}
 	};
 	var f1 = Mapgui.addFolder('Caméra');
 	f1.open();
@@ -317,11 +291,76 @@ function init() {
 	});
 
 	var f2 = Mapgui.addFolder('Carte');
+	f2.open();
+	Mapgui.typeAction = f2.add(Mapgui.params, 'typeAction', ['Simple Visite', 'Ajouter un cube', 'Ajouter un module', 'Editer un module', 'Supprimer', 'Manipuler un objet']).onChange(function (value) {
+		if (value == 'Ajouter un cube') {
+			typeAction = 'add';
+		} else if (value == 'Ajouter un module') {
+			typeAction = 'mod';
+		} else if (value == 'Editer un module') {
+			typeAction = 'edit';
+		} else if (value == 'Supprimer') {
+			typeAction = 'del';
+		} else if (value == 'Manipuler un objet') {
+			typeAction = 'obj';
+		}
+		else
+			typeAction = 'no';
 
+		app.scene.remove(rollOverMesh);
+
+		if (typeAction == 'add')
+			$('#controlCube').show();
+		else
+			$('#controlCube').hide();
+
+		$('#actionCurrent').val(typeAction);
+		if (typeAction == 'no')
+			return;
+
+		else if (typeAction == 'add') {
+			rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
+			rollOverMesh.visible = true;
+		} else {
+			rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(sizeCube, sizeCube, sizeCube), new THREE.MeshBasicMaterial({
+				color: typeAction == 'del' ? 0xff0000 : 0xffff00,
+				opacity: 0.3,
+				transparent: true
+			}));
+		}
+
+		app.scene.add(rollOverMesh);
+	});
+	Mapgui.sizeCube = f2.add(Mapgui.params, 'sizeCube', ['grand', 'petit']).onChange(function (value) {
+		sizeCube = value == 'grand' ? 50 : 10;
+
+		app.scene.remove(rollOverMesh);
+
+		if (typeAction == 'add')
+			$('#controlCube').show();
+		else
+			$('#controlCube').hide();
+
+		$('#actionCurrent').val(typeAction);
+		if (typeAction == 'no')
+			return;
+
+		else if (typeAction == 'add') {
+			rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
+			rollOverMesh.visible = true;
+		} else {
+			rollOverMesh = new THREE.Mesh(new THREE.CubeGeometry(sizeCube, sizeCube, sizeCube), new THREE.MeshBasicMaterial({
+				color: typeAction == 'del' ? 0xff0000 : 0xffff00,
+				opacity: 0.3,
+				transparent: true
+			}));
+		}
+
+		app.scene.add(rollOverMesh);
+	});
 	Mapgui.visibleMap = f2.add(Mapgui.params, 'visibleMap').onChange(function (value) {
 		cubes.visible = value;
 	});
-
 	Mapgui.visibleHide = f2.add(Mapgui.params, 'visibleHide').onChange(function (value) {
 		cubesHide.visible = value;
 	});
@@ -341,12 +380,11 @@ function init() {
 			cubes.material.wireframe = false;
 		}
 	});
-	Mapgui.sizeCube = f2.add(Mapgui.params, 'sizeCube', ['grand', 'petit']).onChange(function (value) {
-		sizeCube = value == 'grand' ? 50 : 10;
-		app.scene.remove(rollOverMesh);
-		rollOverMesh = addCube(dataTextureCube, (sizeCube == 10 ? true : null));
-		app.scene.add(rollOverMesh);
+	Mapgui.selectObject = f2.add(Mapgui.params, 'selectObject', selectObjectList).onChange(function (value) {
+		modelSelect = value;
+		Mapgui.typeAction.setValue('Manipuler un objet');
 	});
+	Mapgui.addObject = f2.add(Mapgui.params, 'addObject');
 
 	document.getElementById('map-gui-container').appendChild(Mapgui.domElement);
 	Mapgui.open();
@@ -360,6 +398,13 @@ function getCubes() {
 	container.style.display = 'none';
 
 	if (cubes) {
+		for (var keyChild in app.scene.children) {
+			var row = app.scene.children[keyChild];
+			if (row.name !== undefined && row.name == 'cube') {
+				row.deallocate();
+				app.scene.remove(row);
+			}
+		}
 		app.renderer.deallocateObject(cubes);
 		cubes.deallocate();
 		app.scene.remove(cubes);
@@ -587,6 +632,7 @@ function onDocumentMouseDown(event) {
 								memoryObjectSelect = null;
 								$('#my-gui-container').empty();
 								sauvegardeObject();
+								Mapgui.open();
 							}
 						};
 						gui.saveObject = gui.add(gui.params, 'identifiant').onChange(function (value) {
@@ -680,8 +726,10 @@ function onDocumentMouseUp(event) {
 
 	if (typeAction == 'del') {
 
-		if (sizeCube != 10 && obstacles[voxelPosition.x] != undefined && obstacles[voxelPosition.x][voxelPosition.y] != undefined && obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z] != undefined)
+		if (sizeCube != 10 && obstacles[voxelPosition.x] != undefined && obstacles[voxelPosition.x][voxelPosition.y] != undefined && obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z] != undefined) {
+			console.log(obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z]);
 			delete obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z];
+		}
 		else if (obstacles[voxelPosition.x - 5] != undefined && obstacles[voxelPosition.x - 5][voxelPosition.y] != undefined && obstacles[voxelPosition.x - 5][voxelPosition.y][voxelPosition.z - 5] != undefined)
 			delete obstacles[voxelPosition.x - 5][voxelPosition.y][voxelPosition.z - 5];
 
