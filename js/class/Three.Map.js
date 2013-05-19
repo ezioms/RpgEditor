@@ -175,11 +175,11 @@ THREE.Map = function (app) {
 	/*
 	 * Tool load image / gestion en cache
 	 */
-	var materials = [new THREE.MeshBasicMaterial( { visible: false } )];
+	var materials = [new THREE.MeshBasicMaterial({ visible: false, wireframe: this.wireframe, transparent: true })];
 	var index = 0;
 	this.loadTexture = function (path, visible) {
-		if (listImg[path.src+'_'+visible] !== undefined)
-			return listImg[path.src+'_'+visible];
+		if (listImg[path.src + '_' + visible] !== undefined)
+			return listImg[path.src + '_' + visible];
 
 		var material = new THREE.MeshLambertMaterial({
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
@@ -190,13 +190,10 @@ THREE.Map = function (app) {
 		});
 		material.map.needsUpdate = true;
 
-		if (path.src.replace(url_script + 'images/background/', '') == 'water.png')
-			material.opacity = 0.3;
-
 		materials.push(material);
 		index++;
 
-		return listImg[path.src+'_'+visible] = index;
+		return listImg[path.src + '_' + visible] = index;
 	};
 
 
@@ -295,15 +292,11 @@ THREE.Map = function (app) {
 			};
 		}
 
-		for (var keyImg in row.materials) {
-			if (filter == 'water.png' && (row.x || row.y || row.z) && facesWater[keyImg]) {
+		for (var keyImg in row.materials)
+			if (filter == 'water.png' && (row.x || row.y || row.z) && facesWater[keyImg] !== undefined && facesWater[keyImg])
 				mesh.geometry.faces[keyImg].materialIndex = 0;
-				console.log(mesh.geometry);
-			}
 			else
 				mesh.geometry.faces[keyImg].materialIndex = this.loadTexture(row.materials[keyImg]);
-
-		}
 
 		return mesh;
 	};
@@ -446,7 +439,6 @@ THREE.Map = function (app) {
 			THREE.GeometryUtils.merge(geometry, cube);
 	}
 
-
 	// deformation des vertices
 	for (var i = 0, l = geometry.vertices.length; i < l; i++) {
 		if (random(0, 100) > frequence)
@@ -455,7 +447,6 @@ THREE.Map = function (app) {
 		geometry.vertices[ i ].y += Math.random() * (degradation * 2);
 		geometry.vertices[ i ].z += Math.random() * degradation;
 	}
-
 
 	var material = new THREE.MeshFaceMaterial(materials);
 	var element = new THREE.Mesh(geometry, material);

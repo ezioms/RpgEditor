@@ -81,8 +81,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.leftarm.rotation.set(0, 0, 0.3);
 		this.rightleg.rotation.set(0, 0, 0);
 		this.leftleg.rotation.set(0, 0, 0);
-		this.bodyGroup.rotation.set(0, 0, 0);
-		this.bodyGroup.position.set(0, 0, 0);
 	};
 
 
@@ -183,6 +181,32 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.bodyGroup.rotation.z = -1;
 		this.bodyGroup.position.y = 10;
 		this.bodyGroup.position.x = -13;
+		this.handRight.visible = false;
+		this.handRight.traverse(function (child) {
+			child.visible = false;
+		});
+		this.handLeft.visible = false;
+		this.handLeft.traverse(function (child) {
+			child.visible = false;
+		});
+	};
+
+
+	/*
+	 * Position person Water out
+	 */
+	this.waterOut = function () {
+		this.bodyGroup.rotation.z = 0;
+		this.bodyGroup.position.y = 0;
+		this.bodyGroup.position.x = 0;
+		this.handRight.visible = true;
+		this.handRight.traverse(function (child) {
+			child.visible = true;
+		});
+		this.handLeft.visible = true;
+		this.handLeft.traverse(function (child) {
+			child.visible = true;
+		});
 	};
 
 

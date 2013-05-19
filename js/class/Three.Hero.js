@@ -190,6 +190,7 @@ THREE.Hero = function (app) {
 			light.visible = false;
 			if (!inWater) {
 				this.currentdirection.jump = -1;
+				jump = false;
 			}
 			inWater = true;
 
@@ -198,6 +199,7 @@ THREE.Hero = function (app) {
 			if (inWater && jump && this.currentdirection.jump > 0) {
 				this.currentdirection.jump = heightJump - this.currentdirection.jump;
 				jump = false;
+				person.waterOut();
 			}
 			inWater = false;
 		}
@@ -206,7 +208,7 @@ THREE.Hero = function (app) {
 		var newZoneHear = collision.getZone(collisionWater);
 		if (app.map.hasWater(newZoneHear.x, newZoneHear.y, newZoneHear.z)) {
 			//if in water
-			if (!jump && inWater && pitchObject.rotation.x < 0.1 && pitchObject.rotation.x > -0.1)
+			if (!jump && inWater && pitchObject.rotation.x < 0.5 && pitchObject.rotation.x > -0.5)
 				this.currentdirection.jump = -0.1;
 
 			water.style.display = 'block';
@@ -248,7 +250,7 @@ THREE.Hero = function (app) {
 		else
 			app.sound.audioMove.volume = 0;
 
-		person.update(( !moveForward && !moveBackward ? 2 : (speedTmp || inWater >= 1 ? 1 : 0)), shootgun);
+		person.update(( !moveForward && !moveBackward && !inWater ? 2 : spacerActive || speedTmp >= 1 ? 1 : 0), shootgun);
 
 
 		//update de la torche
@@ -430,7 +432,7 @@ THREE.Hero = function (app) {
 			if (jump && !inWater)
 				return;
 
-			if (lastJump > app.clock.getElapsedTime() - (inWater ? 0.3 : 0.5))
+			if (lastJump > app.clock.getElapsedTime() - (inWater ? 0.4 : 0.5))
 				return;
 			lastJump = app.clock.getElapsedTime();
 			jump = true;
@@ -459,6 +461,8 @@ THREE.Hero = function (app) {
 			moveRight = false;
 		} else if (event.keyCode == 32) {
 			spacerActive = false;
+			if (inWater)
+				this.currentdirection.jump = 0.2;
 		}
 
 		this.saveSession();
