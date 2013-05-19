@@ -32,6 +32,7 @@ var clock = new THREE.Clock();
 
 var gui;
 var Mapgui;
+var margeGrid = 100;
 
 $(function () {
 	init();
@@ -227,20 +228,22 @@ function init() {
 		vitesse: controls.movementSpeed,
 		vertical: controls.lookSpeed,
 		sizeCube: 'grand',
-		typeAction: 'Simple Visite',
-		selectObject: null,
+		action: 'Simple Visite',
+		object: selectObjectList[0] !== undefined ? selectObjectList[0] : null,
 		visibleMap: true,
 		visibleModels: true,
 		visibleHide: true,
+		visibleGrid: true,
 		material: 'texture',
 		lookVertical: true,
+		margeGridY:margeGrid,
 		rotationY: 180 * app.camera.rotation.y / Math.PI,
 		rotationX: 180 * app.camera.rotation.x / Math.PI,
 		rotationZ: 180 * app.camera.rotation.z / Math.PI,
 		positionX: app.camera.position.x,
 		positionY: app.camera.position.y,
 		positionZ: app.camera.position.z,
-		addObject : function() {
+		addObject: function () {
 
 			Mapgui.typeAction.setValue('Manipuler un objet');
 
@@ -292,7 +295,7 @@ function init() {
 
 	var f2 = Mapgui.addFolder('Carte');
 	f2.open();
-	Mapgui.typeAction = f2.add(Mapgui.params, 'typeAction', ['Simple Visite', 'Ajouter un cube', 'Ajouter un module', 'Editer un module', 'Supprimer', 'Manipuler un objet']).onChange(function (value) {
+	Mapgui.action = f2.add(Mapgui.params, 'action', ['Simple Visite', 'Ajouter un cube', 'Ajouter un module', 'Editer un module', 'Supprimer', 'Manipuler un objet']).onChange(function (value) {
 		if (value == 'Ajouter un cube') {
 			typeAction = 'add';
 		} else if (value == 'Ajouter un module') {
@@ -358,6 +361,12 @@ function init() {
 
 		app.scene.add(rollOverMesh);
 	});
+	Mapgui.visibleGrid = f2.add(Mapgui.params, 'visibleGrid').onChange(function (value) {
+		grille.visible = value;
+	});
+	Mapgui.margeGridY = f2.add(Mapgui.params, 'margeGridY', 20, 500).onChange(function (value) {
+		margeGrid = value;
+	});
 	Mapgui.visibleMap = f2.add(Mapgui.params, 'visibleMap').onChange(function (value) {
 		cubes.visible = value;
 	});
@@ -380,7 +389,7 @@ function init() {
 			cubes.material.wireframe = false;
 		}
 	});
-	Mapgui.selectObject = f2.add(Mapgui.params, 'selectObject', selectObjectList).onChange(function (value) {
+	Mapgui.object = f2.add(Mapgui.params, 'object', selectObjectList).onChange(function (value) {
 		modelSelect = value;
 		Mapgui.typeAction.setValue('Manipuler un objet');
 	});
@@ -820,6 +829,11 @@ function render() {
 		objectSelect.position.copy(voxelPosition);
 	}
 
+	if (app.camera.position.y > margeGrid || app.camera.position.y < 0)
+		grille.position.setY(app.camera.position.y - margeGrid);
+	else
+		grille.position.y = 0;
+
 	controls.update(clock.getDelta(), dataRegion);
 	Mapgui.positionX.setValue(app.camera.position.x);
 	Mapgui.positionY.setValue(app.camera.position.y);
@@ -931,10 +945,12 @@ function savePNG() {
 }
 
 function setGrid() {
-
 	if (grille.visible)
 		grille.visible = false;
 	else
 		grille.visible = true;
+
+
+	Mapgui.visibleGrid.setValue(grille.visible);
 
 }
