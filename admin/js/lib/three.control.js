@@ -5,7 +5,7 @@ THREE.FirstPersonControls = function (object, domElement) {
 
 	this.domElement = ( domElement !== undefined ) ? domElement : document;
 
-	this.movementSpeed = 0.05;
+	this.movementSpeed = 0.01;
 	this.lookSpeed = 0.005;
 
 	this.lookVertical = true;
@@ -215,7 +215,7 @@ THREE.FirstPersonControls = function (object, domElement) {
 
 			var actualLookSpeed = delta * this.lookSpeed;
 
-			if (!this.activeLook || (this.mouseX < 50 && this.mouseX > -50 && this.mouseY < 50 && this.mouseY > -50)) {
+			if (!this.activeLook || (this.mouseX < 200 && this.mouseX > -200 && this.mouseY < 200 && this.mouseY > -200)) {
 
 				actualLookSpeed = 0;
 

@@ -6,8 +6,9 @@
     }
 </style>
 <div id="barTop"></div>
-<section id="logout"><a href="<?php echo url::site('logout'); ?>">Se déconnecter</a></section>
+<section id="logout"><span id="myProfil">Mon compte</span> - <a href="<?php echo url::site('logout'); ?>">Se déconnecter</a></section>
 
+<section id="overlay"></section>
 <section id="content_loading"></section>
 <section id="notifications"></section>
 

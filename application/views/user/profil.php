@@ -41,4 +41,4 @@
 		<div class="spacer"></div>
 </div>
 
-<div class="center"><input type="button" value="<?php echo Kohana::lang( 'template.modif' ); ?>" onclick="overlay.load('user/show/update' )" class="button" /> <input type="button" value="<?php echo Kohana::lang( 'template.badge' ); ?>" onclick="overlay.load('user/show/badge' )" class="button" /></div>
+<div class="center"><input type="button" value="<?php echo Kohana::lang( 'template.modif' ); ?>" onclick="app.overlay.load('user/show/update' )" class="button" /><input type="button" value="<?php echo Kohana::lang( 'template.close' ); ?>" onclick="app.overlay.close()" class="button" /></div>

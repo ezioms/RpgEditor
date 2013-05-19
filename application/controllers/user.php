@@ -20,6 +20,51 @@ class User_Controller extends Template_Controller
         $this->auto_render = FALSE;
     }
 
+    /**
+     * Page de détail du user
+     *
+     * @return  void
+     */
+    public function index()
+    {
+        $v = new View( 'user/profil' );
+        $v->user = $this->user;
+        $v->render( TRUE );
+    }
+
+    /**
+     * Sauvegarder le nouvel mot de passe d'un user
+     *
+     * @return  void
+     */
+    public function update_pwd()
+    {
+        $new_pwd = $this->input->post( 'new_pwd' );
+
+        if( strlen( $new_pwd ) <= 4 )
+            echo Kohana::lang( 'user.error_pwd' );
+        else
+        {
+            $this->user->update( array( 'password' => Auth::instance()->hash_password( $new_pwd ) ) );
+            echo Kohana::lang( 'user.valid_change_pwd' );
+        }
+    }
+
+    /**
+     * Page de détail d'un personnage
+     *
+     * @return  void
+     */
+    public function show( $type )
+    {
+        $v = new View( 'user/'.$type );
+        $v->stats = Statistiques_Model::instance()->user_show( $this->user->id );
+        $v->user = $this->user;
+        $v->modif = TRUE;
+
+        $v->render( TRUE );
+    }
+
     public function update($noScript = false)
     {
         $this->user->positionX = $this->input->get('positionX', $this->user->positionX);

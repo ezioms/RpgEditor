@@ -504,10 +504,16 @@ $(function () {
 			app.loader.request('user/update', 'GET', app.hero.getData());
 		})
 		.keyup(function (event) {
+			if (!control)
+				return;
+
 			if (event.keyCode === 13)
 				buttonEnter = simulate_key = false;
 		})
 		.keydown(function (event) {
+			if (!control)
+				return;
+
 			if (event.keyCode === 80)
 				window.open(app.renderer.domElement.toDataURL('image/png'), 'Capture');
 			else if (event.keyCode === 13) {
@@ -538,4 +544,14 @@ $(function () {
 			});
 			event.preventDefault();
 		});
+	/*
+	 * MENU TOP LEFT
+	 */
+	$('#logout').on('click', '#myProfil', function () {
+		app.overlay.load('user');
+	});
+
+	$('#overlay').on('click', '#updateProfil', function () {
+		app.overlay.load('user/show/update');
+	});
 });

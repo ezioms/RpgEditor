@@ -1,15 +1,14 @@
 THREE.Overlay = function () {
 
-	this.global = $('#overlay_global');
-
-	this.loadData = false;
+	this.global = $('#overlay');
 
 	this.close = function () {
 		if (!this.show())
 			return;
 
 		this.global.fadeOut(function () {
-			$('#overlay_content').empty();
+			$(this).empty();
+			$('#instructions').show();
 		});
 	};
 
@@ -17,21 +16,20 @@ THREE.Overlay = function () {
 		if (data == '')
 			return;
 
-		$('#overlay_content').html(data);
+		this.global.html(data);
 
 		if (hide)
 			this.global.hide();
-		else
+		else {
 			this.global.show();
-
-		this.size();
+			$('#instructions').hide();
+		}
 	};
 
 	this.load = function (url, callback) {
 		var _this = this;
 		var hideOverlay = false;
 		var action = url.split('?')[0];
-		this.loadData = true;
 
 		if (action.substring(action.length - 4) == 'move')
 			hideOverlay = true;
@@ -47,14 +45,6 @@ THREE.Overlay = function () {
 
 			_this.loadData = false;
 		});
-	};
-
-	this.size = function () {
-		if (this.show())
-			this.global.css({
-				'left': ( $(window).width() - this.global.width() ) / 2,
-				'top': 150
-			});
 	};
 
 	this.show = function () {

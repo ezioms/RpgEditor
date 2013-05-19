@@ -12,4 +12,4 @@
 				<div class="spacer"></div>
 		</div>
 <?php endif ?>
-<div class="center"><input type="button" value="<?php echo Kohana::lang( 'form.annul' ); ?>" onclick="overlay.load('user' )" class="button" /> <input type="button" value="<?php echo Kohana::lang( 'user.modif_password' ); ?>" id="modif_pwd" class="button" /></div>
+<div class="center"><input type="button" value="<?php echo Kohana::lang( 'form.annul' ); ?>" onclick="app.overlay.load('user' )" class="button" /> <input type="button" value="<?php echo Kohana::lang( 'user.modif_password' ); ?>" onclick="savePassword()" class="button" /></div>
