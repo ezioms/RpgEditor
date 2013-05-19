@@ -151,14 +151,10 @@ THREE.Hero = function (app) {
 			clone.translateZ(this.speed);
 		}
 
-		//if in water
-		if (inWater && pitchObject.rotation.x < 0.1 && pitchObject.rotation.x > -0.1)
-			this.currentdirection.jump = 0;
-
 		if (inWater && !spacerActive)
 			clone.position.y += this.currentdirection.jump += (pitchObject.rotation.x / 100);
 		else if (inWater && spacerActive)
-			clone.position.y += this.currentdirection.jump -= 0.001;
+			clone.position.y += this.currentdirection.jump -= 0.01;
 		else
 			clone.position.y += this.currentdirection.jump -= this.gravity;
 
@@ -188,13 +184,12 @@ THREE.Hero = function (app) {
 		}
 
 
-		var newZone = collision.getZone(yawObject.position);
+		var collisionWater = clone.position.clone();
+		var newZone = collision.getZone(collisionWater);
 		if (app.map.hasWater(newZone.x, newZone.y, newZone.x)) {
-			water.style.display = 'block';
 			light.visible = false;
 			if (!inWater) {
-				lastJump = Date.now();
-				this.currentdirection.jump = 0;
+				this.currentdirection.jump = -1;
 			}
 			inWater = true;
 
@@ -205,8 +200,18 @@ THREE.Hero = function (app) {
 				jump = false;
 			}
 			inWater = false;
-			water.style.display = 'none';
 		}
+
+		collisionWater.y += 25;
+		var newZoneHear = collision.getZone(collisionWater);
+		if (app.map.hasWater(newZoneHear.x, newZoneHear.y, newZoneHear.x)) {
+			//if in water
+			if (!jump && inWater && pitchObject.rotation.x < 0.1 && pitchObject.rotation.x > -0.1)
+				this.currentdirection.jump = -0.1;
+
+			water.style.display = 'block';
+		} else
+			water.style.display = 'none';
 
 
 		if (!moveForward && !moveBackward)
@@ -424,11 +429,12 @@ THREE.Hero = function (app) {
 			spacerActive = true;
 			if (jump && !inWater)
 				return;
+
 			if (lastJump > app.clock.getElapsedTime() - (inWater ? 0.3 : 0.5))
 				return;
 			lastJump = app.clock.getElapsedTime();
 			jump = true;
-			this.currentdirection.jump = inWater ? 1 : heightJump;
+			this.currentdirection.jump = inWater ? 2 : heightJump;
 			app.sound.effect((inWater ? 'jumpWater.ogg' : 'jump.ogg'), 0.1);
 		} else if (event.keyCode == 76) {
 			if (light.visible)

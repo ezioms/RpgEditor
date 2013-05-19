@@ -325,6 +325,7 @@ var updateHeroVisual = function () {
 					app.messages.push(module.data.title);
 			}
 			else if (module.data.module == 'checkpoint') {
+				app.loader.request('user/update', 'GET', app.hero.getData());
 				if (module.data.title)
 					app.messages.push(module.data.title);
 

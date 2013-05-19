@@ -22,13 +22,6 @@ class User_Controller extends Template_Controller
 
     public function update($noScript = false)
     {
-        if (($x = $this->input->get('x')))
-            $this->user->x = $x - 1;
-        if (($y = $this->input->get('y')))
-            $this->user->y = $y - 1;
-        if (($z = $this->input->get('z')))
-            $this->user->z = $z - 1;
-
         $this->user->positionX = $this->input->get('positionX', $this->user->positionX);
         $this->user->positionY = $this->input->get('positionY', $this->user->positionY);
         $this->user->positionZ = $this->input->get('positionZ', $this->user->positionZ);
@@ -44,12 +37,9 @@ class User_Controller extends Template_Controller
         $this->user->update();
 
         if (!$noScript) {
-            echo 'app.hero.position.x = ' . $this->user->positionX . ';' . "\n";
-            echo 'app.hero.position.y = ' . $this->user->positionY . ';' . "\n";
-            echo 'app.hero.position.z = ' . $this->user->positionZ . ';' . "\n";
-            echo 'app.hero.zone.x = ' . $this->user->x . ';' . "\n";
-            echo 'app.hero.zone.y = ' . $this->user->y . ';' . "\n";
-            echo 'app.hero.zone.z = ' . $this->user->z . ';' . "\n";
+            echo 'app.hero.getCamera().position.x = ' . $this->user->positionX . ';' . "\n";
+            echo 'app.hero.getCamera().position.y = ' . $this->user->positionY . ';' . "\n";
+            echo 'app.hero.getCamera().position.z = ' . $this->user->positionZ . ';' . "\n";
             echo 'app.hero.region = ' . $this->user->region_id . ';' . "\n";
             echo 'app.hero.argent = ' . $this->user->argent . ';' . "\n";
             echo 'app.hero.gravity = ' . $this->user->gravity . ';' . "\n";

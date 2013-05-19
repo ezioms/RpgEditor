@@ -29,18 +29,15 @@ class Plugin_Move_Controller extends Action_Controller {
 
 				if( !$this->data->action_map->prix || $this->user->argent >= $this->data->action_map->prix )
 				{
-						$this->user->x = $this->data->action_map->x_move;
-						$this->user->y = $this->data->action_map->y_move;
-						$this->user->z = $this->data->action_map->z_move;
+						$this->user->positionX = $this->data->action_map->x_move * 50 + 25;
+						$this->user->positionY = $this->data->action_map->y_move * 50 + 25;
+						$this->user->positionZ = $this->data->action_map->z_move * 50 + 25;
 						$this->user->region_id = $this->data->action_map->id_region_move;
 						$this->user->update();
 
 						History_Model::instance()->user_insert( $this->user->id, $this->data->id, $this->data->action_map->id_region_move, 'change_map' );
 
-						echo '<script>
-						$(window).unbind("unload");
-						window.location.reload();
-						</script>';
+						echo '<script>window.location.reload();</script>';
 				}
 		}
 

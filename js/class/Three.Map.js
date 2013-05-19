@@ -145,7 +145,7 @@ THREE.Map = function (app) {
 	/*
 	 * GET obstacles small
 	 */
-	this.hasObstacleSmall = function (x, y, z, subX, subY, subZ) {
+	this.hasObstacleSmall = function (x, y, z) {
 		if (subObstacles[x] != undefined && subObstacles[x][y] != undefined && subObstacles[x][y][z] != undefined && subObstacles[x][y][z] === true)
 			return true;
 
@@ -157,7 +157,7 @@ THREE.Map = function (app) {
 	 * GET water
 	 */
 	this.hasWater = function (x, y, z) {
-		if (region.water[x] != undefined && region.water[x][y] != undefined && region.water[x][y][z] != undefined && region.water[x][y][z] === true)
+		if (water[x] != undefined && water[x][y] != undefined && water[x][y][z] != undefined && water[x][y][z] === true)
 			return true;
 
 		return false;
@@ -189,6 +189,9 @@ THREE.Map = function (app) {
 			side: 2
 		});
 		material.map.needsUpdate = true;
+
+		if(path.src.replace(url_script + 'images/background/', '') == 'water.png')
+			material.opacity = 0.3;
 
 		materials.push(material);
 		index++;
@@ -435,6 +438,8 @@ THREE.Map = function (app) {
 	var material = new THREE.MeshFaceMaterial(materials);
 	var element = new THREE.Mesh(geometry, material);
 	var elementWater = new THREE.Mesh(geometryWater, material);
+	elementWater.material.opacity = 0.8;
+	console.log(elementWater);
 
 
 	univers.add(element);

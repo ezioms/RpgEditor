@@ -144,15 +144,15 @@ THREE.Collision = function (app) {
 		}
 
 		// no out map
-		if (clone.position.x < 0)
-			clone.position.x = 0;
-		else if (clone.position.x > maxX)
-			clone.position.x = maxX;
+		if (clone.position.x < 10)
+			clone.position.x = 10;
+		else if (clone.position.x > maxX - 10)
+			clone.position.x = maxX - 10;
 
-		if (clone.position.z < 0)
-			clone.position.z = 0;
-		else if (clone.position.z > maxZ)
-			clone.position.z = maxZ;
+		if (clone.position.z < 10)
+			clone.position.z = 10;
+		else if (clone.position.z > maxZ - 10)
+			clone.position.z = maxZ - 10;
 		
 		return {
 			jump : isJump,
