@@ -55,7 +55,7 @@ var load = function () {
 		return setTimeout(load, 200);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = 'block';
+	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = notifications.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
@@ -186,6 +186,27 @@ var render = function () {
 	// update the environment hero
 	updateHeroVisual();
 
+
+	// lecture de message a afficher
+	if (app.messages) {
+		for (var keyMsg in app.messages) {
+
+			console.log(app.messages[keyMsg]);
+			if ($('.notifications').last().html() != app.messages[keyMsg])
+				lookMessage(app.messages[keyMsg]);
+			app.messages.splice(keyMsg, 1);
+		}
+	}
+
+
+	// Vue en rouge en cas d'accident'
+	if (app.alert) {
+		var alertUser = $('#alertUser');
+		app.sound.effect('sorrow.mp3', 0.4);
+		alertUser.stop(true, true).show().fadeOut(app.alert);
+		app.alert = false;
+	}
+
 	// update stat environment
 	if (debug) {
 		var info = app.renderer.info;
@@ -229,11 +250,15 @@ var onWindowResize = function () {
  * Update notification management
  */
 var lookMessage = function (txt) {
-	var id = app.clock.oldTime + '_' + random(0, 100);
-	$('#notifications').append('<div id="' + id + '" class="notifications">' + txt + '</div>');
-	$('#' + id).fadeIn(400).delay(80 * txt.length).fadeOut(3000, function () {
-		killSpeackBot();
-	});
+	var id = Math.round(app.clock.oldTime) + '_' + random(0, 100);
+	$('#notifications')
+		.append('<div id="' + id + '" class="notifications">' + txt + '</div>')
+		.find('#' + id)
+		.fadeIn(400)
+		.delay(80 * txt.length)
+		.fadeOut(3000, function () {
+			killSpeackBot();
+		});
 };
 
 
@@ -339,26 +364,6 @@ var updateHeroVisual = function () {
 		contentAction.innerHTML = '';
 		action = false;
 	}
-
-
-	// lecture de message a afficher
-	if (app.messages) {
-		for (var keyMsg in app.messages) {
-			if ($('.notifications').last().html() != app.messages[keyMsg])
-				lookMessage(app.messages[keyMsg]);
-			app.messages.splice(keyMsg, 1);
-		}
-	}
-
-
-	// Vue en rouge en cas d'accident'
-	if (app.alert) {
-		var alertUser = $('#alertUser');
-		app.sound.effect('sorrow.mp3', 0.4);
-		alertUser.stop(true, true).show().fadeOut(app.alert);
-		app.alert = false;
-	}
-
 };
 
 

@@ -227,48 +227,6 @@ function init() {
 	grille.name = 'planeGrille';
 	app.scene.add(grille);
 
-
-	var material = THREE.ImageUtils.loadTexture(dir_script + '../' + dataRegion.background_univers);
-	material.wrapS = material.wrapT = THREE.RepeatWrapping;
-	material.magFilter = THREE.NearestFilter;
-	material.minFilter = THREE.LinearMipMapLinearFilter;
-
-	var faceZ = new THREE.PlaneGeometry(dataRegion.x * 50, dataRegion.y * 50);
-	var faceX = new THREE.PlaneGeometry(dataRegion.z * 50, dataRegion.y * 50);
-	var materialMesh = new THREE.MeshLambertMaterial({
-		map: material,
-		transparent: true,
-		side: 2
-	});
-
-	var middleMaxX = dataRegion.x * 25;
-	var middleMaxY = dataRegion.y * 25;
-	var middleMaxZ = dataRegion.z * 25;
-	var PI = Math.PI / 180;
-
-	var nz = new THREE.Mesh(faceZ, materialMesh);
-	nz.position.z -= middleMaxZ;
-	nz.position.y = middleMaxY;
-	app.scene.add(nz);
-
-	var pz = new THREE.Mesh(faceZ, materialMesh);
-	pz.position.z = middleMaxZ;
-	pz.position.y = middleMaxY;
-	pz.rotation.y = -180 * PI;
-	app.scene.add(pz);
-
-	var nx = new THREE.Mesh(faceX, materialMesh);
-	nx.position.x -= middleMaxX;
-	nx.position.y = middleMaxY;
-	nx.rotation.y = 90 * PI;
-	app.scene.add(nx);
-
-	var px = new THREE.Mesh(faceX, materialMesh);
-	px.position.x = middleMaxX;
-	px.position.y = middleMaxY;
-	px.rotation.y = -90 * PI;
-	app.scene.add(px);
-
 	for (keyEl in dataElements) {
 		if (dataElements[keyEl].subX > 0 || dataElements[keyEl].subZ > 0 || dataElements[keyEl].subZ > 0)
 			addObstacle(dataElements[keyEl].subX, dataElements[keyEl].subY, dataElements[keyEl].subZ, dataElements[keyEl]);
