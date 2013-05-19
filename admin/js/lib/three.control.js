@@ -5,7 +5,7 @@ THREE.FirstPersonControls = function (object, domElement) {
 
 	this.domElement = ( domElement !== undefined ) ? domElement : document;
 
-	this.movementSpeed = 1.0;
+	this.movementSpeed = 0.05;
 	this.lookSpeed = 0.005;
 
 	this.lookVertical = true;
