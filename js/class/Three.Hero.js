@@ -186,7 +186,7 @@ THREE.Hero = function (app) {
 
 		var collisionWater = clone.position.clone();
 		var newZone = collision.getZone(collisionWater);
-		if (app.map.hasWater(newZone.x, newZone.y, newZone.x)) {
+		if (app.map.hasWater(newZone.x, newZone.y, newZone.z)) {
 			light.visible = false;
 			if (!inWater) {
 				this.currentdirection.jump = -1;
@@ -204,7 +204,7 @@ THREE.Hero = function (app) {
 
 		collisionWater.y += 25;
 		var newZoneHear = collision.getZone(collisionWater);
-		if (app.map.hasWater(newZoneHear.x, newZoneHear.y, newZoneHear.x)) {
+		if (app.map.hasWater(newZoneHear.x, newZoneHear.y, newZoneHear.z)) {
 			//if in water
 			if (!jump && inWater && pitchObject.rotation.x < 0.1 && pitchObject.rotation.x > -0.1)
 				this.currentdirection.jump = -0.1;

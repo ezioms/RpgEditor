@@ -175,11 +175,11 @@ THREE.Map = function (app) {
 	/*
 	 * Tool load image / gestion en cache
 	 */
-	var materials = [];
-	var index = -1;
-	this.loadTexture = function (path) {
-		if (listImg[path.src] !== undefined)
-			return listImg[path.src];
+	var materials = [new THREE.MeshBasicMaterial( { visible: false } )];
+	var index = 0;
+	this.loadTexture = function (path, visible) {
+		if (listImg[path.src+'_'+visible] !== undefined)
+			return listImg[path.src+'_'+visible];
 
 		var material = new THREE.MeshLambertMaterial({
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
@@ -190,13 +190,13 @@ THREE.Map = function (app) {
 		});
 		material.map.needsUpdate = true;
 
-		if(path.src.replace(url_script + 'images/background/', '') == 'water.png')
+		if (path.src.replace(url_script + 'images/background/', '') == 'water.png')
 			material.opacity = 0.3;
 
 		materials.push(material);
 		index++;
 
-		return listImg[path.src] = index;
+		return listImg[path.src+'_'+visible] = index;
 	};
 
 
@@ -277,11 +277,33 @@ THREE.Map = function (app) {
 	var cubeMesh = new THREE.CubeGeometry(sizeBloc, sizeBloc, sizeBloc);
 	var cubeMeshSmall = new THREE.CubeGeometry(sizeBloc / 5, sizeBloc / 5, sizeBloc / 5);
 	this.addCube = function (row) {
+		var filter = row.materials[0].src.replace(url_script + 'images/background/', '');
 
 		var mesh = new THREE.Mesh((row.subX || row.subY || row.subZ) ? cubeMeshSmall : cubeMesh);
 
-		for (keyImg in row.materials)
-			mesh.geometry.faces[keyImg].materialIndex = this.loadTexture(row.materials[keyImg]);
+		var zone, facesWater;
+		if (filter == 'water.png') {
+			zone = this.getZone({x: row.x, y: row.y, z: row.z});
+
+			facesWater = {
+				0: water[zone.x + 1] != undefined && water[zone.x + 1][zone.y] !== undefined && water[zone.x + 1][zone.y][zone.z] !== undefined && water[zone.x + 1][zone.y][zone.z] ? true : false,
+				1: water[zone.x - 1] != undefined && water[zone.x - 1][zone.y] !== undefined && water[zone.x - 1][zone.y][zone.z] !== undefined && water[zone.x - 1][zone.y][zone.z] ? true : false,
+				2: water[zone.x] !== undefined && water[zone.x][zone.y + 1] !== undefined && water[zone.x][zone.y + 1][zone.z] !== undefined && water[zone.x][zone.y + 1][zone.z] ? true : false,
+				3: water[zone.x] !== undefined && water[zone.x][zone.y - 1] !== undefined && water[zone.x][zone.y - 1][zone.z] !== undefined && water[zone.x][zone.y - 1][zone.z] ? true : false,
+				4: water[zone.x] !== undefined && water[zone.x][zone.y] !== undefined && water[zone.x][zone.y][zone.z + 1] !== undefined && water[zone.x][zone.y][zone.z + 1] ? true : false,
+				5: water[zone.x] !== undefined && water[zone.x][zone.y] !== undefined && water[zone.x][zone.y][zone.z - 1] !== undefined && water[zone.x][zone.y][zone.z - 1] ? true : false
+			};
+		}
+
+		for (var keyImg in row.materials) {
+			if (filter == 'water.png' && (row.x || row.y || row.z) && facesWater[keyImg]) {
+				mesh.geometry.faces[keyImg].materialIndex = 0;
+				console.log(mesh.geometry);
+			}
+			else
+				mesh.geometry.faces[keyImg].materialIndex = this.loadTexture(row.materials[keyImg]);
+
+		}
 
 		return mesh;
 	};
@@ -438,9 +460,6 @@ THREE.Map = function (app) {
 	var material = new THREE.MeshFaceMaterial(materials);
 	var element = new THREE.Mesh(geometry, material);
 	var elementWater = new THREE.Mesh(geometryWater, material);
-	elementWater.material.opacity = 0.8;
-	console.log(elementWater);
-
 
 	univers.add(element);
 	univers.add(elementWater);
