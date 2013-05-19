@@ -719,36 +719,31 @@ function onDocumentMouseUp(event) {
 			addObstacle(coordonnee.x, coordonnee.y, coordonnee.z, coordonnee);
 	}
 
-	if (app.scene.children.length < 200) {
-		var dataSend = {
-			background_px: dir_script + '../' + coordonnee.materials[0],
-			background_nx: dir_script + '../' + coordonnee.materials[1],
-			background_py: dir_script + '../' + coordonnee.materials[2],
-			background_ny: dir_script + '../' + coordonnee.materials[3],
-			background_pz: dir_script + '../' + coordonnee.materials[4],
-			background_nz: dir_script + '../' + coordonnee.materials[5]
-		};
+	var dataSend = {
+		background_px: dir_script + '../' + coordonnee.materials[0],
+		background_nx: dir_script + '../' + coordonnee.materials[1],
+		background_py: dir_script + '../' + coordonnee.materials[2],
+		background_ny: dir_script + '../' + coordonnee.materials[3],
+		background_pz: dir_script + '../' + coordonnee.materials[4],
+		background_nz: dir_script + '../' + coordonnee.materials[5]
+	};
 
-		var voxel;
+	var voxel;
 
-		if (coordonnee.subX > 0 || coordonnee.subY > 0 || coordonnee.subZ > 0) {
-			voxel = addCube(dataSend, true);
-			voxel.position.x = coordonnee.subX + 5;
-			voxel.position.y = coordonnee.subY;
-			voxel.position.z = coordonnee.subZ + 5;
-		} else {
-			voxel = addCube(dataSend);
-			voxel.position.x = coordonnee.x;
-			voxel.position.y = coordonnee.y;
-			voxel.position.z = coordonnee.z;
-		}
-
-		app.scene.add(voxel);
+	if (coordonnee.subX > 0 || coordonnee.subY > 0 || coordonnee.subZ > 0) {
+		voxel = addCube(dataSend, true);
+		voxel.position.x = coordonnee.subX + 5;
+		voxel.position.y = coordonnee.subY;
+		voxel.position.z = coordonnee.subZ + 5;
+	} else {
+		voxel = addCube(dataSend);
+		voxel.position.x = coordonnee.x;
+		voxel.position.y = coordonnee.y;
+		voxel.position.z = coordonnee.z;
 	}
-	else {
-		app.scene.children.length = 0;
-		getCubes();
-	}
+
+	app.scene.add(voxel);
+
 }
 
 
