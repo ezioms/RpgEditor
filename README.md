@@ -4,6 +4,8 @@ Enigma Cube
 
 [Site officiel](http://www.enigmacube.com) — [Documentation](http://docs.openrpg.fr) — [Forum](http://www.openrpg.fr/forums/85-enigma-cube)
 
+[Voir la vidéo de présentation](http://youtu.be/hSYKtFSRMsU)
+
 #### Jeu en javascript et PHP ####
 
 Enigma Cube est un jeu en WebGL s'appyant sur les frameworks THREE et sur KOHANA.
