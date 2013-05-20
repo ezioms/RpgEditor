@@ -245,7 +245,7 @@ function init() {
 		positionZ: app.camera.position.z,
 		addObject: function () {
 
-			Mapgui.typeAction.setValue('Manipuler un objet');
+			Mapgui.action.setValue('Manipuler un objet');
 
 			var vector = new THREE.Vector3(0, 0, 1);
 			projector.unprojectVector(vector, app.camera);
@@ -362,7 +362,7 @@ function init() {
 	});
 	Mapgui.object = f2.add(Mapgui.params, 'object', selectObjectList).onChange(function (value) {
 		modelSelect = value;
-		Mapgui.typeAction.setValue('Manipuler un objet');
+		Mapgui.action.setValue('Manipuler un objet');
 	});
 	Mapgui.addObject = f2.add(Mapgui.params, 'addObject');
 
