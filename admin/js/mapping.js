@@ -624,6 +624,7 @@ function onDocumentMouseDown(event) {
 							rotationY: 180 * memoryObjectSelect.rotation.y / Math.PI,
 							rotationX: 180 * memoryObjectSelect.rotation.x / Math.PI,
 							rotationZ: 180 * memoryObjectSelect.rotation.z / Math.PI,
+							scale: memoryObjectSelect.scale.x,
 							scaleY: memoryObjectSelect.scale.y,
 							scaleX: memoryObjectSelect.scale.x,
 							scaleZ: memoryObjectSelect.scale.z,
@@ -677,6 +678,12 @@ function onDocumentMouseDown(event) {
 						});
 						gui.rotationZ = gui.add(gui.params, 'rotationZ', -180, 180).onChange(function (value) {
 							memoryObjectSelect.rotation.setZ(value * Math.PI / 180);
+						});
+						gui.scale = gui.add(gui.params, 'scale', -100, 100).onChange(function (value) {
+							memoryObjectSelect.scale.set(value,value,value);
+							gui.scaleX.setValue(value);
+							gui.scaleY.setValue(value);
+							gui.scaleZ.setValue(value);
 						});
 						gui.scaleX = gui.add(gui.params, 'scaleX', -100, 100).onChange(function (value) {
 							memoryObjectSelect.scale.setX(value);
