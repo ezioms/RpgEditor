@@ -263,35 +263,6 @@ function init() {
 			});
 		}
 	};
-	var f1 = Mapgui.addFolder('Caméra');
-	f1.open();
-	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', 0, dataRegion.x * 50).onChange(function (value) {
-		app.camera.position.setX(value);
-	});
-	Mapgui.positionY = f1.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
-		app.camera.position.setY(value);
-	});
-	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', 0, dataRegion.z * 50).onChange(function (value) {
-		app.camera.position.setZ(value);
-	});
-	Mapgui.rotationY = f1.add(Mapgui.params, 'rotationY', -180, 180).onChange(function (value) {
-		app.camera.rotation.setY(value * Math.PI / 180);
-	});
-	Mapgui.rotationX = f1.add(Mapgui.params, 'rotationX', -180, 180).onChange(function (value) {
-		app.camera.rotation.setX(value * Math.PI / 180);
-	});
-	Mapgui.rotationZ = f1.add(Mapgui.params, 'rotationZ', -180, 180).onChange(function (value) {
-		app.camera.rotation.setZ(value * Math.PI / 180);
-	});
-	Mapgui.movementSpeed = f1.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
-		controls.movementSpeed = value;
-	});
-	Mapgui.lookSpeed = f1.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
-		controls.lookSpeed = value;
-	});
-	Mapgui.lookVertical = f1.add(Mapgui.params, 'lookVertical').onChange(function (value) {
-		controls.lookVertical = value;
-	});
 
 	var f2 = Mapgui.addFolder('Carte');
 	f2.open();
@@ -394,6 +365,36 @@ function init() {
 		Mapgui.typeAction.setValue('Manipuler un objet');
 	});
 	Mapgui.addObject = f2.add(Mapgui.params, 'addObject');
+
+	var f1 = Mapgui.addFolder('Caméra');
+	f1.open();
+	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', 0, dataRegion.x * 50).onChange(function (value) {
+		app.camera.position.setX(value);
+	});
+	Mapgui.positionY = f1.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
+		app.camera.position.setY(value);
+	});
+	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', 0, dataRegion.z * 50).onChange(function (value) {
+		app.camera.position.setZ(value);
+	});
+	Mapgui.rotationY = f1.add(Mapgui.params, 'rotationY', -180, 180).onChange(function (value) {
+		app.camera.rotation.setY(value * Math.PI / 180);
+	});
+	Mapgui.rotationX = f1.add(Mapgui.params, 'rotationX', -180, 180).onChange(function (value) {
+		app.camera.rotation.setX(value * Math.PI / 180);
+	});
+	Mapgui.rotationZ = f1.add(Mapgui.params, 'rotationZ', -180, 180).onChange(function (value) {
+		app.camera.rotation.setZ(value * Math.PI / 180);
+	});
+	Mapgui.movementSpeed = f1.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
+		controls.movementSpeed = value;
+	});
+	Mapgui.lookSpeed = f1.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
+		controls.lookSpeed = value;
+	});
+	Mapgui.lookVertical = f1.add(Mapgui.params, 'lookVertical').onChange(function (value) {
+		controls.lookVertical = value;
+	});
 
 	document.getElementById('map-gui-container').appendChild(Mapgui.domElement);
 	Mapgui.open();
