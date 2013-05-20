@@ -37,6 +37,36 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 ### Change log ###
 
 
+20 mai 2013 - **r11**
+
+* Gestion des bloc d'eau (On peut nager + audio)
+* Affichage des objets ajouté manuellement sur l'éditeur de map
+* Gestion de block transparent pour empecher un user de passer
+* Ajout des objets 3D de blender
+* Amélioration suppression geometry memory
+* Possibilité d'éditer un objet et de le sauvegarder
+* Mise a jour base de données
+* Correction CSS GUI
+* Retrait des zone
+* Ajout de petit cube
+* Base de donnée modifié
+* Gestion des collision avec petit cube
+* Image de chargement
+* Ajout d'une classe qui gère les collisions
+* Correctif bot, ils savent monter les marches
+* Correction et prise en charge de l'environnement pour les PNJ pour l'attaque
+* Correction PNJ déplacement
+* Correction tire sur PNJ a travers décor
+* Optimisation images
+* Correction texte alerte
+* Création vignette objet 3D
+* Admin retrait regenerate map
+* Ajout du profil
+* Ajout du module de game over avec un nouvelle objet piège a pointe
+* Amélioration UI mapping
+* Mise a jour des objets (de nouveaux)
+
+
 10 mai 2013 - **r10**
 
 * Refonte de la partie audio, correction du bug lors de la premiere lecture et purge des fichiers inutiles
