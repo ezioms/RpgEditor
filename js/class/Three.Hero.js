@@ -215,8 +215,18 @@ THREE.Hero = function (app) {
 				this.currentdirection.jump = -0.1;
 
 			water.style.display = user_oxygen.style.display = 'block';
-		} else
+			this.oxygen -= 0.05;
+
+			if (this.oxygen <= 0)
+				this.hp--;
+		} else {
+			if (this.oxygen == 100)
+				user_oxygen.style.display = 'none';
+			else if (this.oxygen < 100)
+				this.oxygen += 0.05;
+
 			water.style.display = 'none';
+		}
 
 
 		if (!moveForward && !moveBackward)
@@ -283,19 +293,6 @@ THREE.Hero = function (app) {
 		if (this.oxygen > 100)
 			this.oxygen = 100;
 
-		if (!inWater) {
-			if (this.oxygen == 100)
-				user_oxygen.style.display = 'none';
-			else if (this.oxygen < 100)
-				this.oxygen += 0.05;
-		} else if (inWater) {
-			if (this.oxygen <= 0)
-				app.hero.gameover();
-			else
-				this.oxygen -= 0.01;
-
-		}
-
 		if (memoryBarValue != this.hp) {
 			memoryBarValue = this.hp;
 			valueGraphHp.innerHTML = this.hp;
@@ -323,7 +320,6 @@ THREE.Hero = function (app) {
 			if (now - shootgun > 300) {
 				battle.add(app);
 				shootgun = now;
-
 			}
 		}
 

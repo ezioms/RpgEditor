@@ -190,8 +190,8 @@ FileETag None
   RewriteEngine On
   RewriteBase /
   RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+  #RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  #RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
   RewriteRule ^(application|modules|system) - [F,L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
