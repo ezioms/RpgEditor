@@ -22,6 +22,8 @@ THREE.Hero = function (app) {
 		jump: 0
 	};
 
+	this.oxygen = 100;
+
 	var moveForward = false;
 	var moveBackward = false;
 	var moveLeft = false;
@@ -45,6 +47,7 @@ THREE.Hero = function (app) {
 	var memoryScoreValue = 0;
 	var memoryAmmoValue = 0;
 	var memoryDistance = 0;
+	var memoryBarOxygenValue = 0;
 
 	var light = new THREE.PointLight(0xffaa00, 1.2, 400);
 
@@ -211,7 +214,7 @@ THREE.Hero = function (app) {
 			if (!jump && inWater && pitchObject.rotation.x < 0.5 && pitchObject.rotation.x > -0.5)
 				this.currentdirection.jump = -0.1;
 
-			water.style.display = 'block';
+			water.style.display = user_oxygen.style.display = 'block';
 		} else
 			water.style.display = 'none';
 
@@ -277,10 +280,31 @@ THREE.Hero = function (app) {
 		else if (this.hp > 100)
 			this.hp = 100;
 
+		if (this.oxygen > 100)
+			this.oxygen = 100;
+
+		if (!inWater) {
+			if (this.oxygen == 100)
+				user_oxygen.style.display = 'none';
+			else if (this.oxygen < 100)
+				this.oxygen += 0.05;
+		} else if (inWater) {
+			if (this.oxygen <= 0)
+				app.hero.gameover();
+			else
+				this.oxygen -= 0.01;
+
+		}
+
 		if (memoryBarValue != this.hp) {
 			memoryBarValue = this.hp;
-			valueGraph.innerHTML = this.hp;
-			contentGraph.style.width = this.hp + '%';
+			valueGraphHp.innerHTML = this.hp;
+			contentGraphHp.style.width = this.hp + '%';
+		}
+
+		if (memoryBarOxygenValue != this.oxygen) {
+			memoryBarOxygenValue = this.oxygen;
+			contentGraphOxygen.style.width = memoryBarOxygenValue + '%';
 		}
 
 		if (memoryScoreValue != this.argent) {
@@ -313,6 +337,7 @@ THREE.Hero = function (app) {
 		yawObject.rotation.set(0, -2.5, 0);
 		yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
 		this.hp = 100;
+		this.oxygen = 100;
 		this.ammo = 32;
 		this.currentdirection.x = 0;
 		this.currentdirection.y = 0;

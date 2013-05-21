@@ -3,7 +3,7 @@
 	"metadata" :
 	{
 		"formatVersion" : 3.1,
-		"generatedBy"   : "Blender 2.66 Exporter",
+		"generatedBy"   : "Blender 2.65 Exporter",
 		"vertices"      : 25,
 		"faces"         : 16,
 		"normals"       : 25,
@@ -24,11 +24,10 @@
 		"colorAmbient" : [0.1428234360042726, 0.7276472676939854, 0.5005282953460259],
 		"colorDiffuse" : [0.1428234360042726, 0.7276472676939854, 0.5005282953460259],
 		"colorSpecular" : [0.5869565010070801, 0.5869565010070801, 0.5869565010070801],
+		"alphaTest" : 0.05,
 		"depthTest" : true,
 		"depthWrite" : true,
-		"mapBump" : "ivy_leaves_c.png",
-		"mapBumpWrap" : ["repeat", "repeat"],
-		"mapDiffuse" : "ivy_leaves_a.png",
+		"mapDiffuse" : "ivy_leaves_m.png",
 		"mapDiffuseWrap" : ["repeat", "repeat"],
 		"mapNormal" : "ivy_leaves_n.png",
 		"mapNormalFactor" : -5.0,

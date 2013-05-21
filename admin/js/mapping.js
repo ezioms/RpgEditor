@@ -32,7 +32,6 @@ var clock = new THREE.Clock();
 
 var gui;
 var Mapgui;
-var margeGrid = 100;
 
 $(function () {
 	init();
@@ -236,7 +235,6 @@ function init() {
 		visibleGrid: true,
 		material: 'texture',
 		lookVertical: true,
-		margeGridY:margeGrid,
 		rotationY: 180 * app.camera.rotation.y / Math.PI,
 		rotationX: 180 * app.camera.rotation.x / Math.PI,
 		rotationZ: 180 * app.camera.rotation.z / Math.PI,
@@ -334,9 +332,6 @@ function init() {
 	});
 	Mapgui.visibleGrid = f2.add(Mapgui.params, 'visibleGrid').onChange(function (value) {
 		grille.visible = value;
-	});
-	Mapgui.margeGridY = f2.add(Mapgui.params, 'margeGridY', 20, 500).onChange(function (value) {
-		margeGrid = value;
 	});
 	Mapgui.visibleMap = f2.add(Mapgui.params, 'visibleMap').onChange(function (value) {
 		cubes.visible = value;
@@ -836,11 +831,6 @@ function render() {
 		voxelPosition.add(intersector.point, intersector.object.matrixRotationWorld.multiplyVector3(tmpVec));
 		objectSelect.position.copy(voxelPosition);
 	}
-
-	if (app.camera.position.y > margeGrid || app.camera.position.y < 0)
-		grille.position.setY(app.camera.position.y - margeGrid);
-	else
-		grille.position.y = 0;
 
 	controls.update(clock.getDelta(), dataRegion);
 	Mapgui.positionX.setValue(app.camera.position.x);

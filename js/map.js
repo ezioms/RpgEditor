@@ -10,12 +10,15 @@ var buttonEnter = false;
 var contentLoading = document.getElementById('content_loading');
 var contentBody = document.getElementById('content_body');
 var contentAction = document.getElementById('content_action');
-var valueGraph = document.getElementById('valueMoyenneGraph');
-var contentGraph = document.getElementById('ContenuGraphique');
+var valueGraphHp = document.getElementById('valueMoyenneGraph_hp');
+var contentGraphHp = document.getElementById('ContenuGraphique_hp');
+var valueGraphOxygen = document.getElementById('valueMoyenneGraph_oxygen');
+var contentGraphOxygen = document.getElementById('ContenuGraphique_oxygen');
 var cible = document.getElementById('cible');
 var water = document.getElementById('water');
 var logout = document.getElementById('logout');
-var userHp = document.getElementById('user_hp');
+var user_info = document.getElementById('user_info');
+var user_oxygen = document.getElementById('user_oxygen');
 var userScore = document.getElementById('user_argent');
 var userAmmo = document.getElementById('user_ammo');
 var noCursor = document.getElementById('noCursor');
@@ -55,7 +58,7 @@ var load = function () {
 		return setTimeout(load, 200);
 
 	// show elements HTML for hero HP / SCORE ...
-	userHp.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = notifications.style.display = 'block';
+	user_info.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = notifications.style.display = 'block';
 
 	info(app.loader.nbrBot + ' habitant(s)');
 	info(app.loader.nbrElements + ' cube(s)');
