@@ -32,7 +32,7 @@ var webGL = document.getElementById('debugWebGL');
 app = {};
 
 app.scene = new THREE.Scene;
-app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 8000);
+app.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 12000);
 app.loader = new THREE.PreLoader;
 app.JSONLoader = new THREE.JSONLoader();
 app.clock = new THREE.Clock;
