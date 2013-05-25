@@ -132,26 +132,33 @@ THREE.Hero = function (app) {
 	 * UPDATE du héro
 	 */
 	this.update = function (appNew) {
-
 		app = appNew;
 		clone = yawObject.clone();
 
 		if (moveLeft && !moveRight)
-			clone.translateX(-this.speed);
+			clone.translateX(-this.speed / (inWater ? 2 : 1));
 
 		if (moveRight && !moveLeft)
-			clone.translateX(this.speed);
+			clone.translateX(this.speed / (inWater ? 2 : 1));
 
 		if (moveForward && !moveBackward) {
 			if (!inWater)
 				speedTmp += 0.05;
-			else
+			else {
 				speedTmp += 0.01;
-			clone.translateZ(-(this.speed + speedTmp));
+				clone.translateY(pitchObject.rotation.x);
+			}
+
+			clone.translateZ(-(this.speed + speedTmp) / (inWater ? 2 : 1) + (inWater ? Math.abs(pitchObject.rotation.x) : 0));
 		}
 		if (moveBackward && !moveForward) {
 			speedTmp += 0.01;
-			clone.translateZ(this.speed);
+			clone.translateZ(this.speed / (inWater ? 2 : 1));
+
+			if (inWater)
+				clone.translateY(pitchObject.rotation.x);
+
+			clone.translateZ((this.speed + speedTmp) / (inWater ? 2 : 1) + (inWater ? Math.abs(pitchObject.rotation.x) : 0));
 		}
 
 		if (inWater && !spacerActive)
@@ -392,8 +399,8 @@ THREE.Hero = function (app) {
 		var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
 		var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
-		yawObject.rotation.y -= movementX * 0.002;
-		pitchObject.rotation.x -= movementY * 0.002;
+		yawObject.rotation.y -= movementX * ( inWater ? 0.001 : 0.002);
+		pitchObject.rotation.x -= movementY * ( inWater ? 0.001 : 0.002);
 
 		pitchObject.rotation.x = Math.max((inWater ? -1.4 : -1), Math.min((inWater ? 1.4 : 1), pitchObject.rotation.x));
 

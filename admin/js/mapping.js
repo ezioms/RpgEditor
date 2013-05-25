@@ -142,6 +142,7 @@ function init() {
 
 	// roll-over helpers
 	rollOverMesh = addCube(getTexutreVoxel());
+	rollOverMesh.name = 'vortex';
 	rollOverMesh.position.y += 50 / 2;
 	rollOverMesh.position.x += 50 / 2;
 	rollOverMesh.position.z += 50 / 2;
@@ -405,7 +406,7 @@ function getCubes() {
 	if (cubes) {
 		for (var keyChild in app.scene.children) {
 			var row = app.scene.children[keyChild];
-			if (row.name !== undefined && row.name == 'cube') {
+			if (row.name !== undefined && (row.name == 'cubeInvisible' || row.name == 'cubeVisible')) {
 				row.deallocate();
 				app.scene.remove(row);
 			}
@@ -469,11 +470,11 @@ function getCubes() {
 	}
 
 	cubes = new THREE.Mesh(geometry, MeshFaceMaterial);
-	cubes.name = 'cube';
+	cubes.name = 'cubeVisible';
 	app.scene.add(cubes);
 
 	cubesHide = new THREE.Mesh(geometryHide, MeshFaceMaterial);
-	cubesHide.name = 'cube';
+	cubesHide.name = 'cubeInvisible';
 	app.scene.add(cubesHide);
 
 	container.style.display = 'block';
