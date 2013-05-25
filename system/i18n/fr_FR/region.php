@@ -13,7 +13,7 @@ $lang = array
     'no_parent_map' => 'Principales cartes',
     'look_all_map' => 'Sous cartes',
     'image_fight' => 'Image de combat',
-    'image_bg' => 'Image de fond',
+    'image_bg' => 'Image du sol',
     'parent_map' => 'Carte parent',
     'prim_map' => 'Carte principale',
     'nbr_case' => 'Nombre de cases',
@@ -25,8 +25,12 @@ $lang = array
     'no_music' => 'Aucune musique',
     'degradation' => 'Force de la dégradation',
     'frequence' => 'Fréquence de la dégradation',
-    'color' => 'Couleur de fond',
+    'color' => 'Couleur du background',
     'function' => 'Fonction javascript',
+    'ambiance' => 'Lumière d\'ambiance',
+    'sun' => 'Activer le soleil',
+    'noSkybox' => 'Pas de skybox',
+    'skybox' => 'Skybox',
     '' => '',
 );
 ?>

@@ -152,8 +152,7 @@ THREE.Hero = function (app) {
 			clone.translateZ(-(this.speed + speedTmp) / (inWater ? 2 : 1) + (inWater ? Math.abs(pitchObject.rotation.x) : 0));
 		}
 		if (moveBackward && !moveForward) {
-			speedTmp += 0.01;
-			clone.translateZ(this.speed / (inWater ? 2 : 1));
+			speedTmp = 0.01;
 
 			if (inWater)
 				clone.translateY(pitchObject.rotation.x);

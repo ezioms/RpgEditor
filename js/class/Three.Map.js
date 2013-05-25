@@ -13,6 +13,7 @@ THREE.Map = function (app) {
 	var degradation = app.loader.map.degradation;
 	var frequence = app.loader.map.frequence;
 	var fonction = app.loader.map.fonction;
+	var skybox = app.loader.map.skybox;
 
 
 	//size
@@ -29,7 +30,12 @@ THREE.Map = function (app) {
 
 	var geometryWater = new THREE.Geometry();
 
-	var ambient = new THREE.AmbientLight(0x444444);
+	if (!app.loader.map.sun)
+		var ambient = new THREE.AmbientLight(app.loader.map.ambiance);
+	else {
+		var ambient = new THREE.DirectionalLight(0xffffff, 2);
+		ambient.position.set(0, maxY * 10, 0).normalize();
+	}
 
 	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
 
@@ -183,7 +189,7 @@ THREE.Map = function (app) {
 
 		var material = new THREE.MeshLambertMaterial({
 			map: new THREE.Texture(path, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
-			ambient: 0xbbbbbb,
+			ambient: app.loader.map.ambiance,
 			wireframe: this.wireframe,
 			transparent: true,
 			side: 2
@@ -352,19 +358,48 @@ THREE.Map = function (app) {
 	 * CONSTRUCTOR
 	 */
 
+	//skybox
+	if (skybox > 0) {
+		var path = url_script + 'images/skybox/' + skybox + '/';
+		var format = '.jpg';
+		var urls = [
+			path + 'px' + format, path + 'nx' + format,
+			path + 'py' + format, path + 'ny' + format,
+			path + 'pz' + format, path + 'nz' + format
+		];
+
+		var textureCube = THREE.ImageUtils.loadTextureCube(urls, new THREE.CubeRefractionMapping());
+
+		var shader = THREE.ShaderLib[ 'cube' ];
+		shader.uniforms[ 'tCube' ].value = textureCube;
+
+		var material = new THREE.ShaderMaterial({
+			fragmentShader: shader.fragmentShader,
+			vertexShader: shader.vertexShader,
+			uniforms: shader.uniforms,
+			depthWrite: false,
+			side: THREE.BackSide
+
+		});
+
+		var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX * 2, maxY * 2, maxZ * 2), material);
+		mesh.position.set(maxX / 2, maxY / 2, maxZ / 2);
+		univers.add(mesh);
+	}
+
 	//ground
 	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
 	material.wrapS = material.wrapT = THREE.RepeatWrapping;
 	material.repeat.set(infoSize.xMax, infoSize.zMax);
 	material.needsUpdate = true;
 
-	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, maxY, maxZ, infoSize.xMax, infoSize.yMax, infoSize.zMax), new THREE.MeshLambertMaterial({
+	var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX, 1, maxZ, infoSize.xMax, infoSize.yMax, infoSize.zMax), new THREE.MeshLambertMaterial({
 		map: material,
 		wireframe: this.wireframe,
-		ambient: 0xbbbbbb,
+		ambient: app.loader.map.ambiance,
 		side: 2
 	}));
-	mesh.position.set((maxX / 2), (maxY / 2), (maxZ / 2));
+	mesh.position.set((maxX / 2), 0, (maxZ / 2));
 
 	univers.add(mesh);
 

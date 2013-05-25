@@ -64,6 +64,31 @@
                 <input name="background_color" id="background_color" value="<?php echo str_replace('0x', '#',$row->background_color); ?>" class="inputbox input-text" type="color" maxlength="50" />
             </p>
 
+            <p class="form-line">
+                <label for="ambiance" class="form-label"><?php echo Kohana::lang( 'region.ambiance' ); ?> :</label>
+                <input name="ambiance" id="ambiance" value="<?php echo str_replace('0x', '#',$row->ambiance); ?>" class="inputbox input-text" type="color" maxlength="50" />
+            </p>
+
+            <p class="form-line">
+                <label for="sun" class="form-label"><?php echo Kohana::lang( 'region.sun' ); ?> :</label>
+                <select class="inputbox" name="sun" id="sun">
+                    <option value="1" class="vert"><?php echo Kohana::lang( 'form.yes' ); ?></option>
+                    <option value="0" class="rouge" <?php if( !$row->sun ) echo 'selected="selected"'; ?>><?php echo Kohana::lang( 'form.no' ); ?></option>
+                </select>
+            </p>
+
+            <p class="form-line">
+                <label for="skybox" class="form-label"><?php echo Kohana::lang( 'region.skybox' ); ?> :</label>
+                <select name="skybox" id="skybox" class="inputbox" >
+                    <option value="0"><?php echo Kohana::lang( 'region.noSkybox' ); ?></option>
+                    <?php if( $skybox ) : ?>
+                        <?php foreach( $skybox as $val ) : ?>
+                            <option value="<?php echo $val; ?>" <?php echo ( $val == $row->skybox ) ? 'selected="selected"' : ''; ?>><?php echo $val; ?></option>
+                        <?php endforeach ?>
+                    <?php endif ?>
+                </select>
+            </p>
+
 				<p class="form-line">
 						<label class="form-label"><?php echo Kohana::lang( 'region.image_bg' ); ?> :</label>
 						<input type="button" id="list_vignette_background" class="button" value="<?php echo Kohana::lang( 'form.selected_list' ); ?>" />

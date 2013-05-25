@@ -120,6 +120,9 @@ THREE.PreLoader = function () {
 	this.getMapCompleted = function () {
 		var noComplete = 0;
 
+		eval('app.loader.map.ambiance = '+app.loader.map.ambiance+';'+
+			'app.loader.map.colorBackground = '+app.loader.map.colorBackground+';');
+
 		for (key in this.map.elements) {
 			var row = this.map.elements[key].materials;
 
