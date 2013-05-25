@@ -37,6 +37,20 @@ Vous avez aussi la possibilité de lancer votre server node pour le multi-joueur
 
 
 ### Change log ###
+25 mai 2013 - **r12**
+
+* Mise à jour des vignettes
+* Ajout de nouveaux objets
+* Respiration sous l'eau est prise en compte
+* Amélioration déplacement dans l'eau
+* Mise en place des skybox
+* Mise en place du soleil (lumière)
+* Image du sol prise en compte
+* Correction bug couleur background
+* Nettoyage panorama par skybox
+* Correction Mysql
+* Couleur ambience editable
+* Correction far camera
 
 
 20 mai 2013 - **r11**

@@ -138,7 +138,6 @@ var initialize = function () {
 		preserveDrawingBuffer: true
 	});
 	app.renderer.setSize(window.innerWidth, window.innerHeight);
-	console.log(app.map.getBackgroundColor());
 	app.renderer.setClearColor(app.map.getBackgroundColor());
 
 	// load music
@@ -194,8 +193,6 @@ var render = function () {
 	// lecture de message a afficher
 	if (app.messages) {
 		for (var keyMsg in app.messages) {
-
-			console.log(app.messages[keyMsg]);
 			if ($('.notifications').last().html() != app.messages[keyMsg])
 				lookMessage(app.messages[keyMsg]);
 			app.messages.splice(keyMsg, 1);
