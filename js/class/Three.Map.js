@@ -29,17 +29,15 @@ THREE.Map = function (app) {
 	var geometry = new THREE.Geometry();
 
 	var geometryWater = new THREE.Geometry();
-
-	if (!app.loader.map.sun)
-		var ambient = new THREE.AmbientLight(app.loader.map.ambiance);
-	else {
-		var ambient = new THREE.DirectionalLight(0xffffff, 2.5);
-		ambient.position.set(0, maxY * 10, 0).normalize();
-	}
+	var ambient = new THREE.AmbientLight(app.loader.map.ambiance);
 
 	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
 
-	var light2 = new THREE.PointLight(0xffaa00, 1, 600);
+	if (app.loader.map.sun) {
+		var light2 = new THREE.DirectionalLight(0xffffff);
+		light2.position.set(1, 0.75, 0.5).normalize();
+	} else
+		var light2 = new THREE.PointLight(0xffaa00, 1, 600);
 
 
 	var obstacles = {};
@@ -264,13 +262,15 @@ THREE.Map = function (app) {
 		else
 			light1.visible = false;
 
-		light2.intensity = random(70, 100) / 100;
-		if (minDistance2.value) {
-			light2.position.set(minDistance2.value.x, minDistance2.value.y + sizeBloc + random(0, 10), minDistance2.value.z);
-			light2.visible = true;
+		if (!light2) {
+			light2.intensity = random(70, 100) / 100;
+			if (minDistance2.value) {
+				light2.position.set(minDistance2.value.x, minDistance2.value.y + sizeBloc + random(0, 10), minDistance2.value.z);
+				light2.visible = true;
+			}
+			else
+				light2.visible = false;
 		}
-		else
-			light2.visible = false;
 	};
 
 
@@ -358,7 +358,7 @@ THREE.Map = function (app) {
 	 * CONSTRUCTOR
 	 */
 
-	//skybox
+//skybox
 	if (skybox > 0) {
 		var path = url_script + 'images/skybox/' + skybox + '/';
 		var format = '.jpg';
@@ -387,7 +387,7 @@ THREE.Map = function (app) {
 		univers.add(mesh);
 	}
 
-	//ground
+//ground
 	var material = new THREE.Texture(app.loader.map.materials, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter);
 	material.wrapS = material.wrapT = THREE.RepeatWrapping;
 	material.repeat.set(infoSize.xMax, infoSize.zMax);
@@ -403,7 +403,7 @@ THREE.Map = function (app) {
 
 	univers.add(mesh);
 
-	//blocs
+//blocs
 	for (var x = 0; x <= infoSize.xMax; x++) {
 		obstacles[x] = {};
 		water[x] = {};
@@ -417,7 +417,7 @@ THREE.Map = function (app) {
 		}
 	}
 
-	//blocs small
+//blocs small
 	for (var x = 0; x <= infoSize.xMax * 5; x++) {
 		subObstacles[x] = {};
 		for (var y = 0; y <= infoSize.yMax * 5; y++) {
@@ -474,7 +474,7 @@ THREE.Map = function (app) {
 			THREE.GeometryUtils.merge(geometry, cube);
 	}
 
-	// deformation des vertices
+// deformation des vertices
 	for (var i = 0, l = geometry.vertices.length; i < l; i++) {
 		if (random(0, 100) > frequence)
 			continue;
@@ -500,6 +500,7 @@ THREE.Map = function (app) {
 		lights: lights,
 		water: water
 	};
-};
+}
+;
 
 THREE.Map.prototype = Object.create(THREE.Object3D.prototype);
