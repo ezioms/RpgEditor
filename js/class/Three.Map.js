@@ -33,7 +33,7 @@ THREE.Map = function (app) {
 	if (!app.loader.map.sun)
 		var ambient = new THREE.AmbientLight(app.loader.map.ambiance);
 	else {
-		var ambient = new THREE.DirectionalLight(0xffffff, 2);
+		var ambient = new THREE.DirectionalLight(0xffffff, 2.5);
 		ambient.position.set(0, maxY * 10, 0).normalize();
 	}
 

@@ -32,7 +32,6 @@
                 "ambiance" : "<?php echo $region->map->region->ambiance; ?>",
                 "skybox" : "<?php echo $region->map->region->skybox; ?>",
                 "sun" : "<?php echo $region->map->region->sun; ?>",
-                "univers" :  "<?php echo str_replace('images/background/', '', $region->map->region->background_univers); ?>",
                 "music" :  "<?php echo $region->map->region->music; ?>",
                 "degradation" :  "<?php echo $region->map->region->degradation; ?>",
                 "frequence" :  "<?php echo $region->map->region->frequence; ?>",

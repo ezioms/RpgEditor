@@ -158,15 +158,6 @@ THREE.PreLoader = function () {
 			noCompletedImage--;
 		this.stat('Chargement des images pour la carte', noCompletedImage);
 
-		if (typeof this.map.univers == 'string')
-			this.map.univers = this.loadImage(dir_script + this.map.univers);
-
-		if (!this.map.univers.complete)
-			noComplete++;
-		else
-			noCompletedImage--;
-		this.stat('Chargement des images pour la carte', noCompletedImage);
-
 		return noComplete ? false : true;
 	};
 

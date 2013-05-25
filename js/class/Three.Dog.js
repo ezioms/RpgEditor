@@ -180,7 +180,7 @@ THREE.Dog = function (picture, id) {
 
 		var material = new THREE.MeshLambertMaterial({
 			map: new THREE.Texture(canvas, new THREE.UVMapping(), THREE.ClampToEdgeWrapping, THREE.ClampToEdgeWrapping, THREE.NearestFilter, THREE.LinearMipMapLinearFilter),
-			ambient: 0xbbbbbb,
+			ambient: app.loader.map.ambiance,
 			wireframe: this.wireframe,
 			transparent: true
 		});
