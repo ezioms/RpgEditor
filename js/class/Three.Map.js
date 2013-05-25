@@ -33,7 +33,7 @@ THREE.Map = function (app) {
 
 	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
 
-	if (app.loader.map.sun) {
+	if (app.loader.map.sun > 0) {
 		var light2 = new THREE.DirectionalLight(0xffffff);
 		light2.position.set(1, 0.75, 0.5).normalize();
 	} else
@@ -205,22 +205,6 @@ THREE.Map = function (app) {
 	 * UPDATE map
 	 */
 	this.update = function (app) {
-		var delta = app.clock.getElapsedTime();
-		var timeDelta = delta % 600;
-
-		if (timeDelta < 100)
-			app.map.getAmbience().color.setHex(0x444444);
-		else if (timeDelta < 200)
-			app.map.getAmbience().color.setHex(0x555555);
-		else if (timeDelta < 300)
-			app.map.getAmbience().color.setHex(0x666666);
-		else if (timeDelta < 400)
-			app.map.getAmbience().color.setHex(0x555555);
-		else if (timeDelta < 500)
-			app.map.getAmbience().color.setHex(0x444444);
-		else
-			app.map.getAmbience().color.setHex(0x333333);
-
 		var minDistance1 = {
 			distance: null,
 			value: null,
@@ -262,7 +246,7 @@ THREE.Map = function (app) {
 		else
 			light1.visible = false;
 
-		if (!light2) {
+		if (app.loader.map.sun == 0) {
 			light2.intensity = random(70, 100) / 100;
 			if (minDistance2.value) {
 				light2.position.set(minDistance2.value.x, minDistance2.value.y + sizeBloc + random(0, 10), minDistance2.value.z);
