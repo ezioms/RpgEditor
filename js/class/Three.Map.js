@@ -368,22 +368,17 @@ THREE.Map = function (app) {
 			path + 'pz' + format, path + 'nz' + format
 		];
 
-		var textureCube = THREE.ImageUtils.loadTextureCube(urls, new THREE.CubeRefractionMapping());
+		var materialArray = [];
+		for (var i = 0; i < 6; i++)
+			materialArray.push(new THREE.MeshBasicMaterial({
+				map: THREE.ImageUtils.loadTexture(urls[i]),
+				side: THREE.BackSide
+			}));
+		var skyMaterial = new THREE.MeshFaceMaterial(materialArray);
 
-		var shader = THREE.ShaderLib[ 'cube' ];
-		shader.uniforms[ 'tCube' ].value = textureCube;
-
-		var material = new THREE.ShaderMaterial({
-			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader,
-			uniforms: shader.uniforms,
-			depthWrite: false,
-			side: THREE.BackSide
-
-		});
-
-		var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX * 2, maxY * 2, maxZ * 2), material);
+		var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX * 5, maxY * 5, maxZ * 5), skyMaterial);
 		mesh.position.set(maxX / 2, maxY / 2, maxZ / 2);
+
 		univers.add(mesh);
 	}
 
