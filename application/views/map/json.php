@@ -43,7 +43,8 @@
                 },
                 "articles" :  [ <?php echo $region->map->articles; ?> ],
                 "elements" :  [ <?php echo str_replace('images/background/', '', $region->map->elements); ?> ],
-                "modules" :  [ <?php echo $region->map->modules; ?> ]
+                "modules" :  [ <?php echo $region->map->modules; ?> ],
+                "listMaterials" :  <?php echo $region->map->materials; ?>
     },
     "bots" : {
             "list" : [

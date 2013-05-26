@@ -57,23 +57,8 @@ THREE.PreLoader = function () {
 			this.nbrBot += this.bots.list.length;
 
 			// map
-			this.completedImage += 2; // baground + wall
-			for (var keyElement in this.map.elements) {
-				if (Object.prototype.toString.apply(this.map.elements[keyElement].materials) === '[object Array]')
-					for (keyImg in this.map.elements[keyElement].materials)
-						this.completedImage++;
-				else if (this.map.elements[keyElement].materials)
-					this.completedImage++;
-
-				this.nbrElements++;
-			}
-
-			// items
-			for (var keyItems in this.items)
-				if (this.items[keyItems].image) {
-					this.completedImage++;
-					this.nbrItems++;
-				}
+			this.completedImage++; // background
+			this.completedImage += this.map.listMaterials.length;
 
 			// sounds
 			for (var keySounds in this.sounds) {
@@ -85,8 +70,8 @@ THREE.PreLoader = function () {
 		noCompletedImage = this.completedImage;
 
 		if (this.getMapCompleted() && this.getBotCompleted() && this.getMyCompleted() && this.getSoundsCompleted()) {
+			this.stat('Chargement de l\'environnement');
 			this.setMapCurrent();
-			this.stat('Chargement fini', noCompletedImage);
 			return true;
 		}
 
@@ -108,7 +93,7 @@ THREE.PreLoader = function () {
 		else
 			noCompletedImage--;
 
-		this.stat('Chargement du héro', noCompletedImage);
+		this.stat('Chargement du héro');
 
 		return noComplete ? false : true;
 	};
@@ -126,30 +111,16 @@ THREE.PreLoader = function () {
 		eval('app.loader.map.ambiance = ' + app.loader.map.ambiance + ';');
 		eval('app.loader.map.colorBackground = ' + app.loader.map.colorBackground + ';');
 
-		for (key in this.map.elements) {
-			var row = this.map.elements[key].materials;
+		for (key in this.map.listMaterials) {
+			if (typeof this.map.listMaterials[key] == 'string')
+				this.map.listMaterials[key] = this.loadImage(dir_script + this.map.listMaterials[key]);
 
-			if (Object.prototype.toString.apply(row) === '[object Array]') {
-				for (keyImg in row) {
-					if (typeof row[keyImg] == 'string')
-						row[keyImg] = this.loadImage(dir_script + 'images/background/' + row[keyImg]);
+			if (!this.map.listMaterials[key].complete)
+				noComplete++;
+			else
+				noCompletedImage--;
 
-					if (!row[keyImg].complete)
-						noComplete++;
-					else
-						noCompletedImage--;
-				}
-			}
-			else if (row) {
-				if (typeof row == 'string')
-					row = this.loadImage(dir_script + row);
-
-				if (!row.complete)
-					noComplete++;
-				else
-					noCompletedImage--;
-			}
-			this.stat('Chargement des images pour la carte', noCompletedImage);
+			this.stat('Chargement des textures pour la carte');
 		}
 
 		if (typeof this.map.materials == 'string')
@@ -159,7 +130,8 @@ THREE.PreLoader = function () {
 			noComplete++;
 		else
 			noCompletedImage--;
-		this.stat('Chargement des images pour la carte', noCompletedImage);
+
+		this.stat('Chargement de la textures pour le sol de la carte');
 
 		return noComplete ? false : true;
 	};
@@ -180,7 +152,7 @@ THREE.PreLoader = function () {
 			else
 				noCompletedImage--;
 
-			this.stat('Chargement des habitants', noCompletedImage);
+			this.stat('Chargement des pnj');
 		}
 		return noComplete ? false : true;
 	};
@@ -192,23 +164,17 @@ THREE.PreLoader = function () {
 	this.getSoundsCompleted = function () {
 		var noComplete = 0;
 
-
 		for (var keySound in this.sounds) {
-
-			if (this.listAudio[this.sounds[keySound]] !== undefined)
-				continue;
-
-			this.listAudio[this.sounds[keySound]] = new Audio(dir_script + 'audios/' + this.sounds[keySound]);
-			this.listAudio[this.sounds[keySound]].load();
-
-			if (!this.listAudio[this.sounds[keySound]].complete)
+			if (this.listAudio[this.sounds[keySound]] == undefined) {
+				this.listAudio[this.sounds[keySound]] = new Audio(dir_script + 'audios/' + this.sounds[keySound]);
+				this.listAudio[this.sounds[keySound]].load();
 				noComplete++;
+			}
 			else
 				noCompletedImage--;
+
+			this.stat('Chargement des pistes audio', noCompletedImage);
 		}
-
-		this.stat('Chargement des sons', noCompletedImage);
-
 		return noComplete ? false : true;
 	};
 

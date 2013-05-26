@@ -44,6 +44,8 @@ class Map_Controller extends Authentic_Controller
 
         $elements = $modules = $items = FALSE;
 
+        $listMaterial = array();
+
         if (($rows = Map_Model::instance()->select(array(
             'region_id' => $this->region->id), FALSE)) !== FALSE
         ) {
@@ -56,9 +58,28 @@ class Map_Controller extends Authentic_Controller
             $images = file::listing_dir(DOCROOT . 'images/character');
 
             foreach ($rows as $row) {
-                if (!$row->module_map && !$row->bot)
-                    $elements[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "materials" : [ "' . $row->background_px . '", "' . $row->background_nx . '", "' . $row->background_py . '", "' . $row->background_ny . '", "' . $row->background_pz . '", "' . $row->background_nz . '"	] }';
-                else {
+                if (!$row->module_map && !$row->bot) {
+
+                    if (!in_array($row->background_px, $listMaterial))
+                        $listMaterial[] = $row->background_px;
+
+                    if (!in_array($row->background_nx, $listMaterial))
+                        $listMaterial[] = $row->background_nx;
+
+                    if (!in_array($row->background_py, $listMaterial))
+                        $listMaterial[] = $row->background_py;
+
+                    if (!in_array($row->background_ny, $listMaterial))
+                        $listMaterial[] = $row->background_ny;
+
+                    if (!in_array($row->background_pz, $listMaterial))
+                        $listMaterial[] = $row->background_pz;
+
+                    if (!in_array($row->background_nz, $listMaterial))
+                        $listMaterial[] = $row->background_nz;
+
+                    $elements[] = '{"x" : ' . $row->x . ', "z" : ' . $row->z . ', "y" : ' . $row->y . ', "subX" : ' . $row->subX . ', "subZ" : ' . $row->subZ . ', "subY" : ' . $row->subY . ', "materials" : [ ' . array_search($row->background_px, $listMaterial) . ', ' . array_search($row->background_nx, $listMaterial) . ', ' . array_search($row->background_py, $listMaterial) . ', ' . array_search($row->background_ny, $listMaterial) . ', ' . array_search($row->background_pz, $listMaterial) . ', ' . array_search($row->background_nz, $listMaterial) . '] }';
+                } else {
                     $data = @unserialize($row->action_map);
                     $action = json_encode($data);
 
@@ -122,6 +143,7 @@ class Map_Controller extends Authentic_Controller
         $this->region->map->modules = $modules ? implode(',', $modules) : FALSE;
         $this->region->map->articles = $articlesList ? implode(',', $articlesList) : FALSE;
         $this->region->map->region->bots = $this->botFixe;
+        $this->region->map->materials = json_encode($listMaterial);
 
         $json->region = $this->region;
 

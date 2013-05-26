@@ -55,7 +55,7 @@ app.group = [];
 var load = function () {
 	// load elements
 	if (!app.loader.getCompleted())
-		return setTimeout(load, 200);
+		return setTimeout(load, 1000/25);
 
 	// show elements HTML for hero HP / SCORE ...
 	user_info.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = notifications.style.display = 'block';
