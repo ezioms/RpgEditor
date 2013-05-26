@@ -28,7 +28,12 @@ var clickMouse = false;
 var objectSelect = null;
 var memoryObjectSelect = null;
 
+var centerSphere = null;
+
 var clock = new THREE.Clock();
+
+var startClick = 0;
+var stopClick = 0;
 
 var gui;
 var Mapgui;
@@ -126,12 +131,10 @@ function init() {
 	var modelSelect = 'arbre';
 	container = document.getElementById('containerMapping');
 
-	app.camera = new THREE.CombinedCamera(window.innerWidth, window.innerHeight, 60, 1, 8000);
+	app.camera = new THREE.CombinedCamera(window.innerWidth, window.innerHeight, 60, 1, 20000);
 
-	controls = new THREE.FirstPersonControls(app.camera, container);
+	controls = new THREE.OrbitControls(app.camera, container);
 
-	controls.object.position.y = 50;
-	controls.movementSpeed = 400;
 	controls.lookSpeed = 0.1;
 	controls.lookVertical = true;
 	controls.lookVertical = true;
@@ -148,6 +151,27 @@ function init() {
 	rollOverMesh.position.z += 50 / 2;
 	rollOverMesh.visible = false;
 	app.scene.add(rollOverMesh);
+
+	centerSphere = new THREE.Object3D();
+
+	var geometryX = new THREE.Geometry();
+	geometryX.vertices.push(new THREE.Vector3(0, 0, 0));
+	geometryX.vertices.push(new THREE.Vector3(50, 0, 0));
+	centerSphere.add(new THREE.Line(geometryX, new THREE.LineBasicMaterial({ color: 0xFE2900 })));
+
+	var geometryY = new THREE.Geometry();
+	geometryY.vertices.push(new THREE.Vector3(0, 0, 0));
+	geometryY.vertices.push(new THREE.Vector3(0, 50, 0));
+	centerSphere.add(new THREE.Line(geometryY, new THREE.LineBasicMaterial({ color: 0x92D555 })));
+
+	var geometryZ = new THREE.Geometry();
+	geometryZ.vertices.push(new THREE.Vector3(0, 0, 0));
+	geometryZ.vertices.push(new THREE.Vector3(0, 0, 50));
+	centerSphere.add(new THREE.Line(geometryZ, new THREE.LineBasicMaterial({ color: 0x004280 })));
+
+	centerSphere.add(new THREE.Mesh(new THREE.SphereGeometry(0.5, 8, 8), new THREE.MeshBasicMaterial({ color: 0xffffff })));
+
+	app.scene.add(centerSphere);
 
 	// picking
 
@@ -194,6 +218,11 @@ function init() {
 	plane.position.x += dataRegion.x * 25;
 	plane.position.z += dataRegion.z * 25;
 	plane.name = 'planeBackground';
+
+	controls.center.position.copy(plane.position);
+	app.camera.position.copy(plane.position);
+	app.camera.position.y += 100;
+	app.camera.position.x += 100;
 
 	app.scene.add(plane);
 
@@ -271,15 +300,9 @@ function init() {
 		addObject: function () {
 
 			Mapgui.action.setValue('Manipuler un objet');
-
-			var vector = new THREE.Vector3(0, 0, 1);
-			projector.unprojectVector(vector, app.camera);
-
-			var ray = new THREE.Ray(app.camera.position, vector.subSelf(app.camera.position).normalize());
-
 			app.JSONLoader.load(dir_script + '../obj/' + modelSelect + '/json.js', function (geometry) {
 				var mesh = new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
-				mesh.position = ray.origin.clone().addSelf(ray.direction);
+				mesh.position.copy(controls.center.position);
 				mesh.name = modelSelect;
 				mesh.alias = modelSelect + ' - inconnue';
 				mesh.type = 'object';
@@ -390,13 +413,13 @@ function init() {
 
 	var f1 = Mapgui.addFolder('Caméra');
 	f1.open();
-	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', 0, dataRegion.x * 50).onChange(function (value) {
+	Mapgui.positionX = f1.add(Mapgui.params, 'positionX', -1000, dataRegion.x * 50 + 1000).onChange(function (value) {
 		app.camera.position.setX(value);
 	});
-	Mapgui.positionY = f1.add(Mapgui.params, 'positionY', 0, dataRegion.y * 50).onChange(function (value) {
+	Mapgui.positionY = f1.add(Mapgui.params, 'positionY', -1000, dataRegion.y * 50 + 1000).onChange(function (value) {
 		app.camera.position.setY(value);
 	});
-	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', 0, dataRegion.z * 50).onChange(function (value) {
+	Mapgui.positionZ = f1.add(Mapgui.params, 'positionZ', -1000, dataRegion.z * 50 + 1000).onChange(function (value) {
 		app.camera.position.setZ(value);
 	});
 	Mapgui.rotationY = f1.add(Mapgui.params, 'rotationY', -180, 180).onChange(function (value) {
@@ -408,7 +431,7 @@ function init() {
 	Mapgui.rotationZ = f1.add(Mapgui.params, 'rotationZ', -180, 180).onChange(function (value) {
 		app.camera.rotation.setZ(value * Math.PI / 180);
 	});
-	Mapgui.movementSpeed = f1.add(Mapgui.params, 'vitesse', { Rapide: 800, Normal: controls.movementSpeed, Lent: 100 }).onChange(function (value) {
+	Mapgui.movementSpeed = f1.add(Mapgui.params, 'vitesse', { Rapide: 10, Normal: controls.movementSpeed, Lent: 1 }).onChange(function (value) {
 		controls.movementSpeed = value;
 	});
 	Mapgui.lookSpeed = f1.add(Mapgui.params, 'vertical', 0, 0.2).onChange(function (value) {
@@ -609,6 +632,7 @@ function onDocumentMouseMove(event) {
 
 function onDocumentMouseDown(event) {
 	event.preventDefault();
+	startClick = Date.now();
 
 	$('#my-gui-container').empty();
 	if (memoryObjectSelect)
@@ -633,6 +657,7 @@ function onDocumentMouseDown(event) {
 					if (clickMouse && !objectSelect) {
 
 						memoryObjectSelect = element.object;
+						controls.center.position.copy(memoryObjectSelect.position);
 
 						/*
 						 GUI pour model
@@ -734,6 +759,11 @@ function onDocumentMouseDown(event) {
 
 function onDocumentMouseUp(event) {
 	event.preventDefault();
+	stopClick = Date.now();
+
+	if (stopClick - startClick > 400)
+		return;
+
 	clickMouse = false;
 	objectSelect = null;
 
@@ -759,16 +789,13 @@ function onDocumentMouseUp(event) {
 			dataTextureCube.background_pz
 		]
 	};
-	var setCoordonnee = coordonnee;
 
 	typeAction = $('#actionCurrent').val();
 
 	if (typeAction == 'del') {
 
-		if (sizeCube != 10 && obstacles[voxelPosition.x] != undefined && obstacles[voxelPosition.x][voxelPosition.y] != undefined && obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z] != undefined) {
-			console.log(obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z]);
+		if (sizeCube != 10 && obstacles[voxelPosition.x] != undefined && obstacles[voxelPosition.x][voxelPosition.y] != undefined && obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z] != undefined)
 			delete obstacles[voxelPosition.x][voxelPosition.y][voxelPosition.z];
-		}
 		else if (obstacles[voxelPosition.x - 5] != undefined && obstacles[voxelPosition.x - 5][voxelPosition.y] != undefined && obstacles[voxelPosition.x - 5][voxelPosition.y][voxelPosition.z - 5] != undefined)
 			delete obstacles[voxelPosition.x - 5][voxelPosition.y][voxelPosition.z - 5];
 
@@ -859,7 +886,7 @@ function render() {
 		objectSelect.position.copy(voxelPosition);
 	}
 
-	controls.update(clock.getDelta(), dataRegion);
+	controls.update(centerSphere);
 	Mapgui.positionX.setValue(app.camera.position.x);
 	Mapgui.positionY.setValue(app.camera.position.y);
 	Mapgui.positionZ.setValue(app.camera.position.z);
