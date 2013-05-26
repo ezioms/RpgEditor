@@ -46,6 +46,7 @@ THREE.Map = function (app) {
 	var subObstacles = {};
 
 	var materials = [];
+	var materialWater = null;
 
 	for (var keyMat in listTexture) {
 		var material = new THREE.MeshLambertMaterial({
@@ -56,6 +57,11 @@ THREE.Map = function (app) {
 			side: 2
 		});
 		material.map.needsUpdate = true;
+
+		if (listTexture[keyMat].src.replace(url_script + 'images/background/', '') == 'water.png') {
+			materialWater = material;
+		}
+
 
 		materials.push(material);
 	}
@@ -125,6 +131,13 @@ THREE.Map = function (app) {
 	 */
 	this.getSubObstacles = function () {
 		return subObstacles;
+	};
+
+	/*
+	 * GET block water
+	 */
+	this.getElementWater = function () {
+		return elementWater;
 	};
 
 
@@ -197,6 +210,11 @@ THREE.Map = function (app) {
 	 * UPDATE map
 	 */
 	this.update = function (app) {
+
+		if (materialWater) {
+			materialWater.map.offset.x = random(0, 1) == 1 ? 0.1 : -0.1;
+			materialWater.map.offset.y = random(0, 1) == 1 ? 0.1 : -0.1;
+		}
 		var minDistance1 = {
 			distance: null,
 			value: null,
