@@ -153,6 +153,32 @@ function init() {
 
 	projector = new THREE.Projector();
 
+	if (dataRegion.skybox > 0) {
+		var path = dir_script + '../images/skybox/' + dataRegion.skybox + '/';
+		var format = '.jpg';
+		var urls = [
+			path + 'px' + format, path + 'nx' + format,
+			path + 'py' + format, path + 'ny' + format,
+			path + 'pz' + format, path + 'nz' + format
+		];
+
+		var materialArray = [];
+		for (var i = 0; i < 6; i++)
+			materialArray.push(new THREE.MeshBasicMaterial({
+				map: THREE.ImageUtils.loadTexture(urls[i]),
+				side: THREE.BackSide
+			}));
+
+		var maxX = dataRegion.x * 50;
+		var maxY = dataRegion.y * 50;
+		var maxZ = dataRegion.z * 50;
+
+		var mesh = new THREE.Mesh(new THREE.CubeGeometry(maxX * 5, maxY * 5, maxZ * 5, 0, 0, 0, materialArray), MeshFaceMaterial);
+		mesh.position.set(maxX / 2, maxY / 2, maxZ / 2);
+
+		app.scene.add(mesh);
+	}
+
 	// grid
 	var material = THREE.ImageUtils.loadTexture(dir_script + '../' + dataRegion.background);
 	material.wrapS = material.wrapT = THREE.RepeatWrapping;
@@ -676,7 +702,7 @@ function onDocumentMouseDown(event) {
 							memoryObjectSelect.rotation.setZ(value * Math.PI / 180);
 						});
 						gui.scale = gui.add(gui.params, 'scale', -100, 100).onChange(function (value) {
-							memoryObjectSelect.scale.set(value,value,value);
+							memoryObjectSelect.scale.set(value, value, value);
 							gui.scaleX.setValue(value);
 							gui.scaleY.setValue(value);
 							gui.scaleZ.setValue(value);
