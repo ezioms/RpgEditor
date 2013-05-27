@@ -83,4 +83,4 @@ THREE.Sound = function () {
 	this.update = function (app) {
 		this.position = app.hero.getPerson().position.clone();
 	};
-}
+};

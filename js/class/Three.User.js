@@ -1,4 +1,4 @@
-THREE.User = function (dataUser, app) {
+THREE.User = function (dataUser) {
 
 	THREE.Object3D.call(this);
 
@@ -13,7 +13,7 @@ THREE.User = function (dataUser, app) {
 
 	this.getPerson = function () {
 		return this.person;
-	}
+	};
 
 
 	/*

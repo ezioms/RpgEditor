@@ -37,8 +37,8 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 			this.cycleDie++;
 		}
 
-		return this.hp < 0 ? true : false;
-	}
+		return !!(this.hp < 0);
+	};
 
 	/*
 	 * Update person et position
@@ -164,10 +164,10 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		this.head.rotation.z = Math.sin(time) / 5;
 
 		this.rightarm.rotation.z = 2 * Math.cos(z + PI);
-		this.rightarm.rotation.x = 1 * (cosX - 1);
+		this.rightarm.rotation.x = cosX - 1;
 
 		this.leftarm.rotation.z = 2 * cosZ;
-		this.leftarm.rotation.x = 1 * (cosX + 1);
+		this.leftarm.rotation.x = cosX + 1;
 
 		this.rightleg.rotation.z = 1.4 * cosZ;
 		this.leftleg.rotation.z = 1.4 * Math.cos(z + PI);
@@ -298,7 +298,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 		return listImg[path] = index;
 	};
 
-	this.setRotationY = function( value ) {
+	this.setRotationY = function (value) {
 		this.rotation.y = PIDivise2 + value;
 	};
 
@@ -351,18 +351,18 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	var head = new THREE.CubeGeometry(7, 8, 7);
 	this.head = new THREE.Mesh(head, faceMesh);
-	for (keyImg in this.materialHead)
+	for (var keyImg in this.materialHead)
 		this.head.geometry.faces[keyImg].materialIndex = this.materialHead[keyImg];
 	this.head.position.y = 18;
 
 
-	var arm = new THREE.CubeGeometry(3, 12, 3)
+	var arm = new THREE.CubeGeometry(3, 12, 3);
 	for (i = 0; i < 8; i += 1)
 		arm.vertices[i].y -= 6;
 
 	this.leftarm = new THREE.Mesh(arm, faceMesh);
 	this.rightarm = new THREE.Mesh(arm, faceMesh);
-	for (keyImg in this.materialArm) {
+	for (var keyImg in this.materialArm) {
 		this.leftarm.geometry.faces[keyImg].materialIndex = this.materialArm[keyImg];
 		this.rightarm.geometry.faces[keyImg].materialIndex = this.materialArm[keyImg];
 	}
@@ -376,14 +376,14 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 	var body = new THREE.CubeGeometry(4, 12, 8);
 	this.body = new THREE.Mesh(body, faceMesh);
-	for (keyImg in this.materialBody)
+	for (var keyImg in this.materialBody)
 		this.body.geometry.faces[keyImg].materialIndex = this.materialBody[keyImg];
 	this.body.position.y = 8;
 
 	this.bodyGroup.add(this.body);
 
 
-	var leg = new THREE.CubeGeometry(4, 12, 4)
+	var leg = new THREE.CubeGeometry(4, 12, 4);
 	for (i = 0; i < 8; i += 1)
 		leg.vertices[i].y -= 6;
 	this.leftleg = new THREE.Mesh(leg, faceMesh);

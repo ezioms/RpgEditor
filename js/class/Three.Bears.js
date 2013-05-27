@@ -312,7 +312,7 @@ THREE.Bears = function (picture, id) {
 	 * LEG
 	 * Left / Right leg
 	 */
-	var leg = new THREE.CubeGeometry(6, 16, 6)
+	var leg = new THREE.CubeGeometry(6, 16, 6);
 	for (i = 0; i < 8; i += 1)
 		leg.vertices[i].y -= 6;
 	this.leftleg = new THREE.Mesh(leg, faceMesh);

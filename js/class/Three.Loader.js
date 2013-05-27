@@ -61,7 +61,7 @@ THREE.PreLoader = function () {
 			this.completedImage += this.map.listMaterials.length;
 
 			// sounds
-			for (var keySounds in this.sounds) {
+			for (var i = 0; i < this.sounds.length; i++) {
 				this.completedImage++;
 				this.nbrSounds++;
 			}
@@ -202,7 +202,7 @@ THREE.PreLoader = function () {
 
 		if (callback && typeof(callback) === 'function')
 			callback();
-	}
+	};
 
 	this.request = function (url, type, params, callback) {
 
@@ -255,4 +255,4 @@ THREE.PreLoader = function () {
 
 
 	this.datas = this.request('map');
-}
+};

@@ -95,14 +95,6 @@ THREE.Map = function (app) {
 
 
 	/*
-	 * GET data for obstacles map current
-	 */
-	this.getObstacles = function () {
-		return obstacles;
-	};
-
-
-	/*
 	 * GET data for module map current
 	 */
 	this.getModules = function () {
@@ -119,26 +111,42 @@ THREE.Map = function (app) {
 
 
 	/*
-	 * GET water
+	 * GET data for obstacles map current
 	 */
-	this.getWater = function () {
-		return water;
+	/*
+	this.getObstacles = function () {
+		return obstacles;
 	};
+	*/
 
 
 	/*
 	 * GET water
 	 */
+	/*
+	this.getWater = function () {
+		return water;
+	};
+	*/
+
+
+	/*
+	 * GET water
+	 */
+	/*
 	this.getSubObstacles = function () {
 		return subObstacles;
 	};
+	*/
 
 	/*
 	 * GET block water
 	 */
+	/*
 	this.getElementWater = function () {
 		return elementWater;
 	};
+	*/
 
 
 	/*
@@ -169,10 +177,7 @@ THREE.Map = function (app) {
 	 * GET obstacles
 	 */
 	this.hasObstacle = function (x, y, z) {
-		if (obstacles[x] != undefined && obstacles[x][y] != undefined && obstacles[x][y][z] != undefined && obstacles[x][y][z] === true)
-			return true;
-
-		return false;
+		return obstacles[x] != undefined && obstacles[x][y] != undefined && obstacles[x][y][z] != undefined && obstacles[x][y][z] === true;
 	};
 
 
@@ -180,10 +185,7 @@ THREE.Map = function (app) {
 	 * GET obstacles small
 	 */
 	this.hasObstacleSmall = function (x, y, z) {
-		if (subObstacles[x] != undefined && subObstacles[x][y] != undefined && subObstacles[x][y][z] != undefined && subObstacles[x][y][z] === true)
-			return true;
-
-		return false;
+		return subObstacles[x] != undefined && subObstacles[x][y] != undefined && subObstacles[x][y][z] != undefined && subObstacles[x][y][z] === true;
 	};
 
 
@@ -191,10 +193,7 @@ THREE.Map = function (app) {
 	 * GET water
 	 */
 	this.hasWater = function (x, y, z) {
-		if (water[x] != undefined && water[x][y] != undefined && water[x][y][z] != undefined && water[x][y][z] === true)
-			return true;
-
-		return false;
+		return water[x] != undefined && water[x][y] != undefined && water[x][y][z] != undefined && water[x][y][z] === true;
 	};
 
 
@@ -283,12 +282,18 @@ THREE.Map = function (app) {
 			zone = this.getZone({x: row.x, y: row.y, z: row.z});
 
 			facesWater = {
-				0: water[zone.x + 1] != undefined && water[zone.x + 1][zone.y] !== undefined && water[zone.x + 1][zone.y][zone.z] !== undefined && water[zone.x + 1][zone.y][zone.z] ? true : false,
-				1: water[zone.x - 1] != undefined && water[zone.x - 1][zone.y] !== undefined && water[zone.x - 1][zone.y][zone.z] !== undefined && water[zone.x - 1][zone.y][zone.z] ? true : false,
-				2: water[zone.x] !== undefined && water[zone.x][zone.y + 1] !== undefined && water[zone.x][zone.y + 1][zone.z] !== undefined && water[zone.x][zone.y + 1][zone.z] ? true : false,
-				3: water[zone.x] !== undefined && water[zone.x][zone.y - 1] !== undefined && water[zone.x][zone.y - 1][zone.z] !== undefined && water[zone.x][zone.y - 1][zone.z] ? true : false,
-				4: water[zone.x] !== undefined && water[zone.x][zone.y] !== undefined && water[zone.x][zone.y][zone.z + 1] !== undefined && water[zone.x][zone.y][zone.z + 1] ? true : false,
-				5: water[zone.x] !== undefined && water[zone.x][zone.y] !== undefined && water[zone.x][zone.y][zone.z - 1] !== undefined && water[zone.x][zone.y][zone.z - 1] ? true : false
+				0: (water[zone.x + 1] != undefined && water[zone.x + 1][zone.y] !== undefined && water[zone.x + 1][zone.y][zone.z] !== undefined && water[zone.x + 1][zone.y][zone.z])
+					|| (obstacles[zone.x + 1] != undefined && obstacles[zone.x + 1][zone.y] !== undefined && obstacles[zone.x + 1][zone.y][zone.z] !== undefined && obstacles[zone.x + 1][zone.y][zone.z]) ? true : false,
+				1: (water[zone.x - 1] != undefined && water[zone.x - 1][zone.y] !== undefined && water[zone.x - 1][zone.y][zone.z] !== undefined && water[zone.x - 1][zone.y][zone.z])
+					|| (obstacles[zone.x - 1] != undefined && obstacles[zone.x - 1][zone.y] !== undefined && obstacles[zone.x - 1][zone.y][zone.z] !== undefined && obstacles[zone.x - 1][zone.y][zone.z]) ? true : false,
+				2: (water[zone.x] !== undefined && water[zone.x][zone.y + 1] !== undefined && water[zone.x][zone.y + 1][zone.z] !== undefined && water[zone.x][zone.y + 1][zone.z])
+					|| (obstacles[zone.x] !== undefined && obstacles[zone.x][zone.y + 1] !== undefined && obstacles[zone.x][zone.y + 1][zone.z] !== undefined && obstacles[zone.x][zone.y + 1][zone.z]) ? true : false,
+				3: (water[zone.x] !== undefined && water[zone.x][zone.y - 1] !== undefined && water[zone.x][zone.y - 1][zone.z] !== undefined && water[zone.x][zone.y - 1][zone.z])
+					|| (obstacles[zone.x] !== undefined && obstacles[zone.x][zone.y - 1] !== undefined && obstacles[zone.x][zone.y - 1][zone.z] !== undefined && obstacles[zone.x][zone.y - 1][zone.z]) ? true : false,
+				4: (water[zone.x] !== undefined && water[zone.x][zone.y] !== undefined && water[zone.x][zone.y][zone.z + 1] !== undefined && water[zone.x][zone.y][zone.z + 1])
+					|| (obstacles[zone.x] !== undefined && obstacles[zone.x][zone.y] !== undefined && obstacles[zone.x][zone.y][zone.z + 1] !== undefined && obstacles[zone.x][zone.y][zone.z + 1]) ? true : false,
+				5: (water[zone.x] !== undefined && water[zone.x][zone.y] !== undefined && water[zone.x][zone.y][zone.z - 1] !== undefined && water[zone.x][zone.y][zone.z - 1])
+					|| (obstacles[zone.x] !== undefined && obstacles[zone.x][zone.y] !== undefined && obstacles[zone.x][zone.y][zone.z - 1] !== undefined && obstacles[zone.x][zone.y][zone.z - 1]) ? true : false
 			};
 		}
 
@@ -476,8 +481,8 @@ THREE.Map = function (app) {
 	var element = new THREE.Mesh(geometry, materialMap);
 	var elementWater = new THREE.Mesh(geometryWater, materialMap);
 
-	univers.add(element);
 	univers.add(elementWater);
+	univers.add(element);
 
 	univers.name = 'map';
 

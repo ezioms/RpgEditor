@@ -33,10 +33,6 @@ THREE.Bot = function (app, dataBot) {
 
 	var speedTmp = 0;
 
-	//size
-	var infoSize = app.loader.map.size;
-	var sizeBloc = infoSize.elements;
-
 	// les battle
 	var battle = new THREE.Battle();
 
@@ -63,12 +59,12 @@ THREE.Bot = function (app, dataBot) {
 		var rand = random(0, 100);
 
 		// On fait tourner le bot aléatoirement
-		turn = (rand > 90) ? true : false;
+		turn = !!((rand > 90));
 
 		//console.log('action', turn);
 
 		setTimeout(action, 100);
-	}
+	};
 
 
 	this.getPerson = function () {
@@ -118,10 +114,9 @@ THREE.Bot = function (app, dataBot) {
 			isDie = true;
 			if (person.cycleDie == 500)
 				return 'remove';
-			if (person.name == 'bot')
+			if (person.name === 'bot')
 				app.map.deleteOverModule(collision.getZone(this.position));
-			return;
-
+			return 'die';
 		}
 
 		if (buttonEnter)
@@ -140,7 +135,7 @@ THREE.Bot = function (app, dataBot) {
 					person.ray.visible = false;
 				});
 			}
-			return;
+			return 'distance';
 		} else if (!person.visible) {
 			person.visible = true;
 			person.traverse(function (child) {
@@ -235,6 +230,8 @@ THREE.Bot = function (app, dataBot) {
 					battle.addForBot(app, this, dataBot.fixe);
 				}
 		}
+
+		return 'valide';
 	};
 
 	this.position.set(dataBot.x, dataBot.y, dataBot.z);

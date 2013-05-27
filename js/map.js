@@ -1,7 +1,11 @@
+var version = '12';
+
 var stats;
 var control = false;
 var simulate_key;
 var buttonEnter = false;
+
+var debug = debug || 0;
 
 
 /*
@@ -12,7 +16,6 @@ var contentBody = document.getElementById('content_body');
 var contentAction = document.getElementById('content_action');
 var valueGraphHp = document.getElementById('valueMoyenneGraph_hp');
 var contentGraphHp = document.getElementById('ContenuGraphique_hp');
-var valueGraphOxygen = document.getElementById('valueMoyenneGraph_oxygen');
 var contentGraphOxygen = document.getElementById('ContenuGraphique_oxygen');
 var cible = document.getElementById('cible');
 var water = document.getElementById('water');
@@ -54,27 +57,29 @@ app.group = [];
  */
 var load = function () {
 	// load elements
-	if (!app.loader.getCompleted())
-		return setTimeout(load, 1000/25);
+	if (app.loader.getCompleted()) {
 
-	// show elements HTML for hero HP / SCORE ...
-	user_info.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = notifications.style.display = 'block';
+		// show elements HTML for hero HP / SCORE ...
+		user_info.style.display = userScore.style.display = userAmmo.style.display = cible.style.display = logout.style.display = notifications.style.display = 'block';
 
-	info(app.loader.nbrBot + ' habitant(s)');
-	info(app.loader.nbrElements + ' cube(s)');
-	info(app.loader.nbrSounds + ' son(s)');
+		info(app.loader.nbrBot + ' habitant(s)');
+		info(app.loader.nbrElements + ' cube(s)');
+		info(app.loader.nbrSounds + ' son(s)');
 
-	//stat for le debug
-	if (debug) {
-		stats = new Stats();
-		stats.domElement.style.position = 'absolute';
-		stats.domElement.style.bottom = '0';
-		stats.domElement.style.left = '0';
-		document.body.appendChild(stats.domElement);
+		//stat for le debug
+		if (debug) {
+			stats = new Stats();
+			stats.domElement.style.position = 'absolute';
+			stats.domElement.style.bottom = '0';
+			stats.domElement.style.left = '0';
+			document.body.appendChild(stats.domElement);
+		}
+
+		// initialize the scene with objects
+		initialize();
 	}
-
-	// initialize the scene with objects
-	initialize();
+	else
+		setTimeout(load, 1000 / 25);
 };
 
 
@@ -112,13 +117,14 @@ var initialize = function () {
 
 	// generate bots and add in scene
 	var bots = app.map.getBots();
-	if (bots)
+	if (bots) {
 		for (var keyBot in bots) {
 			var bot = new THREE.Bot(app, bots[keyBot]);
 			app.bots[bot.id] = bot;
 			app.scene.add(bot.getPerson());
 			app.group.push(bot.getRay());
 		}
+	}
 
 	// generate bots and add in scene
 	var modules = app.map.getModules();
@@ -170,7 +176,7 @@ var render = function () {
 
 	// update bots in scene
 	for (var keyBot in app.bots)
-		if (app.bots[keyBot].update(app) == 'remove') {
+		if (app.bots[keyBot].update(app) === 'remove') {
 			app.bots[keyBot].getPerson().remove();
 			app.scene.remove(app.bots[keyBot].getPerson());
 			delete app.bots[keyBot];
@@ -193,8 +199,10 @@ var render = function () {
 	// lecture de message a afficher
 	if (app.messages) {
 		for (var keyMsg in app.messages) {
-			if ($('.notifications').last().html() != app.messages[keyMsg])
+			if ($('.notifications').last().html() != app.messages[keyMsg]) {
 				lookMessage(app.messages[keyMsg]);
+			}
+
 			app.messages.splice(keyMsg, 1);
 		}
 	}
@@ -215,7 +223,7 @@ var render = function () {
 	}
 
 	app.renderer.clear();
-	app.renderer.render(app.scene, app.camera);
+	return app.renderer.render(app.scene, app.camera);
 };
 
 
@@ -270,9 +278,10 @@ var killSpeackBot = function () {
 	var notif = $('.notifications');
 	if (notif.length) {
 		notif.stop(true, true);
-		if ($('.reponse').length) {
+		var reponse = $('.reponse');
+		if (reponse.length) {
 			var id = app.clock.oldTime + '_' + random(0, 100);
-			var txt = $('.reponse').html();
+			var txt = reponse.html();
 			$('#notifications').empty().append('<div id="' + id + '" class="notifications reponseNotification">' + txt + '</div>');
 			$('#' + id).fadeIn(1000).delay(80 * txt.length).fadeOut(4000, function () {
 				$(this).remove();
@@ -391,7 +400,7 @@ var getIsHistoryModule = function (name, module, read) {
 	memoryModule[module.x + '-' + module.y + '-' + module.z] = true;
 	localStorage.setItem(name, JSON.stringify(memoryModule));
 	return false;
-}
+};
 
 /*
  * Simular click cursor with pressKey ENTER
@@ -427,8 +436,7 @@ var removeReferences = function (removeme) {
 		console.log('Error memory');
 	}
 	app.scene.remove(removeme);
-
-}
+};
 
 
 /*

@@ -48,9 +48,6 @@ THREE.Overlay = function () {
 	};
 
 	this.show = function () {
-		if (this.global.is(':visible'))
-			return true;
-
-		return false;
+		return this.global.is(':visible');
 	};
-}
+};

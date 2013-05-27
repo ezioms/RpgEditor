@@ -63,7 +63,7 @@ THREE.Hero = function (app) {
 
 	var yawObject = new THREE.Object3D();
 	yawObject.name = 'camera';
-	yawObject.rotation.y = app.loader.datas.my.currentdirection_x;
+	yawObject.rotation.y = app.loader.datas.my.currentdirection_x || 0;
 	yawObject.position.set(app.loader.my.positionX, app.loader.my.positionY, app.loader.my.positionZ);
 	yawObject.add(pitchObject);
 
@@ -391,6 +391,8 @@ THREE.Hero = function (app) {
 	 * Position de la sourie
 	 */
 	this.onMouseMove = function (event) {
+		event.preventDefault();
+
 		// var global voir map.js
 		if (!control)
 			return;
@@ -398,14 +400,13 @@ THREE.Hero = function (app) {
 		var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
 		var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
-		yawObject.rotation.y -= movementX * ( inWater ? 0.001 : 0.002);
+		this.currentdirection.x = yawObject.rotation.y -= movementX * ( inWater ? 0.001 : 0.002);
 		pitchObject.rotation.x -= movementY * ( inWater ? 0.001 : 0.002);
 
 		pitchObject.rotation.x = Math.max((inWater ? -1.4 : -1), Math.min((inWater ? 1.4 : 1), pitchObject.rotation.x));
 
-		this.currentdirection.x = yawObject.rotation.y;
+	//	this.currentdirection.x = yawObject.rotation.y;
 
-		event.preventDefault();
 	};
 
 
@@ -413,13 +414,13 @@ THREE.Hero = function (app) {
 	 * On appuis le click sourie
 	 */
 	this.onMouseDown = function (event) {
+		event.preventDefault();
+
 		// var global voir map.js
 		if (!control || inWater)
 			return;
 
 		shootgun = 1;
-
-		event.preventDefault();
 	};
 
 
@@ -427,10 +428,9 @@ THREE.Hero = function (app) {
 	 * On relache le click sourie
 	 */
 	this.onMouseUp = function (event) {
+		event.preventDefault();
 
 		shootgun = false;
-
-		event.preventDefault();
 	};
 
 

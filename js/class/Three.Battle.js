@@ -38,7 +38,7 @@ THREE.Battle = function () {
 			setTimeout(function () {
 				app.sound.effect('ricoche.mp3', 0.4);
 			}, 50);
-	}
+	};
 
 	/*
 	 * Création d'un tire pour un bot
@@ -68,7 +68,7 @@ THREE.Battle = function () {
 					app.sound.play('gunFire.mp3', null, distance);
 			}
 		}
-	}
+	};
 
 	/*
 	 * Création d'un tire pour un animal
@@ -81,7 +81,7 @@ THREE.Battle = function () {
 		}
 
 		app.sound.play('attackDog.ogg', null, distance);
-	}
+	};
 
 	/*
 	 * Création d'un tire pour un animal
@@ -94,7 +94,7 @@ THREE.Battle = function () {
 		}
 
 		app.sound.play('attackBears.ogg', null, distance);
-	}
+	};
 };
 
 THREE.Battle.prototype = Object.create(THREE.Object3D.prototype);
