@@ -31,12 +31,13 @@ THREE.Map = function (app) {
 	var ambient = new THREE.AmbientLight(app.loader.map.ambiance);
 
 	var light1 = new THREE.PointLight(0xffaa00, 1, 600);
+	var light2;
 
 	if (app.loader.map.sun > 0) {
-		var light2 = new THREE.DirectionalLight(0xffffff);
+		light2 = new THREE.DirectionalLight(0xffffff);
 		light2.position.set(1, 0.75, 0.5).normalize();
 	} else
-		var light2 = new THREE.PointLight(0xffaa00, 1, 600);
+		light2 = new THREE.PointLight(0xffaa00, 1, 600);
 
 
 	var obstacles = {};
@@ -58,10 +59,8 @@ THREE.Map = function (app) {
 		});
 		material.map.needsUpdate = true;
 
-		if (listTexture[keyMat].src.replace(url_script + 'images/background/', '') == 'water.png') {
+		if (listTexture[keyMat].src.replace(url_script + 'images/background/', '') == 'water.png')
 			materialWater = material;
-		}
-
 
 		materials.push(material);
 	}
@@ -108,45 +107,6 @@ THREE.Map = function (app) {
 	this.getUnivers = function () {
 		return univers;
 	};
-
-
-	/*
-	 * GET data for obstacles map current
-	 */
-	/*
-	this.getObstacles = function () {
-		return obstacles;
-	};
-	*/
-
-
-	/*
-	 * GET water
-	 */
-	/*
-	this.getWater = function () {
-		return water;
-	};
-	*/
-
-
-	/*
-	 * GET water
-	 */
-	/*
-	this.getSubObstacles = function () {
-		return subObstacles;
-	};
-	*/
-
-	/*
-	 * GET block water
-	 */
-	/*
-	this.getElementWater = function () {
-		return elementWater;
-	};
-	*/
 
 
 	/*
@@ -469,6 +429,7 @@ THREE.Map = function (app) {
 			THREE.GeometryUtils.merge(geometry, cube);
 	}
 
+
 	// deformation des vertices
 	for (var i = 0, l = geometry.vertices.length; i < l; i++) {
 		if (random(0, 100) > frequence)
@@ -477,6 +438,7 @@ THREE.Map = function (app) {
 		geometry.vertices[ i ].y += Math.random() * (degradation * 2);
 		geometry.vertices[ i ].z += Math.random() * degradation;
 	}
+
 
 	var element = new THREE.Mesh(geometry, materialMap);
 	var elementWater = new THREE.Mesh(geometryWater, materialMap);

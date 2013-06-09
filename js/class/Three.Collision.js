@@ -51,7 +51,7 @@ THREE.Collision = function (app) {
 			isJump = false;
 			isCollision ='collisionGround';
 		} else if (clone.position.y > maxY) {
-			clone.position.y = max;
+			clone.position.y = maxY;
 			currentdirectionJump = 0;
 			isJump = false;
 			isCollision ='collisionCeiling';

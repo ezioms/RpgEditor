@@ -71,9 +71,11 @@ THREE.Bot = function (app, dataBot) {
 		return person;
 	};
 
+
 	this.getRay = function () {
 		return person.ray;
 	};
+
 
 	this.setJump = function (value) {
 		this.fixe = false;

@@ -357,7 +357,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 
 	var arm = new THREE.CubeGeometry(3, 12, 3);
-	for (i = 0; i < 8; i += 1)
+	for (var i = 0; i < 8; i += 1)
 		arm.vertices[i].y -= 6;
 
 	this.leftarm = new THREE.Mesh(arm, faceMesh);
@@ -384,7 +384,7 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 
 
 	var leg = new THREE.CubeGeometry(4, 12, 4);
-	for (i = 0; i < 8; i += 1)
+	for (var i = 0; i < 8; i += 1)
 		leg.vertices[i].y -= 6;
 	this.leftleg = new THREE.Mesh(leg, faceMesh);
 	this.rightleg = new THREE.Mesh(leg, faceMesh);
@@ -396,7 +396,6 @@ THREE.Person = function (type, picture, hand_left, hand_right, id) {
 	this.rightleg.position.z = 2;
 	this.leftleg.position.y = 2;
 	this.rightleg.position.y = 2;
-
 
 	if (hand_right != undefined && hand_right)
 		this.changeRight(hand_right);
