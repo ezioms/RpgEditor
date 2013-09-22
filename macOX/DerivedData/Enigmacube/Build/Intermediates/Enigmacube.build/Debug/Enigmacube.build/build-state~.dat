@@ -1,624 +1,0 @@
-TEnigmacube
-v5
-r1
-cCheck dependencies
-cProcessInfoPlistFile /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Info.plist MacGap/Enigmacube-Info.plist
-cCpResource public DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/public
-cCopyStringsFile /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/InfoPlist.strings MacGap/en.lproj/InfoPlist.strings
-cCpResource MacGap/en.lproj/Credits.rtf DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtf
-cCompileXIB /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib
-cCpResource application.icns DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns
-cCompileXIB /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xib
-cProcessPCH /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.pth MacGap/Enigmacube-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.o /Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.o /Users/alban/Sites/rpg/macOX/MacGap/main.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.o /Users/alban/Sites/rpg/macOX/MacGap/WindowController.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube normal x86_64
-cPBXCp MacGap/Growl.framework DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework
-cTouch /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000516D0FE900000000000000AA
-t1366101993
-s170
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework/Cocoa
-c00000000505DDF9800000000000025C8
-t1348329368
-s9672
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
-c00000000505DDF9800000000000001E5
-t1348329368
-s485
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/WebKit.framework/WebKit
-c000000005143B2220000000000087CE4
-t1363391010
-s556260
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Enigmacube.LinkFileList
-c0000000051B4737400000000000007EA
-t1370780532
-s2026
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.o
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.pth
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Info.plist
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/PkgInfo
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtf
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/InfoPlist.strings
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/MainMenu.nib
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Window.nib
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/public
-t2
-s0
-
-N/Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m
-c0000000050DEB0E400000000000003B9
-t1356771556
-s953
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m
-c0000000050DEB0E40000000000000783
-t1356771556
-s1923
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m
-c0000000050DEB0E40000000000000202
-t1356771556
-s514
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m
-c0000000050DEB0E40000000000000921
-t1356771556
-s2337
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m
-c0000000050DEB0E40000000000000548
-t1356771556
-s1352
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m
-c0000000050DEB0E40000000000000227
-t1356771556
-s551
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m
-c0000000050DEB0E40000000000000274
-t1356771556
-s628
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Constants.h
-c0000000050DEB0E40000000000000083
-t1356771556
-s131
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m
-c0000000051AFBEBA0000000000000B42
-t1370472122
-s2882
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m
-c0000000050DEB0E400000000000002A1
-t1356771556
-s673
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.h
-c0000000050DEB0E40000000000000150
-t1356771556
-s336
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m
-c0000000050DEB0E400000000000005E5
-t1356771556
-s1509
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m
-c0000000050DEB0E400000000000016CF
-t1356771556
-s5839
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m
-c0000000050DEB0E400000000000005FD
-t1356771556
-s1533
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Enigmacube-Prefix.pch
-c0000000050DEB0E4000000000000014D
-t1356771556
-s333
-i<Cocoa/Cocoa.h>
-i"Constants.h"
-i"Utils.h"
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Growl.framework
-c0000000051AFB8FD00000000000000CC
-t1370470653
-s204
-
-N/Users/alban/Sites/rpg/macOX/MacGap/Growl.framework/Growl
-c0000000050DEB0E4000000000009F580
-t1356771556
-s652672
-
-N/Users/alban/Sites/rpg/macOX/MacGap/WindowController.m
-c0000000050DEB0E40000000000000554
-t1356771556
-s1364
-
-N/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Credits.rtf
-c0000000050DEB0E400000000000001B4
-t1356771556
-s436
-
-N/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/InfoPlist.strings
-c0000000050DEB0E4000000000000002D
-t1356771556
-s45
-
-N/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib
-c0000000051B471F100000000000223AF
-t1370780145
-s140207
-
-N/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xib
-c0000000050DEB0E400000000000037FF
-t1356771556
-s14335
-
-N/Users/alban/Sites/rpg/macOX/MacGap/main.m
-c0000000050DEB0E400000000000000F6
-t1356771556
-s246
-
-N/Users/alban/Sites/rpg/macOX/application.icns
-c0000000050DEB0E400000000000159F6
-t1356771556
-s88566
-
-N/Users/alban/Sites/rpg/macOX/public
-c0000000050DEB0E40000000000000066
-t1356771556
-s102
-
-NMacGap/Enigmacube-Info.plist
-c0000000051B472CD0000000000000445
-t1370780365
-s1093
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/WindowController.m
-r0
-
-CBuild AST from /Users/alban/Sites/rpg/macOX/MacGap/main.m
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesba832cf4aa64b741^a37643f4aa64b741^---0#1#0#--18"Check dependencies36"5927A514-EB11-41D6-8AE1-5451CD307B0B-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.464168
-e392473333.777676
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection66"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m8ffb76f5aa64b741^6215c7f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@74"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m0000000000000000^3365"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.o MacGap/Classes/Commands/App.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/App.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/App.o36"6F0DD1BD-E9CA-4F7B-B2F7-30410602E294-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.o /Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409413
-e392473333.775929
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.o
-x/Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection57"Compile /Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m6e1469f5aa64b741^27a3c6f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@65"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m0000000000000000^3379"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.o MacGap/AppDelegate.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.dia -c /Users/alban/Sites/rpg/macOX/MacGap/AppDelegate.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/AppDelegate.o36"66068844-F533-4B0D-BB5E-C82037EA58AA-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.466412
-e392473333.778086
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection65"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.md78577f5aa64b741^4030c7f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@73"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m0000000000000000^3395"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.o MacGap/Classes/ContentView.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/ContentView.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/ContentView.o36"F2864566-D73B-42C9-B4DB-187A3FD2F46A-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409312
-e392473333.478796
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.ma31f69f5aa64b741^a7917af5aa64b741^---0#0#0#-19%DVTDocumentLocation2@75"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m0000000000000000^3371"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.o MacGap/Classes/Commands/Dock.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Dock.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Dock.o36"E879B668-0FB1-4CDD-AB86-8AC50CB63AD3-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.464153
-e392473333.522600
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection68"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.me3fb76f5aa64b741^97c885f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@76"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m0000000000000000^3377"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.o MacGap/Classes/Commands/Growl.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Growl.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Growl.o36"EB334E62-5620-4B2D-8A3A-EBFC9A0BEB84-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409496
-e392473333.535687
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.mec3169f5aa64b741^642289f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@75"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m0000000000000000^3407"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.o MacGap/Classes/JSEventHelper.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/JSEventHelper.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/JSEventHelper.o36"DC3F8A6D-D7E3-471C-9DD6-AD71FB5FAD6A-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409522
-e392473333.465199
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m672969f5aa64b741^a81877f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@77"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m0000000000000000^3383"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.o MacGap/Classes/Commands/Notice.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Notice.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Notice.o36"9646F083-95E0-404C-B31E-F79AF1B42E5C-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409372
-e392473333.462723
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m602369f5aa64b741^0d6f76f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@75"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m0000000000000000^3371"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.o MacGap/Classes/Commands/Path.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Path.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Path.o36"B11D9EDC-26A5-495B-B089-E8F9C0DA06BF-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409328
-e392473333.462730
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection68"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m252169f5aa64b741^927776f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@76"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m0000000000000000^3377"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.o MacGap/Classes/Commands/Sound.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Commands/Sound.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Sound.o36"CDFFDAA5-B13B-44FD-8D74-D164698EE7E4-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.480206
-e392473333.776603
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection59"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.mc2167bf5aa64b741^89cec6f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@67"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m0000000000000000^3359"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.o MacGap/Classes/Utils.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Utils.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Utils.o36"1BD5DFE9-A786-4B36-BB0D-51427C3455AD-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409402
-e392473333.777363
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m772d69f5aa64b741^0001c7f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@77"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m0000000000000000^3419"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.o MacGap/Classes/WebViewDelegate.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/WebViewDelegate.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WebViewDelegate.o36"2F4990DF-8D5A-43E4-914A-FB6959268158-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.o /Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.409429
-e392473333.776401
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.o
-x/Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection60"Compile /Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m8b4f69f5aa64b741^33c3c6f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@68"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m0000000000000000^3365"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.o MacGap/Classes/Window.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Classes/Window.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Window.o36"84CC3E8E-B9AD-479C-8B3E-521E9CBEABC9-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.o /Users/alban/Sites/rpg/macOX/MacGap/WindowController.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.537085
-e392473333.778361
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.o
-x/Users/alban/Sites/rpg/macOX/MacGap/WindowController.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection62"Compile /Users/alban/Sites/rpg/macOX/MacGap/WindowController.m1ea689f5aa64b741^4642c7f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@70"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/WindowController.m0000000000000000^3409"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.o MacGap/WindowController.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.dia -c /Users/alban/Sites/rpg/macOX/MacGap/WindowController.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/WindowController.o36"5B21F8DF-7C15-49BC-9822-7BD447B27596-
-
-CCompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.o /Users/alban/Sites/rpg/macOX/MacGap/main.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473333.523968
-e392473333.776819
-r1
-xCompileC
-xDerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.o
-x/Users/alban/Sites/rpg/macOX/MacGap/main.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection50"Compile /Users/alban/Sites/rpg/macOX/MacGap/main.mcf4a86f5aa64b741^7fdcc6f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@58"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/main.m0000000000000000^3337"CompileC DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.o MacGap/main.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -include /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.d --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.dia -c /Users/alban/Sites/rpg/macOX/MacGap/main.m -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/main.o36"1FC8A465-62D5-4A2A-A4A7-DDDBCBB906E7-
-
-CCompileXIB /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib
-s392473332.279794
-e392473332.370181
-r1
-xCompileXIB
-x/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection67"Compiling /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib18b547f4aa64b741^7ec55ef4aa64b741^---0#0#0#-19%DVTDocumentLocation2@73"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib0000000000000000^596"CompileXIB MacGap/en.lproj/MainMenu.xib    cd /Users/alban/Sites/rpg/macOX    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/MainMenu.nib /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/MainMenu.xib --sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk36"B3099EF1-B2F5-44FC-9539-586D18C21D68-
-
-CCompileXIB /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xib
-s392473332.279811
-e392473332.719477
-r1
-xCompileXIB
-x/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xib
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection65"Compiling /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xiba6b747f4aa64b741^6e30b8f4aa64b741^---0#0#0#-19%DVTDocumentLocation2@71"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xib0000000000000000^590"CompileXIB MacGap/en.lproj/Window.xib    cd /Users/alban/Sites/rpg/macOX    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Window.nib /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Window.xib --sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk36"8037E1F8-0731-4DAB-A833-542154DE17E8-
-
-CCopyStringsFile /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/InfoPlist.strings MacGap/en.lproj/InfoPlist.strings
-s392473332.279762
-e392473332.283291
-r1
-xCopyStringsFile
-x/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/InfoPlist.strings
-xMacGap/en.lproj/InfoPlist.strings
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection38"Copy MacGap/en.lproj/InfoPlist.strings0cac47f4aa64b741^b28548f4aa64b741^---0#0#0#-19%DVTDocumentLocation2@78"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/en.lproj/InfoPlist.strings0000000000000000^434"CopyStringsFile DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/InfoPlist.strings MacGap/en.lproj/InfoPlist.strings    cd /Users/alban/Sites/rpg/macOX    builtin-copyStrings --validate --inputencoding utf-8 --outputencoding UTF-16 --outdir /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj -- MacGap/en.lproj/InfoPlist.strings36"662EB50B-1D81-478A-8E84-CEE706907493-
-
-CCpResource MacGap/en.lproj/Credits.rtf DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtf
-s392473332.279786
-e392473332.285762
-r1
-xCpResource
-xMacGap/en.lproj/Credits.rtf
-xDerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtf
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection103"Copy DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtfe2b147f4aa64b741^802749f4aa64b741^---0#0#0#-19%DVTDocumentLocation2@143"file://localhost/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtf000000000080d041^459"CpResource MacGap/en.lproj/Credits.rtf DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj/Credits.rtf    cd /Users/alban/Sites/rpg/macOX    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/alban/Sites/rpg/macOX/MacGap/en.lproj/Credits.rtf /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/en.lproj36"AB1FF385-CF86-4577-9C94-D157860B4C53-
-
-CCpResource application.icns DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns
-s392473332.279803
-e392473332.284400
-r1
-xCpResource
-xapplication.icns
-xDerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Copy DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns10b347f4aa64b741^a3ce48f4aa64b741^---0#0#0#-19%DVTDocumentLocation2@139"file://localhost/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns000000000080d041^424"CpResource application.icns DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/application.icns    cd /Users/alban/Sites/rpg/macOX    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/alban/Sites/rpg/macOX/application.icns /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources36"206F949A-9C16-492B-B898-D9BD60CD713E-
-
-CCpResource public DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/public
-s392473332.279759
-e392473332.282200
-r1
-xCpResource
-xpublic
-xDerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/public
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection89"Copy DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/publicc9ab47f4aa64b741^753e48f4aa64b741^---0#0#0#-19%DVTDocumentLocation2@129"file://localhost/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/public000000000080d041^394"CpResource public DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources/public    cd /Users/alban/Sites/rpg/macOX    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/alban/Sites/rpg/macOX/public /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Resources36"8FCEE176-B64F-49E6-A6FC-5AB909CC4D89-
-
-CLd /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube normal x86_64
-s392473333.785624
-e392473333.837151
-r1
-xLd
-x/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection118"Link /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube0d34cbf5aa64b741^ec4fd6f5aa64b741^---0#0#0#--980"Ld DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube normal x86_64    cd /Users/alban/Sites/rpg/macOX    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap -filelist /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Objects-normal/x86_64/Enigmacube.LinkFileList -mmacosx-version-min=10.8 -fobjc-arc -fobjc-link-runtime -framework Growl -framework Cocoa -framework WebKit -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/MacOS/Enigmacube36"493584E2-7FCF-4FB9-86EC-E730353BA55C-
-
-CPBXCp MacGap/Growl.framework DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework
-s392473333.844934
-e392473333.849442
-r1
-xPBXCp
-xMacGap/Growl.framework
-xDerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Copy DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework035cd8f5aa64b741^3a75d9f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@139"file://localhost/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework000000000080d041^432"PBXCp MacGap/Growl.framework DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks/Growl.framework    cd /Users/alban/Sites/rpg/macOX    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/alban/Sites/rpg/macOX/MacGap/Growl.framework /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Frameworks36"69B50001-29B6-46B1-9ACC-9EA595E4E6DF-
-
-CProcessInfoPlistFile /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Info.plist MacGap/Enigmacube-Info.plist
-s392473332.269062
-e392473332.272235
-r1
-xProcessInfoPlistFile
-x/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Info.plist
-xMacGap/Enigmacube-Info.plist
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection36"Process MacGap/Enigmacube-Info.plist39ee44f4aa64b741^81b245f4aa64b741^---0#0#0#-19%DVTDocumentLocation2@73"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Enigmacube-Info.plist0000000000000000^489"ProcessInfoPlistFile DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Info.plist MacGap/Enigmacube-Info.plist    cd /Users/alban/Sites/rpg/macOX    builtin-infoPlistUtility MacGap/Enigmacube-Info.plist -genpkginfo /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app/Contents/Info.plist36"C37C1EAD-591F-4FD0-A243-5A6958BEC2EB-
-
-CProcessPCH /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.pth MacGap/Enigmacube-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s392473332.727601
-e392473333.402264
-r1
-xProcessPCH
-x/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.pth
-xMacGap/Enigmacube-Prefix.pch
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection39"Precompile MacGap/Enigmacube-Prefix.pchc05dbaf4aa64b741^b1fb66f5aa64b741^---0#0#0#-19%DVTDocumentLocation2@73"file://localhost/Users/alban/Sites/rpg/macOX/MacGap/Enigmacube-Prefix.pch0000000000000000^3295"ProcessPCH DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.pth MacGap/Enigmacube-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/alban/Sites/rpg/macOX    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch x86_64 -fmessage-length=0 -std=gnu99 -fobjc-arc -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wmissing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wshorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -fstrict-aliasing -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -Wno-sign-conversion -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-generated-files.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-own-target-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-all-target-headers.hmap -iquote /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/Enigmacube-project-headers.hmap -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources/x86_64 -I/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/Enigmacube.build/Debug/Enigmacube.build/DerivedSources -F/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug -F/Users/alban/Sites/rpg/macOX/MacGap --serialize-diagnostics /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.dia -c /Users/alban/Sites/rpg/macOX/MacGap/Enigmacube-Prefix.pch -o /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.pth -MMD -MT dependencies -MF /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Intermediates/PrecompiledHeaders/Enigmacube-Prefix-dlfpokbghttrtgecovtyifrkcwfp/Enigmacube-Prefix.pch.d36"A6BDEE87-AA9C-49BD-9825-B74E80FD1FA3-
-
-CProcessPCH /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Index/PrecompiledHeaders/Enigmacube-Prefix-byomxkhpphjnyldpzfykgdbxrhjm_ast/Enigmacube-Prefix.pch.pth MacGap/Enigmacube-Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
-r0
-
-CTouch /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app
-s392473333.857767
-e392473333.864272
-r1
-xTouch
-x/Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Touch /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app2fa4dbf5aa64b741^ff40ddf5aa64b741^---0#0#0#--211"Touch DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app    cd /Users/alban/Sites/rpg/macOX    /usr/bin/touch -c /Users/alban/Sites/rpg/macOX/DerivedData/Enigmacube/Build/Products/Debug/Enigmacube.app36"9E3A656E-6A10-4486-B9D0-AAAB1EB11798-
-
