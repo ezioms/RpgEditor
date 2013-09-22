@@ -2,6 +2,7 @@ THREE.Overlay = function () {
 
 	this.global = $('#overlay');
 
+
 	this.close = function () {
 		if (!this.show())
 			return;
@@ -11,6 +12,7 @@ THREE.Overlay = function () {
 			$('#instructions').show();
 		});
 	};
+
 
 	this.edit = function (data, close, hide) {
 		if (data == '')
@@ -26,6 +28,7 @@ THREE.Overlay = function () {
 		}
 	};
 
+
 	this.load = function (url, callback) {
 		var _this = this;
 		var hideOverlay = false;
@@ -33,7 +36,6 @@ THREE.Overlay = function () {
 
 		if (action.substring(action.length - 4) == 'move')
 			hideOverlay = true;
-
 
 		$.get(url_script + url, function (data) {
 
@@ -46,6 +48,7 @@ THREE.Overlay = function () {
 			_this.loadData = false;
 		});
 	};
+
 
 	this.show = function () {
 		return this.global.is(':visible');

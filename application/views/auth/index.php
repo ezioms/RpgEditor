@@ -48,7 +48,7 @@
     <source src="<?php echo url::base(); ?>audios/home.mp3" type="audio/mpeg">
 </audio>
 
-<script type="text/javascript" src="http://www.enigmacube.com/js/lib/jquery.js"></script>
+<script type="text/javascript" src="http://rpg.dev/js/lib/jquery.js"></script>
 <script>
     $(function () {
         $('body')

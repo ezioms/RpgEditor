@@ -25,7 +25,7 @@ THREE.Battle = function () {
 
 		var ray = new THREE.Raycaster(app.hero.getCamera().position, vector.sub(app.hero.getCamera().position).normalize());
 
-		var intersects = ray.intersectObjects(app.group);
+		var intersects = ray.intersectObjects(app.group, false);
 
 		if (intersects.length > 0 && intersects[0].distance < 2000 && intersects[0].object.parent.hp != undefined && intersects[0].object.parent.hp >= 0) {
 			intersects[0].object.parent.hp--;
@@ -48,11 +48,11 @@ THREE.Battle = function () {
 
 		var vector = app.hero.getCamera().position.clone();
 
-		var listObject = app.map.getUnivers().children;
+		var listObject = app.map.getUnivers().children || [];
 		listObject.push(app.hero.getRay());
 
 		var ray = new THREE.Raycaster(self.position, vector.sub(self.position).normalize());
-		var intersects = ray.intersectObjects(listObject);
+		var intersects = ray.intersectObjects(listObject, false);
 
 		if (intersects.length > 0 && intersects[0].distance < noGun ? 100 : 2000) {
 			if (intersects[0].object.name != undefined && intersects[0].object.name == 'rayPerson') {

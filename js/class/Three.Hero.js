@@ -397,7 +397,13 @@ THREE.Hero = function (app) {
 		if (!control)
 			return;
 
+		/** @namespace event.webkitMovementX */
+		/** @namespace event.mozMovementX */
+		/** @namespace event.movementX */
 		var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
+		/** @namespace event.webkitMovementY */
+		/** @namespace event.mozMovementY */
+		/** @namespace event.movementY */
 		var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
 
 		this.currentdirection.x = yawObject.rotation.y -= movementX * ( inWater ? 0.001 : 0.002);

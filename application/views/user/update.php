@@ -18,3 +18,43 @@
 		</div>
 <?php endif ?>
 <div class="center"><input type="button" value="<?php echo Kohana::lang( 'form.annul' ); ?>" onclick="app.overlay.load('user' )" class="button" /> <input type="button" value="<?php echo Kohana::lang( 'user.modif_password' ); ?>" onclick="savePassword()" class="button" /></div>
+<script>
+    function savePassword() {
+        var selectorPwd = $('#new_pwd');
+        var new_pwd = selectorPwd.val();
+
+        if( new_pwd ) {
+
+            var selectorPwdDouble = $('#repeat_new_pwd, #new_pwd');
+
+            selectorPwdDouble.removeClass('border-rouge');
+
+            if (new_pwd == '') {
+                selectorPwd.addClass('border-rouge');
+                return;
+            }
+
+            if (new_pwd != $('#repeat_new_pwd').val()) {
+                selectorPwdDouble.addClass('border-rouge');
+                return;
+            }
+
+            $.post(url_script + 'user/update_pwd', {
+                'new_pwd': new_pwd
+            }, function () {
+                selectorPwdDouble.val('');
+            });
+        }
+
+        var selectorPseudo = $('#pseudo');
+        var username = selectorPseudo.val();
+
+        if(username) {
+            $.post(url_script + 'user/update_username', {
+                'username': username
+            }, function (data) {
+                selectorPseudo.val(data);
+            });
+        }
+    }
+</script>

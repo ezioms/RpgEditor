@@ -9,3 +9,6 @@ debug = <?php echo Kohana::config( 'game.debug' ) ? 'true' : 'false'; ?>,
 volume_sound = <?php echo str_replace( ',', '.', (string) (Kohana::config( 'map.sound_map' ) / 100) ); ?>,
 showText = "<?php echo Kohana::lang( 'form.aff' ); ?>",
 hideText = "<?php echo Kohana::lang( 'form.masq' ); ?>";
+
+window.dir_script = dir_script;
+window.url_script = url_script;

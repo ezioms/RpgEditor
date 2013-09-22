@@ -2,7 +2,7 @@
 
 defined('SYSPATH') OR die('No direct access allowed.');
 
-$config['version'] = '1.0.0'; //Version de votre jeu
+$config['version'] = '3.0.0'; //Version de votre jeu
 
 $config['name'] = 'Enigma Cube'; //Nom de votre jeu
 

@@ -305,6 +305,9 @@ var updateHeroVisual = function () {
 	// fenetre action module
 	var module = app.map.getOverModule(app.hero.getCollisionModule());
 
+	/** @namespace module.data.module */
+	/** @namespace module.article */
+	/** @namespace module.data.id_item */
 	if (module) {
 		if (!action) {
 			if (module.data.module == 'move') {
@@ -370,7 +373,6 @@ var updateHeroVisual = function () {
 				if (module.data.title)
 					app.messages.push(module.data.title);
 			}
-
 			action = true;
 		}
 	}
@@ -450,6 +452,9 @@ if (havePointerLock) {
 	var element = document.body;
 
 	var pointerlockchange = function () {
+		/** @namespace document.webkitPointerLockElement */
+		/** @namespace document.mozPointerLockElement */
+		/** @namespace document.pointerLockElement */
 		if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 			noCursor.style.display = 'none';
 			lookMessage('Souris désactivé');
@@ -464,12 +469,18 @@ if (havePointerLock) {
 
 	var activeCursor = function () {
 		// Ask the browser to lock the pointer
+		/** @namespace element.webkitRequestPointerLock */
+		/** @namespace element.mozRequestPointerLock */
+		/** @namespace element.requestPointerLock */
 		element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
 
 		if (/Firefox/i.test(navigator.userAgent)) {
 
 			var fullscreenchange = function () {
 
+				/** @namespace document.mozFullScreenElement */
+				/** @namespace document.mozFullscreenElement */
+				/** @namespace document.fullscreenElement */
 				if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
 
 					document.removeEventListener('fullscreenchange', fullscreenchange);
@@ -482,6 +493,11 @@ if (havePointerLock) {
 			document.addEventListener('fullscreenchange', fullscreenchange, false);
 			document.addEventListener('mozfullscreenchange', fullscreenchange, false);
 
+
+			/** @namespace document.webkitRequestFullscreen */
+			/** @namespace document.mozRequestFullScreen */
+			/** @namespace document.mozRequestFullscreen */
+			/** @namespace document.requestFullscreen */
 			element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
 			element.requestFullscreen();
 
@@ -513,17 +529,17 @@ $(function () {
 	 * Event unload window or press key
 	 */
 	$(window)
-		.unload(function () {
+		.on('unload', function () {
 			app.loader.request('user/update', 'GET', app.hero.getData());
 		})
-		.keyup(function (event) {
+		.on('keyup', function (event) {
 			if (!control)
 				return;
 
 			if (event.keyCode === 13)
 				buttonEnter = simulate_key = false;
 		})
-		.keydown(function (event) {
+		.on('keydown', function (event) {
 			if (!control)
 				return;
 

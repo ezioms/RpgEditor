@@ -259,14 +259,14 @@ THREE.Dog = function (picture, id) {
 	//Head Accessory
 	var headAccessory = new THREE.CubeGeometry(10, 10, 10);
 	this.headAccessory = new THREE.Mesh(headAccessory, faceMesh);
-	for (keyImg in this.materialHeadAccessory)
+	for (var keyImg in this.materialHeadAccessory)
 		this.headAccessory.geometry.faces[keyImg].materialIndex = this.materialHeadAccessory[keyImg];
 	this.headAccessory.position.set(12, 12, 0);
 
 	//Head
 	var head = new THREE.CubeGeometry(8, 8, 8);
 	this.head = new THREE.Mesh(head, faceMesh);
-	for (keyImg in this.materialHead)
+	for (var keyImg in this.materialHead)
 		this.head.geometry.faces[keyImg].materialIndex = this.materialHead[keyImg];
 	this.head.position.set(12, 12, 0);
 
@@ -300,7 +300,7 @@ THREE.Dog = function (picture, id) {
 	 */
 	var body = new THREE.CubeGeometry(22, 8, 8);
 	this.body = new THREE.Mesh(body, faceMesh);
-	for (keyImg in this.materialBody)
+	for (var keyImg in this.materialBody)
 		this.body.geometry.faces[keyImg].materialIndex = this.materialBody[keyImg];
 	this.body.position.setY(8);
 	this.bodyGroup.add(this.body);
@@ -315,7 +315,7 @@ THREE.Dog = function (picture, id) {
 		leg.vertices[i].y -= 6;
 	this.leftleg = new THREE.Mesh(leg, faceMesh);
 	this.rightleg = new THREE.Mesh(leg, faceMesh);
-	for (keyImg in this.materialLeg) {
+	for (var keyImg in this.materialLeg) {
 		this.leftleg.geometry.faces[keyImg].materialIndex = this.materialLeg[keyImg];
 		this.rightleg.geometry.faces[keyImg].materialIndex = this.materialLeg[keyImg];
 	}

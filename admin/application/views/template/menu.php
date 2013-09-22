@@ -33,7 +33,6 @@ if( in_array( 'item', $acces )
 				<?php endif ?>
 		</ul>
 		<div class="clear"></div>
-		<hr/>
 		<h3 id="add_menu"><?php echo Kohana::lang( 'menu.add' ); ?></h3>
 		<ul class="toggle">
 				<?php if( in_array( 'user', $acces ) || in_array( 'admin', $acces ) ) : ?>
@@ -53,7 +52,6 @@ if( in_array( 'item', $acces )
 				<?php endif ?>
 		</ul>
 		<div class="clear"></div>
-		<hr/>
 		<h3><?php echo Kohana::lang( 'menu.admin' ); ?></h3>
 		<ul class="toggle">
 				<?php if( in_array( 'ftp', $acces ) || in_array( 'admin', $acces ) ) : ?>

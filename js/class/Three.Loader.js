@@ -1,26 +1,58 @@
 THREE.PreLoader = function () {
 
-	this.datas = false;
+	/** @namespace window.url_script */
+	var url_script = window.url_script || './';
+	/** @namespace window.dir_script */
+	var dir_script = window.dir_script || './';
 
-	this.map = null;
+	this.datas = {
+		map: {},
+		my: {},
+		items: {},
+		bots: {},
+		sounds: {}
+	};
 
-	this.my = null;
+	this.map = {
+		degradation: null,
+		frequence: null,
+		fonction: null,
+		skybox: null,
+		listMaterials: null,
+		size: {
+			elements: {
+				xMax: null,
+				zMax: null,
+				xMax: null
+			}},
+		ambiance: null,
+		sun: null,
+		articles: null,
+		modules: [],
+		music : null
+	};
 
-	this.bots = null;
+	this.my = {
+		positionX: null,
+		positionY: null,
+		positionZ: null
+	};
+
+	this.bots = {};
+
+	this.sounds = {};
+
+	this.listImg = {};
+
+	this.listAudio = {};
 
 	this.nbrBot = 0;
 
 	this.nbrElements = 0;
 
-	this.sounds = null;
-
 	this.nbrSounds = 0;
 
 	this.completedImage = 0;
-
-	this.listImg = {};
-
-	this.listAudio = {};
 
 	var contentLoading = document.getElementById('content_loading');
 
@@ -35,7 +67,6 @@ THREE.PreLoader = function () {
 
 
 	this.getCompleted = function () {
-
 		if (!this.datas)
 			return false;
 
@@ -111,7 +142,7 @@ THREE.PreLoader = function () {
 		eval('app.loader.map.ambiance = ' + app.loader.map.ambiance + ';');
 		eval('app.loader.map.colorBackground = ' + app.loader.map.colorBackground + ';');
 
-		for (key in this.map.listMaterials) {
+		for (var key in this.map.listMaterials) {
 			if (typeof this.map.listMaterials[key] == 'string')
 				this.map.listMaterials[key] = this.loadImage(dir_script + this.map.listMaterials[key]);
 
@@ -143,7 +174,7 @@ THREE.PreLoader = function () {
 	this.getBotCompleted = function () {
 		var noComplete = 0;
 
-		for (key in this.bots.list) {
+		for (var key in this.bots.list) {
 			if (typeof this.bots.list[key].img == 'string')
 				this.bots.list[key].img = this.loadImage(dir_script + 'images/' + this.bots.list[key].img);
 
@@ -173,7 +204,7 @@ THREE.PreLoader = function () {
 			else
 				noCompletedImage--;
 
-			this.stat('Chargement des pistes audio', noCompletedImage);
+			this.stat('Chargement des pistes audio');
 		}
 		return noComplete ? false : true;
 	};
@@ -193,6 +224,7 @@ THREE.PreLoader = function () {
 		return this.listImg[path];
 	};
 
+
 	/*
 	 * On charge les donnée de la map current
 	 */
@@ -203,6 +235,7 @@ THREE.PreLoader = function () {
 		if (callback && typeof(callback) === 'function')
 			callback();
 	};
+
 
 	this.request = function (url, type, params, callback) {
 
